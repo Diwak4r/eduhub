@@ -13,10 +13,13 @@ import React from "react";
 interface Resource {
   id: string;
   title: string;
-  description: string;
-  type: 'Articles' | 'Tutorials' | 'Tools';
-  url?: string;
+  description: string | null;
+  type: string;
+  url: string | null;
+  source_id: string | null;
   created_at: string;
+  updated_at: string;
+  is_active: boolean | null;
 }
 
 const sectionStyles: { [key: string]: { icon: React.ReactNode; borderColor: string } } = {
@@ -124,7 +127,7 @@ export default function Resources() {
     return acc;
   }, {} as Record<string, Resource[]>);
 
-  const handleResourceClick = (url?: string) => {
+  const handleResourceClick = (url?: string | null) => {
     if (url) {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -192,7 +195,7 @@ export default function Resources() {
                     <div key={type} className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
                       <div className="flex items-center gap-4 mb-6">
                         <div className="p-3 bg-white rounded-xl shadow-md">
-                          {sectionStyles[type].icon}
+                          {sectionStyles[type]?.icon || <BookOpen className="h-6 w-6 text-gray-500" />}
                         </div>
                         <h2 className="text-3xl font-bold text-gray-800">{type}</h2>
                         <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
@@ -206,7 +209,7 @@ export default function Resources() {
                             className={cn(
                               "group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 bg-white/80 backdrop-blur-sm animate-fade-in-up",
                               "border-t-4",
-                              sectionStyles[type].borderColor,
+                              sectionStyles[type]?.borderColor || "border-gray-500",
                             )}
                             style={{ animationDelay: `${0.7 + index * 0.1}s` }}
                             onClick={() => handleResourceClick(item.url)}
