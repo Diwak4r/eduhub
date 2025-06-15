@@ -6,10 +6,9 @@ export default function Header() {
   const { pathname } = useLocation();
   const navLinks = [
     { to: "/", label: "Home" },
-    { to: "/courses", label: "Courses" },
+    { to: "/courses", label: "Courses & Careers" },
     { to: "/resources", label: "Resources" },
     { to: "/ai-tools", label: "AI Tools" },
-    { to: "/career-guide", label: "Career Guide" },
     { to: "/about", label: "About" },
     { to: "/chat", label: "Chat with Diwa" },
   ];

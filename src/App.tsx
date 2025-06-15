@@ -11,7 +11,6 @@ import Resources from "./pages/Resources";
 import About from "./pages/About";
 import Chat from "./pages/Chat";
 import AITools from "./pages/AITools";
-import CareerGuide from "./pages/CareerGuide";
 
 const queryClient = new QueryClient();
 
@@ -26,7 +25,6 @@ const App = () => (
           <Route path="/courses" element={<Courses />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/ai-tools" element={<AITools />} />
-          <Route path="/career-guide" element={<CareerGuide />} />
           <Route path="/about" element={<About />} />
           <Route path="/chat" element={<Chat />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
