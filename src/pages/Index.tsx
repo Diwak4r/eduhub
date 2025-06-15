@@ -22,6 +22,9 @@ import {
   MessageCircle,
   GraduationCap,
 } from "lucide-react";
+import TopResourcesSection from "@/components/TopResourcesSection";
+import AnimatedCareerPath from "@/components/AnimatedCareerPath";
+import CourseCard from "@/components/CourseCard";
 
 export default function Index() {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -85,6 +88,61 @@ export default function Index() {
       path: "/chat",
       color: "from-orange-500 to-orange-600"
     }
+  ];
+
+  const trendingCourses = [
+    {
+      id: 101,
+      title: 'Modern React with Hooks',
+      instructor: 'Jane Doe',
+      category: 'Web Development',
+      level: 'Intermediate',
+      duration: '12 hours',
+      students: 15234,
+      rating: 4.8,
+      price: 0,
+      image: 'https://images.unsplash.com/photo-1526948128573-703ee1a4563e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+      description: 'Master React.js with hooks, context, and all the new features from scratch.'
+    },
+    {
+      id: 102,
+      title: 'Python for Data Science and ML',
+      instructor: 'John Smith',
+      category: 'Data Science',
+      level: 'Beginner',
+      duration: '20 hours',
+      students: 25890,
+      rating: 4.9,
+      price: 0,
+      image: 'https://images.unsplash.com/photo-1555949963-ff98c872d8e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+      description: 'Learn Python for Data Science and Machine Learning from A-Z. Scikit-learn, Pandas, and more!'
+    },
+    {
+      id: 103,
+      title: 'The Complete DevOps Bootcamp',
+      instructor: 'Sam Wilson',
+      category: 'DevOps',
+      level: 'Advanced',
+      duration: '30 hours',
+      students: 8765,
+      rating: 4.7,
+      price: 0,
+      image: 'https://images.unsplash.com/photo-1580894742597-87bc8789db3d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+      description: 'Go from a beginner to a DevOps professional. Docker, Kubernetes, CI/CD, and more.'
+    },
+    {
+      id: 104,
+      title: 'Ethical Hacking: The Complete Course',
+      instructor: 'Alex Ray',
+      category: 'Cybersecurity',
+      level: 'Intermediate',
+      duration: '18 hours',
+      students: 12345,
+      rating: 4.8,
+      price: 0,
+      image: 'https://images.unsplash.com/photo-1555949963-a538202b37b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+      description: 'Become a certified ethical hacker. Learn network security, penetration testing, and more.'
+    },
   ];
 
   return (
@@ -192,8 +250,28 @@ export default function Index() {
 
       {/* Featured Sections */}
       <FeaturedCoursesSection />
+      
+      {/* Trending Courses Section */}
+      <section className="py-16 px-6">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">Trending Courses</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Explore our most popular courses across various fields.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {trendingCourses.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <CareerPathsSection />
+      <AnimatedCareerPath />
       <FreeAffordableSection />
+      <TopResourcesSection />
 
       {/* Call to Action */}
       <section className="py-16 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
