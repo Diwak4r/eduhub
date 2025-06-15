@@ -36,7 +36,7 @@ function sanitizeInput(input: string): string {
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<[^>]*>/g, '')
     .trim()
-    .substring(0, 2000); // Increased length limit
+    .substring(0, 2000);
 }
 
 function validateMessage(message: string): { valid: boolean; error?: string } {
@@ -176,9 +176,9 @@ serve(async (req) => {
 
     const systemPrompt = getSystemPrompt(mode);
 
-    // Call Gemini API with correct endpoint
-    console.log('Calling Gemini API...');
-    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`, {
+    // Call new Gemini API with updated endpoint and model
+    console.log('Calling new Gemini API...');
+    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${geminiApiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -193,7 +193,9 @@ serve(async (req) => {
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 2048,
+          maxOutputTokens: 8192,
+          candidateCount: 1,
+          stopSequences: [],
         },
         safetySettings: [
           {
@@ -201,7 +203,7 @@ serve(async (req) => {
             threshold: "BLOCK_MEDIUM_AND_ABOVE"
           },
           {
-            category: "HARM_CATEGORY_HATE_SPEECH",
+            category: "HARM_CATEGORY_HATE_SPEECH", 
             threshold: "BLOCK_MEDIUM_AND_ABOVE"
           },
           {
@@ -210,6 +212,10 @@ serve(async (req) => {
           },
           {
             category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_CIVIC_INTEGRITY",
             threshold: "BLOCK_MEDIUM_AND_ABOVE"
           }
         ]
@@ -221,10 +227,77 @@ serve(async (req) => {
     if (!geminiResponse.ok) {
       const errorText = await geminiResponse.text();
       console.error('Gemini API error:', geminiResponse.status, errorText);
+      
+      // Try fallback to stable model if experimental fails
+      console.log('Trying fallback to stable model...');
+      const fallbackResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `${systemPrompt}\n\nUser question: ${sanitizedMessage}`
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 8192,
+          },
+          safetySettings: [
+            {
+              category: "HARM_CATEGORY_HARASSMENT",
+              threshold: "BLOCK_MEDIUM_AND_ABOVE"
+            },
+            {
+              category: "HARM_CATEGORY_HATE_SPEECH",
+              threshold: "BLOCK_MEDIUM_AND_ABOVE"
+            },
+            {
+              category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+              threshold: "BLOCK_MEDIUM_AND_ABOVE"
+            },
+            {
+              category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+              threshold: "BLOCK_MEDIUM_AND_ABOVE"
+            }
+          ]
+        }),
+      });
+
+      if (!fallbackResponse.ok) {
+        const fallbackErrorText = await fallbackResponse.text();
+        console.error('Fallback Gemini API error:', fallbackResponse.status, fallbackErrorText);
+        return new Response(JSON.stringify({ 
+          error: `AI service error: ${fallbackResponse.status}` 
+        }), {
+          status: 503,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const fallbackData = await fallbackResponse.json();
+      console.log('Fallback Gemini response data:', JSON.stringify(fallbackData, null, 2));
+      
+      if (!fallbackData.candidates || fallbackData.candidates.length === 0) {
+        console.error('No candidates in fallback response');
+        return new Response(JSON.stringify({ 
+          error: 'Unable to generate response. Please try rephrasing your question.' 
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const aiResponse = fallbackData.candidates[0].content.parts[0].text;
+      console.log('Generated fallback response length:', aiResponse.length);
+
       return new Response(JSON.stringify({ 
-        error: `AI service error: ${geminiResponse.status}` 
+        response: aiResponse 
       }), {
-        status: 503,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
