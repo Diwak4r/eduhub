@@ -54,8 +54,6 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
-      console.log('Switching to mode:', newMode);
-
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
           message: `Switch to ${newMode} mode`,
@@ -64,10 +62,7 @@ export default function ChatInterface() {
         },
       });
 
-      console.log('Mode switch response:', data, error);
-
       if (error) {
-        console.error('Mode switch error:', error);
         throw new Error(error.message || 'Failed to switch mode');
       }
       
@@ -91,7 +86,6 @@ export default function ChatInterface() {
         description: "Failed to switch mode. Please try again.",
         variant: "destructive",
       });
-      // Revert mode on error
       setCurrentMode(currentMode === 'lite' ? 'steroids' : 'lite');
     } finally {
       setIsLoading(false);
@@ -117,9 +111,6 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
-      console.log('Sending message:', messageToSend);
-      console.log('Current mode:', currentMode);
-
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
           message: messageToSend,
@@ -127,10 +118,7 @@ export default function ChatInterface() {
         },
       });
 
-      console.log('Chat response:', data, error);
-
       if (error) {
-        console.error('Chat error:', error);
         throw new Error(error.message || 'Failed to get response');
       }
       
@@ -142,7 +130,7 @@ export default function ChatInterface() {
       };
 
       setMessages(prev => [...prev, botMessage]);
-      setRetryCount(0); // Reset retry count on success
+      setRetryCount(0);
     } catch (error) {
       console.error('Error sending message:', error);
       
@@ -156,7 +144,6 @@ export default function ChatInterface() {
         errorMessage = "AI service is temporarily unavailable. Please try again in a moment.";
       }
       
-      // Add retry button for failed messages
       const errorBotMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: `❌ ${errorMessage}`,
@@ -196,19 +183,34 @@ export default function ChatInterface() {
     }
   };
 
-  const getModeColor = () => {
-    return currentMode === 'steroids' ? 'from-purple-500 to-pink-600' : 'from-red-500 to-red-600';
+  const getModeConfig = () => {
+    return currentMode === 'steroids' 
+      ? {
+          color: 'from-purple-500 to-pink-600',
+          bgColor: 'bg-purple-50 border-purple-200',
+          buttonColor: 'bg-purple-500 hover:bg-purple-600',
+          textColor: 'text-purple-900',
+          subtextColor: 'text-purple-600',
+          icon: <Zap className="w-5 h-5 text-white" />,
+          title: 'Diwa on Steroids',
+          subtitle: 'Unlimited AI capabilities',
+          placeholder: "Ask Diwa anything - from creative writing to coding, philosophy to problem-solving..."
+        }
+      : {
+          color: 'from-red-500 to-red-600',
+          bgColor: 'bg-red-50 border-red-200',
+          buttonColor: 'bg-red-500 hover:bg-red-600',
+          textColor: 'text-red-900',
+          subtextColor: 'text-red-600',
+          icon: <Sparkles className="w-5 h-5 text-white" />,
+          title: 'Diwa Lite',
+          subtitle: 'Focused on learning & careers',
+          placeholder: "Ask Diwa about RiverSkills courses, career guidance, and learning resources..."
+        };
   };
 
-  const getModeBgColor = () => {
-    return currentMode === 'steroids' ? 'bg-purple-50 border-purple-200' : 'bg-red-50 border-red-200';
-  };
+  const modeConfig = getModeConfig();
 
-  const getModeButtonColor = () => {
-    return currentMode === 'steroids' ? 'bg-purple-500 hover:bg-purple-600' : 'bg-red-500 hover:bg-red-600';
-  };
-
-  // Show loading state while checking authentication
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -217,7 +219,6 @@ export default function ChatInterface() {
     );
   }
 
-  // Show authentication required message
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border border-gray-200">
@@ -239,26 +240,17 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-red-200 shadow-lg">
       {/* Chat Header with Mode Controls */}
-      <div className={`flex items-center justify-between p-4 border-b rounded-t-lg ${getModeBgColor()}`}>
+      <div className={`flex items-center justify-between p-4 border-b rounded-t-lg ${modeConfig.bgColor}`}>
         <div className="flex items-center gap-3">
-          <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center`}>
-            {currentMode === 'steroids' ? (
-              <Zap className="w-5 h-5 text-white" />
-            ) : (
-              <Sparkles className="w-5 h-5 text-white" />
-            )}
+          <div className={`w-8 h-8 bg-gradient-to-br ${modeConfig.color} rounded-full flex items-center justify-center`}>
+            {modeConfig.icon}
           </div>
           <div>
-            <h3 className={`font-semibold ${currentMode === 'steroids' ? 'text-purple-900' : 'text-red-900'}`}>
-              Diwa {currentMode === 'steroids' ? 'on Steroids' : 'Lite'}
-            </h3>
-            <p className={`text-sm ${currentMode === 'steroids' ? 'text-purple-600' : 'text-red-600'}`}>
-              {currentMode === 'steroids' ? 'Unlimited AI capabilities' : 'Focused on learning & careers'}
-            </p>
+            <h3 className={`font-semibold ${modeConfig.textColor}`}>{modeConfig.title}</h3>
+            <p className={`text-sm ${modeConfig.subtextColor}`}>{modeConfig.subtitle}</p>
           </div>
         </div>
         
-        {/* Mode Toggle Buttons */}
         <div className="flex gap-2">
           <Button
             variant={currentMode === 'lite' ? 'default' : 'outline'}
@@ -291,19 +283,15 @@ export default function ChatInterface() {
             className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {message.sender === 'bot' && (
-              <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center flex-shrink-0`}>
-                {currentMode === 'steroids' ? (
-                  <Zap className="w-4 h-4 text-white" />
-                ) : (
-                  <Sparkles className="w-4 h-4 text-white" />
-                )}
+              <div className={`w-8 h-8 bg-gradient-to-br ${modeConfig.color} rounded-full flex items-center justify-center flex-shrink-0`}>
+                {modeConfig.icon}
               </div>
             )}
             
             <div
               className={`max-w-[80%] rounded-lg px-4 py-3 ${
                 message.sender === 'user'
-                  ? `${getModeButtonColor()} text-white ml-auto`
+                  ? `${modeConfig.buttonColor} text-white ml-auto`
                   : 'bg-gray-100 text-gray-900'
               }`}
             >
@@ -320,12 +308,8 @@ export default function ChatInterface() {
         
         {isLoading && (
           <div className="flex gap-3 justify-start">
-            <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center`}>
-              {currentMode === 'steroids' ? (
-                <Zap className="w-4 h-4 text-white" />
-              ) : (
-                <Sparkles className="w-4 h-4 text-white" />
-              )}
+            <div className={`w-8 h-8 bg-gradient-to-br ${modeConfig.color} rounded-full flex items-center justify-center`}>
+              {modeConfig.icon}
             </div>
             <div className="bg-gray-100 rounded-lg px-4 py-3">
               <div className="flex gap-1">
@@ -340,7 +324,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className={`p-4 border-t rounded-b-lg ${getModeBgColor()}`}>
+      <div className={`p-4 border-t rounded-b-lg ${modeConfig.bgColor}`}>
         <div className="flex gap-3 items-end">
           <div className="flex-1">
             <Textarea
@@ -348,10 +332,7 @@ export default function ChatInterface() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={currentMode === 'steroids' 
-                ? "Ask Diwa anything - from creative writing to coding, philosophy to problem-solving..." 
-                : "Ask Diwa about RiverSkills courses, career guidance, and learning resources..."
-              }
+              placeholder={modeConfig.placeholder}
               className={`min-h-[44px] max-h-32 resize-none ${
                 currentMode === 'steroids' 
                   ? 'border-purple-300 focus:border-purple-500 focus:ring-purple-500' 
@@ -363,7 +344,7 @@ export default function ChatInterface() {
           <Button
             onClick={() => handleSendMessage()}
             disabled={!inputMessage.trim() || isLoading}
-            className={`${getModeButtonColor()} text-white px-4 py-2 h-11`}
+            className={`${modeConfig.buttonColor} text-white px-4 py-2 h-11`}
           >
             <Send className="w-4 h-4" />
           </Button>
