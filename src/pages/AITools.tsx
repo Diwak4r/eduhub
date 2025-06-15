@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
@@ -175,6 +174,15 @@ const aiTools: AITool[] = [
     pricing: "Freemium"
   },
   {
+    id: "deepseek-r1",
+    name: "DeepSeek R1",
+    description: "Open-source reasoning-capable AI with advanced problem-solving abilities",
+    url: "https://chat.deepseek.com",
+    category: "Text Generation",
+    capabilities: ["Reasoning", "Problem Solving", "Open Source", "Advanced Logic"],
+    pricing: "Free"
+  },
+  {
     id: "writesonic",
     name: "Writesonic",
     description: "AI writing assistant for marketing copy, blogs, and ads",
@@ -191,6 +199,51 @@ const aiTools: AITool[] = [
     category: "Text Generation",
     capabilities: ["Marketing", "Brand Voice", "Templates", "Team Collaboration"],
     pricing: "Paid"
+  },
+  {
+    id: "rytr",
+    name: "Rytr",
+    description: "AI writing assistant for creating high-quality content quickly",
+    url: "https://rytr.me",
+    category: "Text Generation",
+    capabilities: ["Content Creation", "Multiple Formats", "Tone Adjustment", "Plagiarism Check"],
+    pricing: "Freemium"
+  },
+  {
+    id: "sudowrite",
+    name: "Sudowrite",
+    description: "AI writing tool specifically designed for creative writers and novelists",
+    url: "https://www.sudowrite.com",
+    category: "Text Generation",
+    capabilities: ["Creative Writing", "Story Development", "Character Building", "Plot Assistance"],
+    pricing: "Freemium"
+  },
+  {
+    id: "wordtune",
+    name: "Wordtune",
+    description: "AI writing companion that helps rewrite and improve your text",
+    url: "https://www.wordtune.com",
+    category: "Writing Assistant",
+    capabilities: ["Text Rewriting", "Tone Adjustment", "Clarity Improvement", "Browser Extension"],
+    pricing: "Freemium"
+  },
+  {
+    id: "originality-ai",
+    name: "Originality.AI",
+    description: "AI content detector and plagiarism checker for publishers",
+    url: "https://originality.ai",
+    category: "Writing Assistant",
+    capabilities: ["AI Detection", "Plagiarism Check", "Content Verification", "Team Management"],
+    pricing: "Paid"
+  },
+  {
+    id: "gptzero",
+    name: "GPTZero",
+    description: "AI detector to identify AI-generated text and ensure authenticity",
+    url: "https://gptzero.me",
+    category: "Writing Assistant",
+    capabilities: ["AI Detection", "Text Analysis", "Authenticity Check", "Educational Focus"],
+    pricing: "Freemium"
   },
   {
     id: "poe",
@@ -477,6 +530,15 @@ const aiTools: AITool[] = [
     capabilities: ["Audio Editing", "Voice Cloning", "Transcription", "Overdub"],
     pricing: "Freemium"
   },
+  {
+    id: "lalal-ai",
+    name: "Lalal.ai",
+    description: "AI-powered vocal and instrumental track separation tool",
+    url: "https://www.lalal.ai",
+    category: "Audio Generation",
+    capabilities: ["Vocal Separation", "Instrumental Extraction", "Audio Processing", "High Quality"],
+    pricing: "Freemium"
+  },
 
   // Code Generation & Development
   {
@@ -550,6 +612,51 @@ const aiTools: AITool[] = [
     category: "Code Generation",
     capabilities: ["Codebase Context", "Code Search", "Explanations", "Enterprise"],
     pricing: "Freemium"
+  },
+  {
+    id: "bubble",
+    name: "Bubble",
+    description: "No-code platform with AI-assisted app development",
+    url: "https://bubble.io",
+    category: "Code Generation",
+    capabilities: ["No-code Development", "Visual Programming", "Web Apps", "Database Integration"],
+    pricing: "Freemium"
+  },
+  {
+    id: "bolt",
+    name: "Bolt",
+    description: "AI-powered development platform for rapid prototyping",
+    url: "https://bolt.new",
+    category: "Code Generation",
+    capabilities: ["Rapid Prototyping", "Full-stack Development", "AI Generation", "Deployment"],
+    pricing: "Freemium"
+  },
+  {
+    id: "v0",
+    name: "v0",
+    description: "AI-powered UI component generator by Vercel",
+    url: "https://v0.dev",
+    category: "Code Generation",
+    capabilities: ["UI Components", "React Generation", "Design to Code", "Responsive Design"],
+    pricing: "Freemium"
+  },
+  {
+    id: "theia-ide",
+    name: "Theia IDE",
+    description: "Open-source cloud and desktop IDE with AI capabilities",
+    url: "https://theia-ide.org",
+    category: "Code Generation",
+    capabilities: ["Open Source", "Cloud IDE", "Extensions", "Multi-language Support"],
+    pricing: "Free"
+  },
+  {
+    id: "ml-net",
+    name: "ML.NET",
+    description: "Microsoft's machine learning framework with AI model building",
+    url: "https://dot.net/ml",
+    category: "Code Generation",
+    capabilities: ["Machine Learning", ".NET Integration", "Model Building", "Open Source"],
+    pricing: "Free"
   },
 
   // Presentations & Design
@@ -625,6 +732,33 @@ const aiTools: AITool[] = [
     capabilities: ["Background Removal", "Batch Processing", "API Access", "High Quality"],
     pricing: "Freemium"
   },
+  {
+    id: "inkscape",
+    name: "Inkscape",
+    description: "Free vector graphics editor with AI-enhanced features",
+    url: "https://inkscape.org",
+    category: "Design",
+    capabilities: ["Vector Graphics", "Open Source", "Free Software", "Cross-platform"],
+    pricing: "Free"
+  },
+  {
+    id: "fotor",
+    name: "Fotor",
+    description: "AI-powered photo editor and design tool",
+    url: "https://www.fotor.com",
+    category: "Design",
+    capabilities: ["Photo Editing", "AI Enhancement", "Design Templates", "Batch Processing"],
+    pricing: "Freemium"
+  },
+  {
+    id: "freepik",
+    name: "Freepik",
+    description: "AI-powered design resources and content creation platform",
+    url: "https://www.freepik.com",
+    category: "Design",
+    capabilities: ["Stock Resources", "AI Generation", "Design Assets", "Templates"],
+    pricing: "Freemium"
+  },
 
   // Research & Analysis
   {
@@ -635,6 +769,15 @@ const aiTools: AITool[] = [
     category: "Research",
     capabilities: ["Real-time Search", "Source Citations", "Research", "Q&A"],
     pricing: "Freemium"
+  },
+  {
+    id: "google-notebooklm",
+    name: "Google NotebookLM",
+    description: "AI document analyzer and research assistant with personalized insights",
+    url: "https://notebooklm.google.com",
+    category: "Research",
+    capabilities: ["Document Analysis", "Research Assistant", "Source-grounded", "Note Taking"],
+    pricing: "Free"
   },
   {
     id: "consensus",
@@ -747,6 +890,15 @@ const aiTools: AITool[] = [
     pricing: "Freemium"
   },
   {
+    id: "n8n",
+    name: "n8n",
+    description: "Open-source workflow automation tool with AI integrations",
+    url: "https://n8n.io",
+    category: "Productivity",
+    capabilities: ["Open Source", "Workflow Automation", "Self-hosted", "AI Integrations"],
+    pricing: "Free"
+  },
+  {
     id: "mem-ai",
     name: "Mem",
     description: "AI-powered note-taking and knowledge management",
@@ -762,6 +914,15 @@ const aiTools: AITool[] = [
     url: "https://otter.ai",
     category: "Productivity",
     capabilities: ["Meeting Transcription", "Note Taking", "Action Items", "Integration"],
+    pricing: "Freemium"
+  },
+  {
+    id: "fathom",
+    name: "Fathom",
+    description: "AI meeting recorder and summarizer with free plan",
+    url: "https://fathom.video",
+    category: "Productivity",
+    capabilities: ["Meeting Recording", "AI Summaries", "Transcription", "Integration"],
     pricing: "Freemium"
   },
 
@@ -1107,6 +1268,71 @@ const aiTools: AITool[] = [
     capabilities: ["Model Hosting", "API Access", "Open Source Models", "Scalable"],
     pricing: "Freemium"
   },
+  {
+    id: "vastav-ai",
+    name: "Vastav AI",
+    description: "Free deepfake detection tool for agencies and content verification",
+    url: "https://vastav.ai",
+    category: "AI Security",
+    capabilities: ["Deepfake Detection", "Content Verification", "Media Authentication", "Free Tier"],
+    pricing: "Freemium"
+  },
+
+  // Additional Marketing & Sales Tools
+  {
+    id: "adcreative",
+    name: "AdCreative.ai",
+    description: "AI-powered ad creative generator for digital marketing campaigns",
+    url: "https://adcreative.ai",
+    category: "Marketing",
+    capabilities: ["Ad Creation", "Creative Generation", "Performance Optimization", "A/B Testing"],
+    pricing: "Freemium"
+  },
+  {
+    id: "clay",
+    name: "Clay",
+    description: "AI-powered lead generation and sales prospecting platform",
+    url: "https://clay.com",
+    category: "Marketing",
+    capabilities: ["Lead Generation", "Data Enrichment", "Sales Prospecting", "Automation"],
+    pricing: "Freemium"
+  },
+  {
+    id: "textio",
+    name: "Textio",
+    description: "AI writing platform for inclusive and effective communication",
+    url: "https://textio.com",
+    category: "Writing Assistant",
+    capabilities: ["Inclusive Writing", "Performance Prediction", "Language Optimization", "Bias Detection"],
+    pricing: "Paid"
+  },
+  {
+    id: "cvviz",
+    name: "CVViZ",
+    description: "AI-powered recruitment and applicant tracking system",
+    url: "https://cvviz.com",
+    category: "HR & Recruitment",
+    capabilities: ["Resume Screening", "Candidate Matching", "ATS", "Recruitment Analytics"],
+    pricing: "Freemium"
+  },
+  {
+    id: "sanebox",
+    name: "SaneBox",
+    description: "AI email management tool for inbox organization and productivity",
+    url: "https://sanebox.com",
+    category: "Productivity",
+    capabilities: ["Email Organization", "Priority Filtering", "Snooze", "Unsubscribe"],
+    pricing: "Freemium"
+  },
+  {
+    id: "shortwave",
+    name: "Shortwave",
+    description: "AI-powered email client with smart features and automation",
+    url: "https://shortwave.com",
+    category: "Productivity",
+    capabilities: ["Smart Email", "AI Assistant", "Workflow Automation", "Team Collaboration"],
+    pricing: "Freemium"
+  },
 
   // Newer AI Tools 2024-2025
   {
@@ -1223,7 +1449,9 @@ const categoryColors: { [key: string]: string } = {
   "Entertainment": "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200",
   "Customer Service": "bg-amber-100 text-amber-800 border-amber-200",
   "Business Intelligence": "bg-slate-100 text-slate-800 border-slate-200",
-  "AI Platform": "bg-zinc-100 text-zinc-800 border-zinc-200"
+  "AI Platform": "bg-zinc-100 text-zinc-800 border-zinc-200",
+  "AI Security": "bg-red-200 text-red-900 border-red-300",
+  "HR & Recruitment": "bg-blue-200 text-blue-900 border-blue-300"
 };
 
 const pricingColors: { [key: string]: string } = {
