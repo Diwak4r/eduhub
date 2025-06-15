@@ -1,73 +1,165 @@
-# Welcome to your Lovable project
 
-## Project info
+# RiverSkills - Educational Platform
 
-**URL**: https://lovable.dev/projects/899eb167-b6dd-4f5a-9eb1-7318f9942a25
+**Created by: Diwakar Ray Yadav (Raycode)**  
+**Made with Struggle - Every byte of code is a step toward changing my life and supporting my family.**
 
-## How can I edit this code?
+## About the Creator
 
-There are several ways of editing your application.
+👤 **Full Name:** Diwakar Ray Yadav  
+🧠 **Nickname:** Raycode  
+📍 **Location:** Kathmandu, Nepal  
+🎂 **Age:** 20 years  
+🎓 **Education:** Bachelor's in Information Technology (BIT) - Himalayan WhiteHouse International College  
+💼 **Role:** Computer Support Staff at MC Group of Companies  
 
-**Use Lovable**
+## Project Vision
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/899eb167-b6dd-4f5a-9eb1-7318f9942a25) and start prompting.
+RiverSkills is an educational platform created by a BIT student who understands the struggles of balancing work, studies, and the desire to build something meaningful. This platform serves as a central hub for:
 
-Changes made via Lovable will be committed automatically to this repo.
+- 📚 **Educational Resources** - Curated learning materials for IT students
+- 🤖 **AI Tools Integration** - Latest AI tools for productivity and learning
+- 💬 **Interactive Chat** - AI-powered assistant for learning support
+- 🎯 **Real-world Projects** - Practical applications like Marksheet Management Systems
 
-**Use your preferred IDE**
+## Technical Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+This project is built with modern web technologies:
+- **Frontend:** React, TypeScript, Tailwind CSS
+- **UI Components:** shadcn/ui
+- **Backend:** Supabase (Database, Authentication, Edge Functions)
+- **AI Integration:** Google Gemini API
+- **Deployment:** Vercel/Netlify ready
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting Started
 
-Follow these steps:
+### Prerequisites
+- Node.js & npm installed
+- Git for version control
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Installation
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+# Clone the repository
+git clone <repository-url>
+cd riverskills
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Environment Setup
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Create a `.env.local` file with your Supabase credentials:
+```
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-**Use GitHub Codespaces**
+## Features
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### 🏠 Home Page
+- Modern landing page with River3D animation
+- Career paths guidance
+- Featured courses and resources
 
-## What technologies are used for this project?
+### 📖 Courses
+- Curated programming courses
+- Visual learning materials
+- Progress tracking
 
-This project is built with:
+### 📚 Resources
+- Articles, tutorials, and tools
+- Categorized learning materials
+- Search functionality
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### 🤖 AI Tools
+- Daily featured AI tools
+- Tool recommendations
+- Integration guides
 
-## How can I deploy this project?
+### 💬 Chat with Diwa
+- AI-powered learning assistant
+- Two modes: Lite (focused) and Steroids (unlimited)
+- Real-time help and guidance
 
-Simply open [Lovable](https://lovable.dev/projects/899eb167-b6dd-4f5a-9eb1-7318f9942a25) and click on Share -> Publish.
+### ℹ️ About
+- Personal story and journey
+- Educational background
+- Professional experience
+- Values and mission
 
-## Can I connect a custom domain to my Lovable project?
+## Development Philosophy
 
-Yes, you can!
+**"Made with Struggle by Diwa"** - This project represents:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- 🎯 **Real-world Application:** Every feature solves actual problems faced by students
+- 📱 **Multi-device Learning:** Optimized for laptop, mobile, and iPad usage
+- 🔄 **Continuous Learning:** Regular updates with new tools and resources
+- 👥 **Community Focus:** Built for students, by a student
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Current Projects & Goals
+
+### Academic Projects
+- **C Programming:** Marksheet Management System with struct, file handling
+- **Web Development:** RiverSkills platform with AI integration
+- **Database:** Learning SQL and database management
+
+### Professional Development
+- Improving work-study balance
+- Building GitHub portfolio
+- Creating educational content
+- Exploring AI automation tools
+
+## Deployment
+
+This project can be deployed on various platforms:
+
+```bash
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+### Deployment Platforms
+- **Vercel:** Automatic deployments from Git
+- **Netlify:** Easy static site hosting
+- **Custom Domain:** Can be configured for personal branding
+
+## Contributing
+
+This is a personal learning project, but feedback and suggestions are welcome:
+
+1. **Issues:** Report bugs or suggest features
+2. **Learning:** Share resources or improvements
+3. **Collaboration:** Connect for mutual learning
+
+## Contact & Connect
+
+- **Email:** [Add your email]
+- **GitHub:** [Add your GitHub profile]
+- **LinkedIn:** [Add your LinkedIn profile]
+- **Location:** Kathmandu, Nepal
+
+## Acknowledgments
+
+- **Family:** For supporting my educational journey
+- **MC Group of Companies:** For providing work experience
+- **Himalayan WhiteHouse International College:** For quality education
+- **Open Source Community:** For amazing tools and libraries
+
+## License
+
+This project is created for educational purposes. Feel free to learn from it, but please give credit where it's due.
+
+---
+
+**"Every byte of code is a step toward changing my life and supporting my family."**  
+*- Diwakar Ray Yadav (Raycode)*
+
+**Made in Nepal 🇳🇵 with ❤️ and lots of ☕**

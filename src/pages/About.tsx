@@ -1,6 +1,7 @@
+
 import Header from "@/components/Header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Lightbulb, Rocket, Heart, Target, Globe, Users } from "lucide-react";
+import { Lightbulb, Rocket, Heart, Target, Globe, Users, MapPin, GraduationCap, Briefcase, Code2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function About() {
@@ -8,23 +9,32 @@ export default function About() {
     {
       icon: <Heart className="w-6 h-6" />,
       title: "Passion for Learning",
-      description: "We believe learning should be accessible, engaging, and transformative for everyone."
+      description: "Driven by curiosity and the desire to grow every day, turning struggles into stepping stones."
     },
     {
       icon: <Target className="w-6 h-6" />,
       title: "Goal-Oriented",
-      description: "Every resource is carefully curated to help you achieve your specific learning objectives."
+      description: "Every project and skill learned is a step toward changing my life and supporting my family."
     },
     {
       icon: <Globe className="w-6 h-6" />,
-      title: "Global Community",
-      description: "Connecting learners worldwide through shared knowledge and collaborative growth."
+      title: "Community First",
+      description: "Building resources that help students like me navigate the challenging world of IT and programming."
     },
     {
       icon: <Users className="w-6 h-6" />,
-      title: "Inclusive Education",
-      description: "Breaking down barriers to make quality education available to all backgrounds."
+      title: "Real-World Focus",
+      description: "Bridging the gap between academic learning and practical application through hands-on projects."
     }
+  ];
+
+  const personalInfo = [
+    { label: "Full Name", value: "Diwakar Ray Yadav", icon: <Users className="w-4 h-4" /> },
+    { label: "Nickname", value: "Raycode", icon: <Code2 className="w-4 h-4" /> },
+    { label: "Age", value: "20 years", icon: <Heart className="w-4 h-4" /> },
+    { label: "Location", value: "Kathmandu, Nepal", icon: <MapPin className="w-4 h-4" /> },
+    { label: "Education", value: "BIT - Himalayan WhiteHouse International College", icon: <GraduationCap className="w-4 h-4" /> },
+    { label: "Role", value: "Computer Support Staff at MC Group of Companies", icon: <Briefcase className="w-4 h-4" /> },
   ];
 
   return (
@@ -38,20 +48,20 @@ export default function About() {
           
           <div className="container mx-auto max-w-4xl text-center">
             <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4 animate-fade-in-up pb-2">
-              About RiverSkills
+              About Me - Diwakar Ray Yadav
             </h1>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              The story behind our mission to make learning flow naturally.
+              Student, Developer, and Creator - Building RiverSkills with struggle and determination.
             </p>
 
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-left flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               <div className="flex-shrink-0 text-center">
                 <Avatar className="w-32 h-32 md:w-48 md:h-48 border-4 border-white shadow-lg mx-auto">
                   <AvatarImage src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" alt="Diwakar Ray Yadav" />
-                  <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DRY</AvatarFallback>
+                  <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DRY</AvatarFallable>
                 </Avatar>
                 <h2 className="text-2xl font-bold text-gray-800 mt-4">Diwakar Ray Yadav</h2>
-                <p className="text-gray-500">Founder & Creator</p>
+                <p className="text-gray-500">Raycode</p>
                 <div className="flex justify-center mt-4 space-x-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                   <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
@@ -60,10 +70,10 @@ export default function About() {
               </div>
               <div className="flex-grow">
                 <p className="text-lg text-gray-700 mb-6 italic">
-                  "Welcome to <span className="font-bold text-blue-600">RiverSkills</span>! I created this platform to help people like you flow through the world of learning."
+                  "Welcome to <span className="font-bold text-blue-600">RiverSkills</span>! I'm a 20-year-old BIT student from Kathmandu, Nepal, who believes in learning through struggle and building something meaningful."
                 </p>
                 <p className="text-gray-600 mb-6">
-                  I've always been passionate about helping others grow, and I wanted to build a space where anyone can gain new skills in an easy and engaging way. RiverSkills is designed to make learning feel like a natural part of your journey.
+                  Currently pursuing my Bachelor's in Information Technology while working as Computer Support Staff at MC Group of Companies. Every line of code I write is a step toward changing my life and supporting my family. RiverSkills is my way of helping fellow students navigate the challenging world of IT and programming.
                 </p>
                 <div className="space-y-6 border-t border-gray-200 pt-6">
                   <div className="flex items-start gap-4">
@@ -73,7 +83,7 @@ export default function About() {
                     <div>
                       <h3 className="font-semibold text-lg text-gray-800">My Motivation</h3>
                       <p className="text-gray-600">
-                        From early on, I recognized the challenges people face when navigating new knowledge and career paths. With RiverSkills, my vision is to break down barriers to learning—making education accessible, practical, and inspiring for everyone.
+                        As a student juggling work and studies, I understand the struggles of learning programming and managing resources. RiverSkills is my attempt to create a platform that makes learning accessible and practical for students like me who are building their future one project at a time.
                       </p>
                     </div>
                   </div>
@@ -84,30 +94,56 @@ export default function About() {
                     <div>
                       <h3 className="font-semibold text-lg text-gray-800">My Journey</h3>
                       <p className="text-gray-600">
-                        As an educator and lifelong learner myself, I've gathered the best resources and tools to support your personal growth. Every feature on RiverSkills reflects my commitment to making learning smooth, meaningful, and enjoyable.
+                        From learning C programming with Marksheet Management Systems to building web applications like RiverSkills, every project teaches me something new. I'm passionate about AI tools, automation, and creating educational resources that bridge the gap between theory and practice.
                       </p>
                     </div>
                   </div>
                 </div>
                 <p className="mt-8 text-lg font-semibold text-gray-800 text-center md:text-right">
-                  Join me, and let's explore new possibilities together!
+                  "Made with Struggle by Diwa" 💪
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Values Section */}
+        {/* Personal Info Section */}
         <section className="py-16 px-6 bg-gradient-to-r from-blue-50 to-purple-50">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Core Values</h2>
-              <p className="text-gray-600 text-lg">The principles that guide everything we do</p>
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">Get to Know Me</h2>
+              <p className="text-gray-600 text-lg">The person behind RiverSkills</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {personalInfo.map((info, index) => (
+                <Card key={index} className="bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-2 rounded-full">
+                        {info.icon}
+                      </div>
+                      <h3 className="font-semibold text-gray-800">{info.label}</h3>
+                    </div>
+                    <p className="text-gray-600 text-sm ml-11">{info.value}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Values Section */}
+        <section className="py-16 px-6">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">My Core Values</h2>
+              <p className="text-gray-600 text-lg">What drives me every day</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {values.map((value, index) => (
-                <Card key={index} className="bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:scale-105" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={index} className="bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                   <CardContent className="p-6 text-center">
                     <div className="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-3 rounded-full w-fit mx-auto mb-4">
                       {value.icon}
@@ -122,16 +158,21 @@ export default function About() {
         </section>
 
         {/* Mission Section */}
-        <section className="py-16 px-6">
+        <section className="py-16 px-6 bg-gradient-to-r from-blue-50 to-purple-50">
           <div className="container mx-auto max-w-4xl text-center">
             <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white rounded-2xl p-12 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full transform translate-x-16 -translate-y-16"></div>
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-lg transform -translate-x-12 translate-y-12 rotate-45"></div>
               
-              <h2 className="text-3xl font-bold mb-6 relative z-10">Our Mission</h2>
+              <h2 className="text-3xl font-bold mb-6 relative z-10">My Mission</h2>
               <p className="text-xl text-blue-100 leading-relaxed relative z-10">
-                To democratize education by providing free, high-quality learning resources and AI-powered tools that help individuals around the world acquire new skills, advance their careers, and achieve their personal and professional goals.
+                To create educational resources and tools that help students like me succeed in their IT journey. Every feature in RiverSkills reflects my commitment to making learning practical, accessible, and rooted in real-world application. Because every byte of code is a step toward changing lives and supporting families.
               </p>
+              <div className="mt-8 relative z-10">
+                <p className="text-lg font-semibold">
+                  Current Projects: C Programming Systems, RiverSkills Platform, AI Integration
+                </p>
+              </div>
             </div>
           </div>
         </section>
