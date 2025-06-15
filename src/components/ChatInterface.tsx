@@ -2,9 +2,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, User, Sparkles, Zap, Settings } from 'lucide-react';
+import { Send, User, Sparkles, Zap, Settings, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Message {
   id: string;
@@ -16,20 +17,26 @@ interface Message {
 type DiwaMode = 'lite' | 'steroids';
 
 export default function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient. You can switch to Steroids mode for full capabilities. What would you like to know?",
-      sender: 'bot',
-      timestamp: new Date(),
-    }
-  ]);
+  const { user, loading } = useAuth();
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentMode, setCurrentMode] = useState<DiwaMode>('lite');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
+
+  // Initialize welcome message only when user is authenticated
+  useEffect(() => {
+    if (user && messages.length === 0) {
+      setMessages([{
+        id: '1',
+        content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient. You can switch to Steroids mode for full capabilities. What would you like to know?",
+        sender: 'bot',
+        timestamp: new Date(),
+      }]);
+    }
+  }, [user, messages.length]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -40,12 +47,15 @@ export default function ChatInterface() {
   }, [messages]);
 
   const handleModeSwitch = async (newMode: DiwaMode) => {
-    if (newMode === currentMode) return;
+    if (newMode === currentMode || !user) return;
     
     setCurrentMode(newMode);
     setIsLoading(true);
 
     try {
+      console.log('Switching to mode:', newMode);
+      console.log('User token:', user);
+
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
           message: `Switch to ${newMode} mode`,
@@ -54,7 +64,10 @@ export default function ChatInterface() {
         },
       });
 
+      console.log('Mode switch response:', data, error);
+
       if (error) {
+        console.error('Mode switch error:', error);
         throw new Error(error.message);
       }
       
@@ -73,13 +86,15 @@ export default function ChatInterface() {
         description: "Failed to switch mode. Please try again.",
         variant: "destructive",
       });
+      // Revert mode on error
+      setCurrentMode(currentMode === 'lite' ? 'steroids' : 'lite');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleSendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
+    if (!inputMessage.trim() || isLoading || !user) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -93,6 +108,9 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
+      console.log('Sending message:', userMessage.content);
+      console.log('Current user:', user);
+
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
           message: userMessage.content,
@@ -100,7 +118,10 @@ export default function ChatInterface() {
         },
       });
 
+      console.log('Chat response:', data, error);
+
       if (error) {
+        console.error('Chat error:', error);
         throw new Error(error.message);
       }
       
@@ -114,9 +135,20 @@ export default function ChatInterface() {
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
+      
+      let errorMessage = "Failed to send message. Please try again.";
+      
+      if (error.message?.includes('401') || error.message?.includes('Authorization')) {
+        errorMessage = "Authentication error. Please try logging out and back in.";
+      } else if (error.message?.includes('429')) {
+        errorMessage = "Rate limit exceeded. Please wait a moment before trying again.";
+      } else if (error.message?.includes('503')) {
+        errorMessage = "AI service is temporarily unavailable. Please try again later.";
+      }
+      
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -142,6 +174,34 @@ export default function ChatInterface() {
   const getModeButtonColor = () => {
     return currentMode === 'steroids' ? 'bg-purple-500 hover:bg-purple-600' : 'bg-red-500 hover:bg-red-600';
   };
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+      </div>
+    );
+  }
+
+  // Show authentication required message
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border border-gray-200">
+        <AlertCircle className="w-12 h-12 text-gray-400 mb-4" />
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">Authentication Required</h3>
+        <p className="text-gray-500 text-center mb-4">
+          Please sign in to chat with Diwa, your AI assistant.
+        </p>
+        <Button 
+          onClick={() => window.location.href = '/auth'}
+          className="bg-red-500 hover:bg-red-600 text-white"
+        >
+          Sign In
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-red-200 shadow-lg">
