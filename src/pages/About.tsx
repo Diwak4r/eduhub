@@ -48,8 +48,8 @@ export default function About() {
             <div className="mb-12 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               <div className="relative overflow-hidden rounded-2xl shadow-2xl max-w-3xl mx-auto">
                 <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&crop=face" 
-                  alt="Diwakar Ray Yadav - Founder of RiverSkills" 
+                  src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" 
+                  alt="Diwakar Ray Yadav - Founder of RiverSkills at a cultural heritage site" 
                   className="w-full h-auto object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -62,7 +62,7 @@ export default function About() {
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-left flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               <div className="flex-shrink-0 text-center">
                 <Avatar className="w-32 h-32 md:w-48 md:h-48 border-4 border-white shadow-lg mx-auto">
-                  <AvatarImage src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face" alt="Diwakar Ray Yadav" />
+                  <AvatarImage src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" alt="Diwakar Ray Yadav" />
                   <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DRY</AvatarFallback>
                 </Avatar>
                 <h2 className="text-2xl font-bold text-gray-800 mt-4">Diwakar Ray Yadav</h2>
