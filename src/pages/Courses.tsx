@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -7,7 +8,6 @@ import Header from '@/components/Header';
 import CourseCard from '@/components/CourseCard';
 import FeaturedCoursesSection from '@/components/FeaturedCoursesSection';
 import FreeAffordableSection from '@/components/FreeAffordableSection';
-import CareerPathsSection from '@/components/CareerPathsSection';
 
 const categories = [
   'All Categories',
@@ -204,132 +204,131 @@ export default function Courses() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Header />
       
-      {/* Hero Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-blue-600 to-purple-700">
-        <div className="container mx-auto max-w-6xl text-center">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            Discover Your Next Skill
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Explore thousands of courses from industry experts and level up your career
-          </p>
-          
-          {/* Search Bar */}
-          <div className="relative max-w-2xl mx-auto mb-8">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-            <Input
-              type="text"
-              placeholder="Search for courses, instructors, or topics..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-4 py-6 text-lg rounded-full border-2 border-gray-200 focus:border-blue-500 shadow-lg"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Courses Section */}
-      <FeaturedCoursesSection />
-
-      {/* Free & Affordable Section */}
-      <FreeAffordableSection />
-
-      {/* Career Paths Section */}
-      <CareerPathsSection />
-
-      {/* Search and Filter Section */}
-      <section className="py-16 px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="flex flex-wrap items-center gap-4 justify-between">
-            <div className="flex flex-wrap items-center gap-4">
-              <h3 className="text-lg font-semibold text-gray-800">Filter by:</h3>
-              
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map(category => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={selectedLevel} onValueChange={setSelectedLevel}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Skill Level" />
-                </SelectTrigger>
-                <SelectContent>
-                  {skillLevels.map(level => (
-                    <SelectItem key={level} value={level}>
-                      {level}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Price Range" />
-                </SelectTrigger>
-                <SelectContent>
-                  {priceRanges.map(range => (
-                    <SelectItem key={range} value={range}>
-                      {range}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <span className="text-gray-600">
-                {filteredCourses.length} course{filteredCourses.length !== 1 ? 's' : ''} found
-              </span>
-              <Button 
-                variant="outline" 
-                onClick={handleClearFilters}
-                className="text-gray-600 hover:text-gray-800"
-              >
-                Clear Filters
-              </Button>
+      <main className="pt-20">
+        {/* Hero Section with Search */}
+        <section className="py-16 px-6">
+          <div className="container mx-auto max-w-6xl text-center">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+              Discover Your Next Skill
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Explore thousands of courses from industry experts and level up your career
+            </p>
+            
+            {/* Search Bar */}
+            <div className="relative max-w-2xl mx-auto mb-8">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Input
+                type="text"
+                placeholder="Search for courses, instructors, or topics..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 pr-4 py-6 text-lg rounded-full border-2 border-gray-200 focus:border-blue-500 shadow-lg"
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* All Courses Grid */}
-      <section className="pb-20 px-6">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8">
-            {searchQuery || selectedCategory !== 'All Categories' || selectedLevel !== 'All Levels' || selectedPriceRange !== 'All Prices'
-              ? 'Search Results' 
-              : 'All Courses'}
-          </h2>
-          
-          {filteredCourses.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="text-gray-400 text-6xl mb-4">🔍</div>
-              <h3 className="text-2xl font-semibold text-gray-600 mb-2">No courses found</h3>
-              <p className="text-gray-500 mb-4">Try adjusting your search terms or filters</p>
-              <Button onClick={handleClearFilters} variant="outline">
-                Clear All Filters
-              </Button>
+        {/* Filters Section */}
+        <section className="py-8 px-6 bg-white/80 backdrop-blur-sm border-y border-gray-200">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex flex-wrap items-center gap-4 justify-between">
+              <div className="flex flex-wrap items-center gap-4">
+                <h3 className="text-lg font-semibold text-gray-800">Filter by:</h3>
+                
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(category => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={selectedLevel} onValueChange={setSelectedLevel}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Skill Level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {skillLevels.map(level => (
+                      <SelectItem key={level} value={level}>
+                        {level}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Price Range" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {priceRanges.map(range => (
+                      <SelectItem key={range} value={range}>
+                        {range}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <span className="text-gray-600">
+                  {filteredCourses.length} course{filteredCourses.length !== 1 ? 's' : ''} found
+                </span>
+                <Button 
+                  variant="outline" 
+                  onClick={handleClearFilters}
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  Clear Filters
+                </Button>
+              </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredCourses.map(course => (
-                <CourseCard key={course.id} course={course} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+
+        {/* Free & Affordable Options Section */}
+        <FreeAffordableSection />
+
+        {/* Featured Courses Section */}
+        <FeaturedCoursesSection />
+
+        {/* All Courses Grid */}
+        <section className="py-16 px-6">
+          <div className="container mx-auto max-w-6xl">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8">
+              {searchQuery || selectedCategory !== 'All Categories' || selectedLevel !== 'All Levels' || selectedPriceRange !== 'All Prices'
+                ? 'Search Results' 
+                : 'All Courses'}
+            </h2>
+            
+            {filteredCourses.length === 0 ? (
+              <div className="text-center py-16">
+                <div className="text-gray-400 text-6xl mb-4">🔍</div>
+                <h3 className="text-2xl font-semibold text-gray-600 mb-2">No courses found</h3>
+                <p className="text-gray-500 mb-4">Try adjusting your search terms or filters</p>
+                <Button onClick={handleClearFilters} variant="outline">
+                  Clear All Filters
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredCourses.map(course => (
+                  <CourseCard key={course.id} course={course} />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
