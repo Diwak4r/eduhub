@@ -957,7 +957,7 @@ function getRandomDuration() {
 }
 
 function getRandomRating() {
-  return (4 + Math.random()).toFixed(1);
+  return Number((4 + Math.random()).toFixed(1));
 }
 
 function getRandomDifficulty(): 'Beginner' | 'Intermediate' | 'Advanced' {
