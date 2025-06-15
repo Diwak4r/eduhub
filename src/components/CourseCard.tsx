@@ -56,6 +56,8 @@ export default function CourseCard({ course }: CourseCardProps) {
     return 'text-green-600';
   };
 
+  const USD_TO_NPR_RATE = 133;
+
   return (
     <Card className="group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-0 bg-white">
       <div className="relative overflow-hidden rounded-t-lg">
@@ -102,15 +104,22 @@ export default function CourseCard({ course }: CourseCardProps) {
       </CardContent>
 
       <CardFooter className="px-6 pb-6 pt-0 flex items-center justify-between">
-        <div className="flex items-center gap-1">
+        <div className="flex items-start gap-2">
           {course.price === 0 ? (
-            <Gift className="h-5 w-5 text-green-600" />
+            <Gift className="h-6 w-6 text-green-600 mt-1" />
           ) : (
-            <DollarSign className="h-5 w-5 text-green-600" />
+            <DollarSign className="h-6 w-6 text-green-600 mt-1" />
           )}
-          <span className={`text-2xl font-bold ${getPriceColor(course.price)}`}>
-            {formatPrice(course.price)}
-          </span>
+          <div>
+            <p className={`text-2xl font-bold ${getPriceColor(course.price)}`}>
+              {course.price === 0 ? 'FREE' : `$${course.price.toFixed(2)}`}
+            </p>
+            {course.price > 0 && (
+              <p className="text-sm text-gray-500 -mt-1">
+                NPR {Math.round(course.price * USD_TO_NPR_RATE).toLocaleString('en-IN')}
+              </p>
+            )}
+          </div>
         </div>
         <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
           {course.price === 0 ? 'Start Free' : 'Enroll Now'}
