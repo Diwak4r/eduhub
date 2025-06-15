@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, Bot, User } from 'lucide-react';
+import { Send, User, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -17,7 +17,7 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm here to help you learn about our courses, resources, and how our platform can support your learning journey. What would you like to know?",
+      content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I provide quick, helpful answers about our courses and resources. What would you like to know?",
       sender: 'bot',
       timestamp: new Date(),
     }
@@ -87,15 +87,15 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-gray-200 shadow-lg">
+    <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-red-200 shadow-lg">
       {/* Chat Header */}
-      <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-          <Bot className="w-5 h-5 text-white" />
+      <div className="flex items-center gap-3 p-4 border-b border-red-200 bg-red-50 rounded-t-lg">
+        <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
+          <Sparkles className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Diwa</h3>
-          <p className="text-sm text-gray-500">RiverSkills AI Assistant</p>
+          <h3 className="font-semibold text-red-900">Diwa</h3>
+          <p className="text-sm text-red-600">RiverSkills AI Assistant</p>
         </div>
       </div>
 
@@ -107,15 +107,15 @@ export default function ChatInterface() {
             className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {message.sender === 'bot' && (
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <Bot className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-4 h-4 text-white" />
               </div>
             )}
             
             <div
               className={`max-w-[80%] rounded-lg px-4 py-3 ${
                 message.sender === 'user'
-                  ? 'bg-blue-500 text-white ml-auto'
+                  ? 'bg-red-500 text-white ml-auto'
                   : 'bg-gray-100 text-gray-900'
               }`}
             >
@@ -132,14 +132,14 @@ export default function ChatInterface() {
         
         {isLoading && (
           <div className="flex gap-3 justify-start">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <Bot className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-white" />
             </div>
             <div className="bg-gray-100 rounded-lg px-4 py-3">
               <div className="flex gap-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                <div className="w-2 h-2 bg-red-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-red-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-red-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
               </div>
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+      <div className="p-4 border-t border-red-200 bg-red-50 rounded-b-lg">
         <div className="flex gap-3 items-end">
           <div className="flex-1">
             <Textarea
@@ -157,14 +157,14 @@ export default function ChatInterface() {
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask Diwa about RiverSkills courses, resources, or anything else..."
-              className="min-h-[44px] max-h-32 resize-none border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className="min-h-[44px] max-h-32 resize-none border-red-300 focus:border-red-500 focus:ring-red-500"
               disabled={isLoading}
             />
           </div>
           <Button
             onClick={handleSendMessage}
             disabled={!inputMessage.trim() || isLoading}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 h-11"
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 h-11"
           >
             <Send className="w-4 h-4" />
           </Button>
