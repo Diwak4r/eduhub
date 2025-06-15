@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Search, MapPin, DollarSign, TrendingUp, BookOpen, Users, ChevronRight, Star, Building, Globe } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,6 @@ import Header from '@/components/Header';
 import CourseCard from '@/components/CourseCard';
 import FeaturedCoursesSection from '@/components/FeaturedCoursesSection';
 import FreeAffordableSection from '@/components/FreeAffordableSection';
-import CareerPathsSection from '@/components/CareerPathsSection';
 
 const categories = [
   'All Categories',
@@ -186,7 +186,9 @@ const careerCategories = [
   'Creative Industries'
 ];
 
+// Comprehensive career dataset - consolidated and expanded
 const careers = [
+  // AI Development & Engineering
   {
     id: 1,
     title: 'AI/ML Engineer',
@@ -216,33 +218,6 @@ const careers = [
   },
   {
     id: 2,
-    title: 'Data Scientist',
-    alternativeNames: ['Data Analyst', 'Business Intelligence Analyst', 'Data Researcher'],
-    category: 'Data Science & Analytics',
-    description: 'Extract insights from data to drive business decisions. Use statistical methods and machine learning to analyze trends and patterns.',
-    responsibilities: [
-      'Analyze complex datasets for business insights',
-      'Create predictive models and forecasts',
-      'Design and maintain data pipelines',
-      'Present findings to stakeholders',
-      'Collaborate with business teams'
-    ],
-    technicalSkills: ['Python/R', 'SQL', 'Tableau/Power BI', 'Statistics', 'Excel', 'Jupyter Notebooks', 'Git'],
-    softSkills: ['Critical thinking', 'Communication', 'Business acumen', 'Curiosity', 'Attention to detail'],
-    education: 'Bachelor\'s in Mathematics, Statistics, Computer Science, or Economics. Advanced degree preferred.',
-    salaryRange: 'NPR 50,000 - 120,000 per month',
-    growthPotential: 'Junior → Senior → Lead → Chief Data Officer',
-    localOpportunities: ['Sastodeal', 'Daraz', 'IME Group', 'NIC Asia Bank', 'Various NGOs'],
-    gettingStarted: [
-      'Learn statistics and probability',
-      'Master Python/R programming',
-      'Practice with real datasets',
-      'Create data visualization projects',
-      'Build a portfolio on GitHub'
-    ]
-  },
-  {
-    id: 3,
     title: 'Prompt Engineer',
     alternativeNames: ['AI Prompt Designer', 'Conversational AI Specialist', 'LLM Engineer'],
     category: 'AI Development & Engineering',
@@ -269,7 +244,200 @@ const careers = [
     ]
   },
   {
+    id: 3,
+    title: 'Computer Vision Specialist',
+    alternativeNames: ['CV Engineer', 'Image Processing Engineer', 'Vision AI Developer'],
+    category: 'AI Development & Engineering',
+    description: 'Develop AI systems that can interpret and understand visual information from images and videos.',
+    responsibilities: [
+      'Build image recognition and classification systems',
+      'Develop object detection algorithms',
+      'Implement facial recognition systems',
+      'Create automated quality inspection tools',
+      'Optimize computer vision models for deployment'
+    ],
+    technicalSkills: ['OpenCV', 'TensorFlow', 'YOLO', 'CNN architectures', 'Image processing', 'Python'],
+    softSkills: ['Attention to detail', 'Visual thinking', 'Problem-solving', 'Research skills'],
+    education: 'Bachelor\'s in Computer Science, Electronics, or related field. Computer Vision specialization preferred.',
+    salaryRange: 'NPR 70,000 - 160,000 per month',
+    growthPotential: 'Junior → Senior → Lead → Research Scientist',
+    localOpportunities: ['CloudFactory', 'Fusemachines', 'Tech startups', 'Manufacturing companies'],
+    gettingStarted: [
+      'Learn OpenCV and image processing basics',
+      'Complete computer vision online courses',
+      'Build image classification projects',
+      'Practice with datasets like COCO, ImageNet',
+      'Create a portfolio on GitHub'
+    ]
+  },
+  {
     id: 4,
+    title: 'NLP Developer',
+    alternativeNames: ['Natural Language Processing Engineer', 'Text Analytics Developer', 'Conversational AI Developer'],
+    category: 'AI Development & Engineering',
+    description: 'Build systems that can understand, interpret, and generate human language for various applications.',
+    responsibilities: [
+      'Develop chatbots and virtual assistants',
+      'Build text classification and sentiment analysis systems',
+      'Create language translation tools',
+      'Implement named entity recognition',
+      'Design conversational interfaces'
+    ],
+    technicalSkills: ['NLTK', 'spaCy', 'Transformers', 'BERT', 'GPT models', 'Python', 'Regex'],
+    softSkills: ['Language understanding', 'Logical thinking', 'Communication', 'Cultural awareness'],
+    education: 'Bachelor\'s in Computer Science, Linguistics, or related field. NLP/AI coursework preferred.',
+    salaryRange: 'NPR 65,000 - 140,000 per month',
+    growthPotential: 'Junior → Senior → Lead → NLP Research Scientist',
+    localOpportunities: ['Tech companies', 'Startups', 'Customer service platforms', 'Educational tech'],
+    gettingStarted: [
+      'Learn NLP fundamentals and linguistics basics',
+      'Practice with NLTK and spaCy libraries',
+      'Build chatbot projects',
+      'Work with text datasets',
+      'Understand transformer architectures'
+    ]
+  },
+  {
+    id: 5,
+    title: 'AI Product Manager',
+    alternativeNames: ['ML Product Manager', 'AI Strategy Manager', 'Technical Product Manager'],
+    category: 'AI Development & Engineering',
+    description: 'Bridge the gap between technical AI capabilities and business requirements to deliver AI-powered products.',
+    responsibilities: [
+      'Define AI product roadmaps and strategy',
+      'Coordinate between technical and business teams',
+      'Analyze market trends and user needs',
+      'Manage AI product development lifecycle',
+      'Ensure ethical AI implementation'
+    ],
+    technicalSkills: ['Basic ML understanding', 'Product management tools', 'Analytics platforms', 'A/B testing'],
+    softSkills: ['Strategic thinking', 'Communication', 'Leadership', 'Business acumen', 'Project management'],
+    education: 'Bachelor\'s in Engineering, Business, or related field. MBA or AI certification preferred.',
+    salaryRange: 'NPR 80,000 - 200,000 per month',
+    growthPotential: 'Associate → Senior → Director → VP of Product',
+    localOpportunities: ['Tech companies', 'Startups', 'Digital agencies', 'Consulting firms'],
+    gettingStarted: [
+      'Learn product management fundamentals',
+      'Understand AI/ML basics',
+      'Practice with product analytics tools',
+      'Build a portfolio of product case studies',
+      'Network with product management communities'
+    ]
+  },
+  
+  // Data Science & Analytics
+  {
+    id: 6,
+    title: 'Data Scientist',
+    alternativeNames: ['Data Analyst', 'Business Intelligence Analyst', 'Data Researcher'],
+    category: 'Data Science & Analytics',
+    description: 'Extract insights from data to drive business decisions. Use statistical methods and machine learning to analyze trends and patterns.',
+    responsibilities: [
+      'Analyze complex datasets for business insights',
+      'Create predictive models and forecasts',
+      'Design and maintain data pipelines',
+      'Present findings to stakeholders',
+      'Collaborate with business teams'
+    ],
+    technicalSkills: ['Python/R', 'SQL', 'Tableau/Power BI', 'Statistics', 'Excel', 'Jupyter Notebooks', 'Git'],
+    softSkills: ['Critical thinking', 'Communication', 'Business acumen', 'Curiosity', 'Attention to detail'],
+    education: 'Bachelor\'s in Mathematics, Statistics, Computer Science, or Economics. Advanced degree preferred.',
+    salaryRange: 'NPR 50,000 - 120,000 per month',
+    growthPotential: 'Junior → Senior → Lead → Chief Data Officer',
+    localOpportunities: ['Sastodeal', 'Daraz', 'IME Group', 'NIC Asia Bank', 'Various NGOs'],
+    gettingStarted: [
+      'Learn statistics and probability',
+      'Master Python/R programming',
+      'Practice with real datasets',
+      'Create data visualization projects',
+      'Build a portfolio on GitHub'
+    ]
+  },
+  {
+    id: 7,
+    title: 'Business Intelligence Analyst',
+    alternativeNames: ['BI Analyst', 'Data Analyst', 'Reporting Analyst'],
+    category: 'Data Science & Analytics',
+    description: 'Transform raw data into actionable business insights through reporting, dashboards, and analysis.',
+    responsibilities: [
+      'Create and maintain business dashboards',
+      'Generate regular business reports',
+      'Analyze KPIs and business metrics',
+      'Support decision-making with data insights',
+      'Collaborate with various departments'
+    ],
+    technicalSkills: ['SQL', 'Power BI', 'Tableau', 'Excel', 'Data warehousing', 'ETL processes'],
+    softSkills: ['Business understanding', 'Communication', 'Attention to detail', 'Problem-solving'],
+    education: 'Bachelor\'s in Business, Economics, or related field. BI certifications preferred.',
+    salaryRange: 'NPR 45,000 - 100,000 per month',
+    growthPotential: 'Junior → Senior → BI Manager → Analytics Director',
+    localOpportunities: ['Banks', 'Telecom companies', 'Retail chains', 'Government organizations'],
+    gettingStarted: [
+      'Learn SQL and database fundamentals',
+      'Master Power BI or Tableau',
+      'Understand business metrics',
+      'Practice with sample datasets',
+      'Create a portfolio of dashboards'
+    ]
+  },
+  {
+    id: 8,
+    title: 'Data Engineer',
+    alternativeNames: ['Big Data Engineer', 'ETL Developer', 'Data Pipeline Engineer'],
+    category: 'Data Science & Analytics',
+    description: 'Build and maintain the infrastructure and pipelines that enable data collection, storage, and processing.',
+    responsibilities: [
+      'Design and build data pipelines',
+      'Maintain data warehouses and databases',
+      'Ensure data quality and reliability',
+      'Optimize data processing performance',
+      'Support data scientists and analysts'
+    ],
+    technicalSkills: ['Python', 'SQL', 'Apache Spark', 'Kafka', 'Docker', 'Cloud platforms', 'ETL tools'],
+    softSkills: ['System thinking', 'Problem-solving', 'Attention to detail', 'Collaboration'],
+    education: 'Bachelor\'s in Computer Science, Engineering, or related field.',
+    salaryRange: 'NPR 60,000 - 140,000 per month',
+    growthPotential: 'Junior → Senior → Lead → Data Architecture Manager',
+    localOpportunities: ['Tech companies', 'Banks', 'E-commerce platforms', 'Consulting firms'],
+    gettingStarted: [
+      'Learn Python and SQL programming',
+      'Understand database systems',
+      'Practice with cloud platforms',
+      'Build ETL pipeline projects',
+      'Learn about big data technologies'
+    ]
+  },
+  {
+    id: 9,
+    title: 'Market Research Analyst',
+    alternativeNames: ['Consumer Insights Analyst', 'Market Intelligence Analyst', 'Research Analyst'],
+    category: 'Data Science & Analytics',
+    description: 'Study market conditions to examine potential sales of products or services using data-driven approaches.',
+    responsibilities: [
+      'Conduct market research and surveys',
+      'Analyze consumer behavior and preferences',
+      'Track industry trends and competitors',
+      'Prepare market research reports',
+      'Present findings to stakeholders'
+    ],
+    technicalSkills: ['SPSS', 'Survey tools', 'Excel', 'Statistical analysis', 'Data visualization'],
+    softSkills: ['Research skills', 'Analytical thinking', 'Communication', 'Presentation skills'],
+    education: 'Bachelor\'s in Marketing, Business, Economics, or related field.',
+    salaryRange: 'NPR 40,000 - 90,000 per month',
+    growthPotential: 'Junior → Senior → Research Manager → Director of Insights',
+    localOpportunities: ['Market research firms', 'FMCG companies', 'Advertising agencies', 'Consulting firms'],
+    gettingStarted: [
+      'Learn market research methodologies',
+      'Practice with survey design tools',
+      'Understand statistical analysis',
+      'Build research project portfolio',
+      'Network with marketing professionals'
+    ]
+  },
+
+  // Digital Marketing & Content
+  {
+    id: 10,
     title: 'Digital Marketing Analyst',
     alternativeNames: ['Marketing Data Analyst', 'Growth Analyst', 'Performance Marketing Specialist'],
     category: 'Digital Marketing & Content',
@@ -296,7 +464,90 @@ const careers = [
     ]
   },
   {
-    id: 5,
+    id: 11,
+    title: 'Content Creator with AI Tools',
+    alternativeNames: ['AI Content Specialist', 'Digital Content Creator', 'Content Marketing Specialist'],
+    category: 'Digital Marketing & Content',
+    description: 'Create engaging content using AI-powered tools to enhance productivity and creativity in content production.',
+    responsibilities: [
+      'Create content using AI writing tools',
+      'Design graphics with AI-powered software',
+      'Optimize content for different platforms',
+      'Manage content calendars and strategies',
+      'Analyze content performance metrics'
+    ],
+    technicalSkills: ['ChatGPT', 'Canva', 'Adobe Creative Suite', 'Content management systems', 'SEO tools'],
+    softSkills: ['Creativity', 'Writing skills', 'Visual design sense', 'Time management', 'Adaptability'],
+    education: 'Bachelor\'s in Communications, Marketing, Journalism, or related field.',
+    salaryRange: 'NPR 30,000 - 80,000 per month',
+    growthPotential: 'Junior → Senior → Content Manager → Creative Director',
+    localOpportunities: ['Digital agencies', 'Startups', 'Media companies', 'Freelance work'],
+    gettingStarted: [
+      'Learn AI content creation tools',
+      'Build a diverse content portfolio',
+      'Understand different content formats',
+      'Practice social media management',
+      'Develop personal brand online'
+    ]
+  },
+  {
+    id: 12,
+    title: 'Social Media Manager (AI-powered)',
+    alternativeNames: ['Social Media Specialist', 'Community Manager', 'Digital Engagement Manager'],
+    category: 'Digital Marketing & Content',
+    description: 'Manage social media presence using AI tools for content creation, scheduling, and engagement optimization.',
+    responsibilities: [
+      'Develop social media strategies',
+      'Create and schedule content using AI tools',
+      'Engage with online communities',
+      'Monitor brand mentions and sentiment',
+      'Analyze social media performance'
+    ],
+    technicalSkills: ['Social media platforms', 'Hootsuite/Buffer', 'AI content tools', 'Analytics tools', 'Graphic design software'],
+    softSkills: ['Communication', 'Creativity', 'Customer service', 'Trend awareness', 'Crisis management'],
+    education: 'Bachelor\'s in Marketing, Communications, or related field. Social media certifications preferred.',
+    salaryRange: 'NPR 35,000 - 75,000 per month',
+    growthPotential: 'Junior → Senior → Social Media Manager → Digital Marketing Manager',
+    localOpportunities: ['Brands', 'Agencies', 'Startups', 'E-commerce companies'],
+    gettingStarted: [
+      'Master major social media platforms',
+      'Learn social media management tools',
+      'Build personal social media presence',
+      'Create content strategy case studies',
+      'Get platform-specific certifications'
+    ]
+  },
+  {
+    id: 13,
+    title: 'SEO Specialist',
+    alternativeNames: ['Search Engine Optimization Analyst', 'Digital Marketing SEO Expert', 'Content SEO Manager'],
+    category: 'Digital Marketing & Content',
+    description: 'Optimize websites and content to improve search engine rankings and drive organic traffic using AI-powered SEO tools.',
+    responsibilities: [
+      'Conduct keyword research and analysis',
+      'Optimize website content and structure',
+      'Monitor search engine rankings',
+      'Implement technical SEO improvements',
+      'Create SEO strategies and reports'
+    ],
+    technicalSkills: ['Google Analytics', 'Search Console', 'SEO tools (SEMrush, Ahrefs)', 'HTML/CSS basics', 'Content management systems'],
+    softSkills: ['Analytical thinking', 'Attention to detail', 'Strategic planning', 'Communication'],
+    education: 'Bachelor\'s in Marketing, Communications, or related field. SEO certifications preferred.',
+    salaryRange: 'NPR 40,000 - 90,000 per month',
+    growthPotential: 'Junior → Senior → SEO Manager → Digital Marketing Director',
+    localOpportunities: ['Digital agencies', 'E-commerce companies', 'Content companies', 'Freelance work'],
+    gettingStarted: [
+      'Learn SEO fundamentals',
+      'Practice with SEO tools',
+      'Build and optimize personal website',
+      'Get Google certifications',
+      'Stay updated with algorithm changes'
+    ]
+  },
+
+  // Healthcare Technology
+  {
+    id: 14,
     title: 'Health Data Analyst',
     alternativeNames: ['Medical Data Analyst', 'Healthcare Analytics Specialist', 'Clinical Data Analyst'],
     category: 'Healthcare Technology',
@@ -320,6 +571,60 @@ const careers = [
       'Practice with healthcare datasets',
       'Get HIPAA training',
       'Network with healthcare professionals'
+    ]
+  },
+  {
+    id: 15,
+    title: 'Telemedicine Coordinator',
+    alternativeNames: ['Telehealth Specialist', 'Remote Patient Care Coordinator', 'Digital Health Coordinator'],
+    category: 'Healthcare Technology',
+    description: 'Coordinate and manage telemedicine services, ensuring smooth delivery of remote healthcare services.',
+    responsibilities: [
+      'Schedule and coordinate virtual consultations',
+      'Provide technical support to patients and doctors',
+      'Manage telemedicine platforms and systems',
+      'Ensure compliance with healthcare regulations',
+      'Train staff on telemedicine procedures'
+    ],
+    technicalSkills: ['Telemedicine platforms', 'EMR systems', 'Video conferencing tools', 'Healthcare software'],
+    softSkills: ['Communication', 'Empathy', 'Problem-solving', 'Organization', 'Patience'],
+    education: 'Bachelor\'s in Healthcare Administration, Nursing, or related field. Telemedicine certification preferred.',
+    salaryRange: 'NPR 35,000 - 75,000 per month',
+    growthPotential: 'Coordinator → Senior → Manager → Director of Telehealth',
+    localOpportunities: ['Hospitals', 'Clinics', 'Telemedicine startups', 'NGOs'],
+    gettingStarted: [
+      'Learn about telemedicine technologies',
+      'Understand healthcare regulations',
+      'Get certified in healthcare administration',
+      'Practice with telehealth platforms',
+      'Build healthcare network'
+    ]
+  },
+  {
+    id: 16,
+    title: 'Medical AI Trainer',
+    alternativeNames: ['Healthcare AI Annotator', 'Medical Data Labeler', 'Clinical AI Specialist'],
+    category: 'Healthcare Technology',
+    description: 'Train AI models for medical applications by labeling data and ensuring accuracy of medical AI systems.',
+    responsibilities: [
+      'Label medical images and data for AI training',
+      'Validate AI model outputs for accuracy',
+      'Collaborate with medical professionals',
+      'Ensure data quality and consistency',
+      'Document training processes and results'
+    ],
+    technicalSkills: ['Medical terminology', 'Data labeling tools', 'Basic AI understanding', 'Medical imaging software'],
+    softSkills: ['Attention to detail', 'Medical knowledge', 'Patience', 'Critical thinking'],
+    education: 'Bachelor\'s in Medicine, Nursing, Medical Technology, or related healthcare field.',
+    salaryRange: 'NPR 40,000 - 85,000 per month',
+    growthPotential: 'Trainer → Senior → Lead → Medical AI Manager',
+    localOpportunities: ['AI companies', 'Medical device companies', 'Research institutions', 'Hospitals'],
+    gettingStarted: [
+      'Build strong medical knowledge foundation',
+      'Learn about AI and machine learning basics',
+      'Practice with medical data labeling',
+      'Network with medical AI professionals',
+      'Stay updated with medical AI trends'
     ]
   }
 ];
@@ -502,9 +807,6 @@ export default function Courses() {
                     </div>
                   </div>
                 </div>
-
-                {/* Career Paths Section */}
-                <CareerPathsSection />
 
                 {/* Free & Affordable Options Section */}
                 <FreeAffordableSection />
