@@ -1,99 +1,88 @@
 
-import { Button } from '@/components/ui/button';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { LogOut, User, Shield } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, BookOpen, Code, Brain, MessageCircle, Info, GraduationCap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
-  const { pathname } = useLocation();
-  const { user, signOut, isAdmin } = useAuth();
-  
-  const navLinks = [
-    { to: "/", label: "Home" },
-    { to: "/courses", label: "Courses & Careers" },
-    { to: "/resources", label: "Resources" },
-    { to: "/ai-tools", label: "AI Tools" },
-    { to: "/chat", label: "Chat with Diwa" },
-    { to: "/about", label: "About" },
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const navItems = [
+    { path: "/", label: "Home", icon: <BookOpen className="w-4 h-4" /> },
+    { path: "/courses", label: "Courses", icon: <GraduationCap className="w-4 h-4" /> },
+    { path: "/resources", label: "Resources", icon: <Code className="w-4 h-4" /> },
+    { path: "/ai-tools", label: "AI Tools", icon: <Brain className="w-4 h-4" /> },
+    { path: "/chat", label: "Chat", icon: <MessageCircle className="w-4 h-4" /> },
+    { path: "/about", label: "About", icon: <Info className="w-4 h-4" /> },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-white/20 shadow-lg">
-      <div className="container mx-auto px-6 py-4">
+    <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
-              <div className="w-full h-full rounded-lg bg-gradient-to-br from-white/20 to-transparent"></div>
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <BookOpen className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              RiverSkills
+              EduHub
             </span>
           </Link>
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
               <Link
-                key={link.to}
-                to={link.to}
-                className={`text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium relative group ${
-                  pathname === link.to ? "text-blue-700" : ""
+                key={item.path}
+                to={item.path}
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive(item.path)
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
                 }`}
               >
-                {link.label}
-                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300 group-hover:w-full ${
-                  pathname === link.to ? "w-full" : ""
-                }`}></span>
+                {item.icon}
+                <span>{item.label}</span>
               </Link>
             ))}
           </nav>
-          <div className="flex items-center space-x-4">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center space-x-2">
-                    <User className="w-4 h-4" />
-                    <span className="hidden sm:inline">Account</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium">{user.email}</p>
-                    {isAdmin && (
-                      <p className="text-xs text-blue-600 flex items-center gap-1">
-                        <Shield className="w-3 h-3" />
-                        Administrator
-                      </p>
-                    )}
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut} className="text-red-600 focus:text-red-600">
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <>
-                <Link to="/auth">
-                  <Button variant="ghost" className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/auth">
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                    Get Started
-                  </Button>
-                </Link>
-              </>
-            )}
-          </div>
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </Button>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <nav className="md:hidden mt-4 pb-4 border-t border-gray-200">
+            <div className="flex flex-col space-y-2 pt-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive(item.path)
+                      ? "bg-blue-100 text-blue-700"
+                      : "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </div>
+          </nav>
+        )}
       </div>
     </header>
   );
