@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import { Search, MapPin, DollarSign, TrendingUp, BookOpen, Users, ChevronRight, Star, Building, Globe } from 'lucide-react';
+import { Search, MapPin, DollarSign, TrendingUp, BookOpen, Users, ChevronRight, Star, Building, Globe, ExternalLink } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -43,132 +42,170 @@ const courses = [
   {
     id: 1,
     title: 'Complete React Development Course',
-    instructor: 'Sarah Johnson',
+    instructor: 'Maximilian Schwarzmüller',
     category: 'Web Development',
     level: 'Intermediate',
     duration: '40 hours',
-    students: 12543,
-    rating: 4.8,
+    students: 170000,
+    rating: 4.6,
     price: 89.99,
     image: '/placeholder.svg',
-    description: 'Master React with hooks, context, and modern development practices'
+    description: 'Master React with hooks, context, and modern development practices',
+    link: 'https://www.udemy.com/course/react-the-complete-guide-incl-redux/'
   },
   {
     id: 2,
-    title: 'Python for Data Science',
-    instructor: 'Dr. Michael Chen',
+    title: 'Python for Data Science and Machine Learning',
+    instructor: 'Jose Portilla',
     category: 'Data Science',
     level: 'Beginner',
-    duration: '35 hours',
-    students: 8921,
-    rating: 4.7,
+    duration: '25 hours',
+    students: 450000,
+    rating: 4.5,
     price: 79.99,
     image: '/placeholder.svg',
-    description: 'Learn Python programming and data analysis from scratch'
+    description: 'Learn Python programming and data analysis from scratch',
+    link: 'https://www.udemy.com/course/python-for-data-science-and-machine-learning-bootcamp/'
   },
   {
     id: 3,
-    title: 'Advanced Machine Learning',
-    instructor: 'Prof. Emily Rodriguez',
+    title: 'Machine Learning A-Z™: Python & R',
+    instructor: 'Kirill Eremenko, Hadelin de Ponteves',
     category: 'Machine Learning',
     level: 'Advanced',
-    duration: '60 hours',
-    students: 3456,
-    rating: 4.9,
+    duration: '44 hours',
+    students: 1200000,
+    rating: 4.5,
     price: 129.99,
     image: '/placeholder.svg',
-    description: 'Deep dive into ML algorithms and neural networks'
+    description: 'Deep dive into ML algorithms and neural networks',
+    link: 'https://www.udemy.com/course/machinelearning/'
   },
   {
     id: 4,
-    title: 'UI/UX Design Masterclass',
-    instructor: 'Alex Thompson',
+    title: 'UI/UX Design Complete Course',
+    instructor: 'Daniel Schifano',
     category: 'UI/UX Design',
     level: 'Intermediate',
-    duration: '45 hours',
-    students: 6789,
-    rating: 4.6,
+    duration: '20 hours',
+    students: 89000,
+    rating: 4.7,
     price: 94.99,
     image: '/placeholder.svg',
-    description: 'Create beautiful and user-friendly digital experiences'
+    description: 'Create beautiful and user-friendly digital experiences',
+    link: 'https://www.udemy.com/course/ui-ux-web-design-using-adobe-xd/'
   },
   {
     id: 5,
-    title: 'Mobile App Development with Flutter',
-    instructor: 'David Kim',
+    title: 'Flutter & Dart Development Course',
+    instructor: 'Maximilian Schwarzmüller',
     category: 'Mobile Development',
     level: 'Beginner',
-    duration: '50 hours',
-    students: 4321,
-    rating: 4.7,
+    duration: '31 hours',
+    students: 190000,
+    rating: 4.6,
     price: 99.99,
     image: '/placeholder.svg',
-    description: 'Build cross-platform mobile apps with Flutter and Dart'
+    description: 'Build cross-platform mobile apps with Flutter and Dart',
+    link: 'https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/'
   },
   {
     id: 6,
-    title: 'Cloud Infrastructure with AWS',
-    instructor: 'Lisa Wang',
+    title: 'AWS Certified Solutions Architect',
+    instructor: 'Stephane Maarek',
     category: 'Cloud Computing',
     level: 'Intermediate',
-    duration: '38 hours',
-    students: 2876,
-    rating: 4.8,
+    duration: '27 hours',
+    students: 720000,
+    rating: 4.7,
     price: 109.99,
     image: '/placeholder.svg',
-    description: 'Master AWS services and cloud architecture patterns'
+    description: 'Master AWS services and cloud architecture patterns',
+    link: 'https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/'
   },
   {
     id: 7,
-    title: 'HTML & CSS Fundamentals',
-    instructor: 'John Martinez',
+    title: 'HTML, CSS, and Javascript for Web Developers',
+    instructor: 'Yaakov Chaikin',
     category: 'Web Development',
     level: 'Beginner',
-    duration: '25 hours',
-    students: 15623,
-    rating: 4.5,
-    price: 0,
-    image: '/placeholder.svg',
-    description: 'Learn the basics of web development with HTML and CSS'
-  },
-  {
-    id: 8,
-    title: 'JavaScript Essentials',
-    instructor: 'Emma Davis',
-    category: 'Web Development',
-    level: 'Beginner',
-    duration: '30 hours',
-    students: 9876,
+    duration: '40 hours',
+    students: 520000,
     rating: 4.6,
     price: 0,
     image: '/placeholder.svg',
-    description: 'Master JavaScript fundamentals and DOM manipulation'
+    description: 'Learn the basics of web development with HTML and CSS',
+    link: 'https://www.coursera.org/learn/html-css-javascript-for-web-developers'
+  },
+  {
+    id: 8,
+    title: 'JavaScript: The Complete Guide',
+    instructor: 'Maximilian Schwarzmüller',
+    category: 'Web Development',
+    level: 'Beginner',
+    duration: '52 hours',
+    students: 180000,
+    rating: 4.6,
+    price: 89.99,
+    image: '/placeholder.svg',
+    description: 'Master JavaScript fundamentals and DOM manipulation',
+    link: 'https://www.udemy.com/course/javascript-the-complete-guide-2020-beginner-advanced/'
   },
   {
     id: 9,
-    title: 'Git Version Control',
-    instructor: 'Tom Wilson',
+    title: 'Git & GitHub Complete Course',
+    instructor: 'Bogdan Stashchuk',
     category: 'DevOps',
     level: 'Beginner',
-    duration: '15 hours',
-    students: 7432,
-    rating: 4.4,
-    price: 29.99,
+    duration: '12 hours',
+    students: 95000,
+    rating: 4.7,
+    price: 49.99,
     image: '/placeholder.svg',
-    description: 'Learn version control with Git and GitHub'
+    description: 'Learn version control with Git and GitHub',
+    link: 'https://www.udemy.com/course/git-and-github-complete-course/'
   },
   {
     id: 10,
-    title: 'Introduction to Data Analysis',
-    instructor: 'Rachel Green',
+    title: 'Data Analysis with Python - Full Course',
+    instructor: 'Santiago Basulto',
     category: 'Data Science',
     level: 'Beginner',
-    duration: '20 hours',
-    students: 5234,
-    rating: 4.7,
-    price: 39.99,
+    duration: '10 hours',
+    students: 45000,
+    rating: 4.5,
+    price: 0,
     image: '/placeholder.svg',
-    description: 'Get started with data analysis using Excel and basic statistics'
+    description: 'Get started with data analysis using Python and pandas',
+    link: 'https://www.youtube.com/watch?v=r-uOLxNrNk8'
+  },
+  {
+    id: 11,
+    title: 'CS50: Introduction to Computer Science',
+    instructor: 'David J. Malan',
+    category: 'Computer Science',
+    level: 'Beginner',
+    duration: '24 hours',
+    students: 3500000,
+    rating: 4.9,
+    price: 0,
+    image: '/placeholder.svg',
+    description: 'Harvard\'s introduction to computer science and programming',
+    link: 'https://www.edx.org/course/introduction-computer-science-harvardx-cs50x'
+  },
+  {
+    id: 12,
+    title: 'Google Digital Marketing Course',
+    instructor: 'Google',
+    category: 'Digital Marketing',
+    level: 'Beginner',
+    duration: '40 hours',
+    students: 850000,
+    rating: 4.6,
+    price: 0,
+    image: '/placeholder.svg',
+    description: 'Learn digital marketing fundamentals from Google',
+    link: 'https://learndigital.withgoogle.com/digitalgarage/course/digital-marketing'
   }
 ];
 
@@ -344,13 +381,13 @@ const careers = [
     education: 'Bachelor\'s in Mathematics, Statistics, Computer Science, or Economics. Advanced degree preferred.',
     salaryRange: 'NPR 50,000 - 120,000 per month',
     growthPotential: 'Junior → Senior → Lead → Chief Data Officer',
-    localOpportunities: ['Sastodeal', 'Daraz', 'IME Group', 'NIC Asia Bank', 'Various NGOs'],
+    localOpportunities: ['Sastodeal', 'Daraz', 'IME Group', 'NIC Asia Bank', 'CloudFactory', 'Leapfrog Technology'],
     gettingStarted: [
-      'Learn statistics and probability',
-      'Master Python/R programming',
-      'Practice with real datasets',
-      'Create data visualization projects',
-      'Build a portfolio on GitHub'
+      'Complete IBM Data Science Professional Certificate on Coursera',
+      'Learn Python with "Python for Data Science" course on edX',
+      'Practice with Kaggle competitions and datasets',
+      'Build portfolio projects on GitHub',
+      'Take Google Data Analytics Certificate'
     ]
   },
   {
@@ -634,25 +671,140 @@ const localResources = [
     name: 'Kathmandu University',
     type: 'University',
     programs: ['Computer Science', 'AI/ML courses', 'Data Science'],
-    location: 'Dhulikhel'
+    location: 'Dhulikhel',
+    website: 'https://ku.edu.np/',
+    description: 'Leading technical university offering comprehensive CS programs'
   },
   {
-    name: 'Tribhuvan University',
+    name: 'Tribhuvan University - IOE',
     type: 'University',
-    programs: ['IT', 'Computer Applications', 'Engineering'],
-    location: 'Kirtipur'
+    programs: ['Computer Engineering', 'Electronics Engineering', 'Software Engineering'],
+    location: 'Pulchowk',
+    website: 'https://ioe.edu.np/',
+    description: 'Nepal\'s premier engineering institute'
   },
   {
     name: 'Fusemachines',
     type: 'Training Center',
-    programs: ['AI Fellowship', 'Machine Learning Bootcamp'],
-    location: 'Pulchowk'
+    programs: ['AI Fellowship', 'Machine Learning Bootcamp', 'Data Science Program'],
+    location: 'Pulchowk',
+    website: 'https://fusemachines.com/',
+    description: 'Leading AI education and development company in Nepal'
   },
   {
     name: 'Leapfrog Technology',
     type: 'Training Center',
-    programs: ['Internship Programs', 'Tech Talks'],
-    location: 'Dillibazar'
+    programs: ['Internship Programs', 'Tech Talks', 'Developer Bootcamps'],
+    location: 'Dillibazar',
+    website: 'https://www.lftechnology.com/',
+    description: 'Software development company offering training programs'
+  },
+  {
+    name: 'Code for Nepal',
+    type: 'Non-Profit',
+    programs: ['Civic Tech Training', 'Open Source Projects', 'Digital Literacy'],
+    location: 'Online/Kathmandu',
+    website: 'https://codefornepal.org/',
+    description: 'Community working on technology for social good'
+  },
+  {
+    name: 'Women in STEM Nepal',
+    type: 'Community',
+    programs: ['Workshops', 'Mentorship', 'Networking Events'],
+    location: 'Kathmandu',
+    website: 'https://www.womenintech.org.np/',
+    description: 'Supporting women in technology and STEM fields'
+  },
+  {
+    name: 'Nepal Blockchain Society',
+    type: 'Community',
+    programs: ['Blockchain Education', 'Workshops', 'Meetups'],
+    location: 'Kathmandu',
+    website: 'https://nepalblockchain.org/',
+    description: 'Promoting blockchain technology and education'
+  },
+  {
+    name: 'IT Park Nepal',
+    type: 'Incubator',
+    programs: ['Startup Support', 'Training Programs', 'Networking'],
+    location: 'Thapathali',
+    website: 'https://itparknepal.com/',
+    description: 'Government initiative supporting IT entrepreneurship'
+  }
+];
+
+// Free Learning Resources
+const freeResources = [
+  {
+    category: 'Programming Basics',
+    resources: [
+      {
+        name: 'freeCodeCamp',
+        type: 'Interactive Courses',
+        description: 'Complete programming curriculum with certificates',
+        link: 'https://www.freecodecamp.org/',
+        topics: ['HTML/CSS', 'JavaScript', 'Python', 'Data Analysis']
+      },
+      {
+        name: 'Codecademy Free',
+        type: 'Interactive Courses',
+        description: 'Learn to code with hands-on practice',
+        link: 'https://www.codecademy.com/catalog/subject/programming',
+        topics: ['Python', 'JavaScript', 'HTML/CSS', 'SQL']
+      },
+      {
+        name: 'Harvard CS50',
+        type: 'University Course',
+        description: 'Introduction to Computer Science',
+        link: 'https://cs50.harvard.edu/',
+        topics: ['Computer Science Fundamentals', 'Programming', 'Algorithms']
+      }
+    ]
+  },
+  {
+    category: 'AI & Machine Learning',
+    resources: [
+      {
+        name: 'Fast.ai',
+        type: 'Practical Courses',
+        description: 'Practical deep learning for coders',
+        link: 'https://www.fast.ai/',
+        topics: ['Deep Learning', 'Natural Language Processing', 'Computer Vision']
+      },
+      {
+        name: 'Andrew Ng\'s ML Course',
+        type: 'University Course',
+        description: 'Stanford\'s machine learning course',
+        link: 'https://www.coursera.org/learn/machine-learning',
+        topics: ['Machine Learning', 'Neural Networks', 'Supervised Learning']
+      },
+      {
+        name: 'Google AI Education',
+        type: 'Documentation & Courses',
+        description: 'Free AI and ML resources from Google',
+        link: 'https://ai.google/education/',
+        topics: ['TensorFlow', 'Machine Learning', 'AI Ethics']
+      }
+    ]
+  },
+  {
+    category: 'Data Science',
+    resources: [
+      {
+        name: 'Kaggle Learn',
+        type: 'Micro-courses',
+        description: 'Free micro-courses on data science topics',
+        link: 'https://www.kaggle.com/learn',
+        topics: ['Python', 'Data Visualization', 'Machine Learning', 'SQL']
+      },
+      {
+        name: 'IBM Data Science',
+        type: 'Professional Certificate',
+        description: 'Comprehensive data science program',
+        link: 'https://www.coursera.org/professional-certificates/ibm-data-science',
+        topics: ['Data Analysis', 'Python', 'Machine Learning', 'Data Visualization']
+      }
+    ]
   }
 ];
 
@@ -747,6 +899,60 @@ export default function Courses() {
 
               {/* Courses Tab */}
               <TabsContent value="courses">
+                {/* Free Resources Section */}
+                <div className="py-16 px-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg mb-8">
+                  <div className="max-w-4xl mx-auto">
+                    <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+                      Free Learning Resources
+                    </h2>
+                    <div className="space-y-8">
+                      {freeResources.map((category, index) => (
+                        <div key={index}>
+                          <h3 className="text-xl font-semibold mb-4 text-blue-700">{category.category}</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {category.resources.map((resource, resourceIndex) => (
+                              <Card key={resourceIndex} className="hover:shadow-lg transition-shadow">
+                                <CardHeader className="pb-3">
+                                  <div className="flex items-start justify-between">
+                                    <div>
+                                      <CardTitle className="text-lg">{resource.name}</CardTitle>
+                                      <CardDescription className="text-sm">{resource.type}</CardDescription>
+                                    </div>
+                                    <ExternalLink className="w-4 h-4 text-gray-400" />
+                                  </div>
+                                </CardHeader>
+                                <CardContent>
+                                  <p className="text-sm text-gray-600 mb-3">{resource.description}</p>
+                                  <div className="flex flex-wrap gap-1 mb-3">
+                                    {resource.topics.slice(0, 3).map((topic, topicIndex) => (
+                                      <Badge key={topicIndex} variant="secondary" className="text-xs">
+                                        {topic}
+                                      </Badge>
+                                    ))}
+                                    {resource.topics.length > 3 && (
+                                      <Badge variant="outline" className="text-xs">
+                                        +{resource.topics.length - 3} more
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    className="w-full"
+                                    onClick={() => window.open(resource.link, '_blank')}
+                                  >
+                                    Start Learning
+                                  </Button>
+                                </CardContent>
+                              </Card>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
                 {/* Filters Section */}
                 <div className="py-8 px-6 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-lg mb-8">
                   <div className="flex flex-wrap items-center gap-4 justify-between">
@@ -808,9 +1014,6 @@ export default function Courses() {
                   </div>
                 </div>
 
-                {/* Free & Affordable Options Section */}
-                <FreeAffordableSection />
-
                 {/* Featured Courses Section */}
                 <FeaturedCoursesSection />
 
@@ -819,7 +1022,7 @@ export default function Courses() {
                   <h2 className="text-3xl font-bold text-gray-800 mb-8">
                     {searchQuery || selectedCategory !== 'All Categories' || selectedLevel !== 'All Levels' || selectedPriceRange !== 'All Prices'
                       ? 'Search Results' 
-                      : 'All Courses'}
+                      : 'Popular Courses'}
                   </h2>
                   
                   {filteredCourses.length === 0 ? (
@@ -834,7 +1037,48 @@ export default function Courses() {
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                       {filteredCourses.map(course => (
-                        <CourseCard key={course.id} course={course} />
+                        <Card key={course.id} className="group cursor-pointer transition-all hover:shadow-lg">
+                          <CardHeader>
+                            <div className="flex justify-between items-start">
+                              <CardTitle className="text-lg group-hover:text-blue-600 transition-colors line-clamp-2">
+                                {course.title}
+                              </CardTitle>
+                              <ExternalLink className="w-4 h-4 text-gray-400" />
+                            </div>
+                            <CardDescription>by {course.instructor}</CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-sm text-gray-600 mb-4 line-clamp-2">{course.description}</p>
+                            
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                <span className="text-sm font-medium">{course.rating}</span>
+                              </div>
+                              <Badge variant="secondary">{course.level}</Badge>
+                            </div>
+
+                            <div className="flex items-center justify-between mb-4">
+                              <span className="text-sm text-gray-500">
+                                {course.students.toLocaleString()} students
+                              </span>
+                              <span className="text-sm text-gray-500">{course.duration}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <span className="text-2xl font-bold text-green-600">
+                                {course.price === 0 ? 'Free' : `$${course.price}`}
+                              </span>
+                              <Button 
+                                size="sm"
+                                onClick={() => window.open(course.link, '_blank')}
+                                className="bg-blue-600 hover:bg-blue-700"
+                              >
+                                View Course
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
                       ))}
                     </div>
                   )}
@@ -1059,18 +1303,24 @@ export default function Courses() {
                   </div>
                 </div>
 
-                {/* Local Resources Section */}
+                {/* Enhanced Local Resources Section */}
                 <div className="py-16 mt-16 px-6 bg-gray-50 rounded-lg">
-                  <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Local Resources in Kathmandu</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Learning Resources in Nepal</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {localResources.map((resource, index) => (
-                      <Card key={index}>
+                      <Card key={index} className="hover:shadow-lg transition-shadow">
                         <CardHeader>
-                          <CardTitle className="text-lg">{resource.name}</CardTitle>
-                          <CardDescription>{resource.type}</CardDescription>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <CardTitle className="text-lg">{resource.name}</CardTitle>
+                              <CardDescription>{resource.type}</CardDescription>
+                            </div>
+                            <ExternalLink className="w-4 h-4 text-gray-400" />
+                          </div>
                         </CardHeader>
                         <CardContent>
-                          <div className="space-y-2">
+                          <p className="text-sm text-gray-600 mb-3">{resource.description}</p>
+                          <div className="space-y-2 mb-4">
                             <div className="flex items-center gap-2 text-sm">
                               <MapPin className="w-4 h-4 text-gray-500" />
                               <span>{resource.location}</span>
@@ -1083,6 +1333,14 @@ export default function Courses() {
                               ))}
                             </div>
                           </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="w-full"
+                            onClick={() => window.open(resource.website, '_blank')}
+                          >
+                            Visit Website
+                          </Button>
                         </CardContent>
                       </Card>
                     ))}
