@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      daily_tools: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          featured_date: string
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          source_tool_id: string | null
+          tool_name: string
+          tool_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          featured_date?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          source_tool_id?: string | null
+          tool_name: string
+          tool_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          featured_date?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          source_tool_id?: string | null
+          tool_name?: string
+          tool_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       resources: {
         Row: {
           created_at: string
