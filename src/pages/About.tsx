@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Lightbulb, Rocket, Heart, Target, Globe, Users } from "lucide-react";
@@ -49,14 +48,14 @@ export default function About() {
             <div className="mb-12 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               <div className="relative overflow-hidden rounded-2xl shadow-2xl max-w-3xl mx-auto">
                 <img 
-                  src="/lovable-uploads/9e936acc-262b-44f4-b7a4-ff1260719c6e.png" 
-                  alt="Diwakar at a cultural heritage site representing our global learning community" 
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&crop=face" 
+                  alt="Diwakar Ray Yadav - Founder of RiverSkills" 
                   className="w-full h-auto object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
               <p className="text-sm text-gray-500 mt-4 italic">
-                Exploring cultural heritage and learning from diverse communities around the world
+                Diwakar Ray Yadav - Passionate educator and founder of RiverSkills
               </p>
             </div>
 
