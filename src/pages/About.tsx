@@ -45,6 +45,21 @@ export default function About() {
               The story behind our mission to make learning flow naturally.
             </p>
 
+            {/* Featured Image Section */}
+            <div className="mb-12 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              <div className="relative overflow-hidden rounded-2xl shadow-2xl max-w-3xl mx-auto">
+                <img 
+                  src="/lovable-uploads/9e936acc-262b-44f4-b7a4-ff1260719c6e.png" 
+                  alt="Diwakar at a cultural heritage site representing our global learning community" 
+                  className="w-full h-auto object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+              <p className="text-sm text-gray-500 mt-4 italic">
+                Exploring cultural heritage and learning from diverse communities around the world
+              </p>
+            </div>
+
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-left flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               <div className="flex-shrink-0 text-center">
                 <Avatar className="w-32 h-32 md:w-48 md:h-48 border-4 border-white shadow-lg mx-auto">
