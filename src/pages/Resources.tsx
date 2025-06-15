@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
-import ToolOfTheDay from "@/components/ToolOfTheDay";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Code, Wrench, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -162,11 +161,6 @@ export default function Resources() {
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               Browse curated articles, tutorials, and tools to accelerate your learning journey.
             </p>
-            
-            {/* Tool of the Day Section */}
-            <div className="mb-8 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              <ToolOfTheDay />
-            </div>
 
             <div className="max-w-2xl mx-auto animate-fade-in-up mb-6" style={{ animationDelay: '0.4s' }}>
               <SearchBar value={search} onChange={setSearch} placeholder="Search for articles, tutorials, tools..." />
