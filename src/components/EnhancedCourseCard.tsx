@@ -1,3 +1,4 @@
+
 import { ReactNode } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Clock, Users, Star, Award, Play, BookOpen } from 'lucide-react';
@@ -11,6 +12,7 @@ interface EnhancedCourseCardProps {
   duration?: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
   category: string;
+  price?: string;
   rating?: number;
   studentsCount?: string;
   image?: string;
@@ -27,6 +29,7 @@ export default function EnhancedCourseCard({
   duration,
   level,
   category,
+  price = "Free",
   rating,
   studentsCount,
   image,
@@ -145,7 +148,11 @@ export default function EnhancedCourseCard({
         {/* Price and Action */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
           <div className="text-2xl font-bold text-gray-900">
-            <span className="text-green-600">Free</span>
+            {price === "Free" ? (
+              <span className="text-green-600">Free</span>
+            ) : (
+              <span>{price}</span>
+            )}
           </div>
           <Button 
             className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"

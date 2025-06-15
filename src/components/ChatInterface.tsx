@@ -1,12 +1,11 @@
 
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, User, Sparkles, Zap, Settings, AlertCircle, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import ChatLoadingSkeleton from '@/components/ChatLoadingSkeleton';
 
 interface Message {
   id: string;
@@ -24,42 +23,39 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentMode, setCurrentMode] = useState<DiwaMode>('lite');
   const [retryCount, setRetryCount] = useState(0);
-  const [initialized, setInitialized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
 
-  // Memoize welcome message to prevent re-renders
-  const welcomeMessage = useMemo(() => ({
-    id: '1',
-    content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient for learning and career guidance. You can switch to Steroids mode for unlimited AI capabilities across any topic. What would you like to know?",
-    sender: 'bot' as const,
-    timestamp: new Date(),
-  }), []);
-
   // Initialize welcome message only when user is authenticated
   useEffect(() => {
-    if (user && !initialized) {
-      setMessages([welcomeMessage]);
-      setInitialized(true);
+    if (user && messages.length === 0) {
+      setMessages([{
+        id: '1',
+        content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient for learning and career guidance. You can switch to Steroids mode for unlimited AI capabilities across any topic. What would you like to know?",
+        sender: 'bot',
+        timestamp: new Date(),
+      }]);
     }
-  }, [user, initialized, welcomeMessage]);
+  }, [user, messages.length]);
 
-  const scrollToBottom = useCallback(() => {
+  const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+  };
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, scrollToBottom]);
+  }, [messages]);
 
-  const handleModeSwitch = useCallback(async (newMode: DiwaMode) => {
+  const handleModeSwitch = async (newMode: DiwaMode) => {
     if (newMode === currentMode || !user) return;
     
     setCurrentMode(newMode);
     setIsLoading(true);
 
     try {
+      console.log('Switching to mode:', newMode);
+
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
           message: `Switch to ${newMode} mode`,
@@ -68,7 +64,10 @@ export default function ChatInterface() {
         },
       });
 
+      console.log('Mode switch response:', data, error);
+
       if (error) {
+        console.error('Mode switch error:', error);
         throw new Error(error.message || 'Failed to switch mode');
       }
       
@@ -92,13 +91,14 @@ export default function ChatInterface() {
         description: "Failed to switch mode. Please try again.",
         variant: "destructive",
       });
+      // Revert mode on error
       setCurrentMode(currentMode === 'lite' ? 'steroids' : 'lite');
     } finally {
       setIsLoading(false);
     }
-  }, [currentMode, user, toast]);
+  };
 
-  const handleSendMessage = useCallback(async (retryMessage?: string) => {
+  const handleSendMessage = async (retryMessage?: string) => {
     const messageToSend = retryMessage || inputMessage.trim();
     if (!messageToSend || isLoading || !user) return;
 
@@ -117,6 +117,9 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
+      console.log('Sending message:', messageToSend);
+      console.log('Current mode:', currentMode);
+
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
           message: messageToSend,
@@ -124,7 +127,10 @@ export default function ChatInterface() {
         },
       });
 
+      console.log('Chat response:', data, error);
+
       if (error) {
+        console.error('Chat error:', error);
         throw new Error(error.message || 'Failed to get response');
       }
       
@@ -136,7 +142,7 @@ export default function ChatInterface() {
       };
 
       setMessages(prev => [...prev, botMessage]);
-      setRetryCount(0);
+      setRetryCount(0); // Reset retry count on success
     } catch (error) {
       console.error('Error sending message:', error);
       
@@ -150,6 +156,7 @@ export default function ChatInterface() {
         errorMessage = "AI service is temporarily unavailable. Please try again in a moment.";
       }
       
+      // Add retry button for failed messages
       const errorBotMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: `❌ ${errorMessage}`,
@@ -180,45 +187,37 @@ export default function ChatInterface() {
     } finally {
       setIsLoading(false);
     }
-  }, [inputMessage, isLoading, user, currentMode, retryCount, toast]);
+  };
 
-  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  }, [handleSendMessage]);
+  };
 
-  const modeConfig = useMemo(() => {
-    return currentMode === 'steroids' 
-      ? {
-          color: 'from-purple-500 to-pink-600',
-          bgColor: 'bg-purple-50 border-purple-200',
-          buttonColor: 'bg-purple-500 hover:bg-purple-600',
-          textColor: 'text-purple-900',
-          subtextColor: 'text-purple-600',
-          icon: <Zap className="w-5 h-5 text-white" />,
-          title: 'Diwa on Steroids',
-          subtitle: 'Unlimited AI capabilities',
-          placeholder: "Ask Diwa anything - from creative writing to coding, philosophy to problem-solving..."
-        }
-      : {
-          color: 'from-red-500 to-red-600',
-          bgColor: 'bg-red-50 border-red-200',
-          buttonColor: 'bg-red-500 hover:bg-red-600',
-          textColor: 'text-red-900',
-          subtextColor: 'text-red-600',
-          icon: <Sparkles className="w-5 h-5 text-white" />,
-          title: 'Diwa Lite',
-          subtitle: 'Focused on learning & careers',
-          placeholder: "Ask Diwa about RiverSkills courses, career guidance, and learning resources..."
-        };
-  }, [currentMode]);
+  const getModeColor = () => {
+    return currentMode === 'steroids' ? 'from-purple-500 to-pink-600' : 'from-red-500 to-red-600';
+  };
 
+  const getModeBgColor = () => {
+    return currentMode === 'steroids' ? 'bg-purple-50 border-purple-200' : 'bg-red-50 border-red-200';
+  };
+
+  const getModeButtonColor = () => {
+    return currentMode === 'steroids' ? 'bg-purple-500 hover:bg-purple-600' : 'bg-red-500 hover:bg-red-600';
+  };
+
+  // Show loading state while checking authentication
   if (loading) {
-    return <ChatLoadingSkeleton />;
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+      </div>
+    );
   }
 
+  // Show authentication required message
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border border-gray-200">
@@ -240,17 +239,26 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-red-200 shadow-lg">
       {/* Chat Header with Mode Controls */}
-      <div className={`flex items-center justify-between p-4 border-b rounded-t-lg ${modeConfig.bgColor}`}>
+      <div className={`flex items-center justify-between p-4 border-b rounded-t-lg ${getModeBgColor()}`}>
         <div className="flex items-center gap-3">
-          <div className={`w-8 h-8 bg-gradient-to-br ${modeConfig.color} rounded-full flex items-center justify-center`}>
-            {modeConfig.icon}
+          <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center`}>
+            {currentMode === 'steroids' ? (
+              <Zap className="w-5 h-5 text-white" />
+            ) : (
+              <Sparkles className="w-5 h-5 text-white" />
+            )}
           </div>
           <div>
-            <h3 className={`font-semibold ${modeConfig.textColor}`}>{modeConfig.title}</h3>
-            <p className={`text-sm ${modeConfig.subtextColor}`}>{modeConfig.subtitle}</p>
+            <h3 className={`font-semibold ${currentMode === 'steroids' ? 'text-purple-900' : 'text-red-900'}`}>
+              Diwa {currentMode === 'steroids' ? 'on Steroids' : 'Lite'}
+            </h3>
+            <p className={`text-sm ${currentMode === 'steroids' ? 'text-purple-600' : 'text-red-600'}`}>
+              {currentMode === 'steroids' ? 'Unlimited AI capabilities' : 'Focused on learning & careers'}
+            </p>
           </div>
         </div>
         
+        {/* Mode Toggle Buttons */}
         <div className="flex gap-2">
           <Button
             variant={currentMode === 'lite' ? 'default' : 'outline'}
@@ -283,15 +291,19 @@ export default function ChatInterface() {
             className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {message.sender === 'bot' && (
-              <div className={`w-8 h-8 bg-gradient-to-br ${modeConfig.color} rounded-full flex items-center justify-center flex-shrink-0`}>
-                {modeConfig.icon}
+              <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center flex-shrink-0`}>
+                {currentMode === 'steroids' ? (
+                  <Zap className="w-4 h-4 text-white" />
+                ) : (
+                  <Sparkles className="w-4 h-4 text-white" />
+                )}
               </div>
             )}
             
             <div
               className={`max-w-[80%] rounded-lg px-4 py-3 ${
                 message.sender === 'user'
-                  ? `${modeConfig.buttonColor} text-white ml-auto`
+                  ? `${getModeButtonColor()} text-white ml-auto`
                   : 'bg-gray-100 text-gray-900'
               }`}
             >
@@ -308,8 +320,12 @@ export default function ChatInterface() {
         
         {isLoading && (
           <div className="flex gap-3 justify-start">
-            <div className={`w-8 h-8 bg-gradient-to-br ${modeConfig.color} rounded-full flex items-center justify-center`}>
-              {modeConfig.icon}
+            <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center`}>
+              {currentMode === 'steroids' ? (
+                <Zap className="w-4 h-4 text-white" />
+              ) : (
+                <Sparkles className="w-4 h-4 text-white" />
+              )}
             </div>
             <div className="bg-gray-100 rounded-lg px-4 py-3">
               <div className="flex gap-1">
@@ -324,7 +340,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className={`p-4 border-t rounded-b-lg ${modeConfig.bgColor}`}>
+      <div className={`p-4 border-t rounded-b-lg ${getModeBgColor()}`}>
         <div className="flex gap-3 items-end">
           <div className="flex-1">
             <Textarea
@@ -332,7 +348,10 @@ export default function ChatInterface() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={modeConfig.placeholder}
+              placeholder={currentMode === 'steroids' 
+                ? "Ask Diwa anything - from creative writing to coding, philosophy to problem-solving..." 
+                : "Ask Diwa about RiverSkills courses, career guidance, and learning resources..."
+              }
               className={`min-h-[44px] max-h-32 resize-none ${
                 currentMode === 'steroids' 
                   ? 'border-purple-300 focus:border-purple-500 focus:ring-purple-500' 
@@ -344,7 +363,7 @@ export default function ChatInterface() {
           <Button
             onClick={() => handleSendMessage()}
             disabled={!inputMessage.trim() || isLoading}
-            className={`${modeConfig.buttonColor} text-white px-4 py-2 h-11`}
+            className={`${getModeButtonColor()} text-white px-4 py-2 h-11`}
           >
             <Send className="w-4 h-4" />
           </Button>

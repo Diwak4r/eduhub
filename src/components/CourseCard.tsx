@@ -1,4 +1,5 @@
-import { Star, Clock, Users } from 'lucide-react';
+
+import { Star, Clock, Users, DollarSign, Gift } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -41,8 +42,24 @@ export default function CourseCard({ course }: CourseCardProps) {
     }
   };
 
+  const formatPrice = (price: number) => {
+    if (price === 0) {
+      return 'FREE';
+    }
+    return `$${price}`;
+  };
+
+  const getPriceColor = (price: number) => {
+    if (price === 0) {
+      return 'text-green-600';
+    }
+    return 'text-green-600';
+  };
+
+  const USD_TO_NPR_RATE = 133;
+
   return (
-    <Card className="group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-0 bg-white flex flex-col h-full">
+    <Card className="group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-0 bg-white">
       <div className="relative overflow-hidden rounded-t-lg">
         <img 
           src={course.image} 
@@ -60,7 +77,7 @@ export default function CourseCard({ course }: CourseCardProps) {
         </div>
       </div>
 
-      <CardContent className="p-6 flex-grow">
+      <CardContent className="p-6">
         <div className="mb-2">
           <span className="text-sm text-blue-600 font-medium">{course.category}</span>
         </div>
@@ -88,14 +105,24 @@ export default function CourseCard({ course }: CourseCardProps) {
 
       <CardFooter className="px-6 pb-6 pt-0 flex items-center justify-between">
         <div className="flex items-start gap-2">
+          {course.price === 0 ? (
+            <Gift className="h-6 w-6 text-green-600 mt-1" />
+          ) : (
+            <DollarSign className="h-6 w-6 text-green-600 mt-1" />
+          )}
           <div>
-            <p className={`text-2xl font-bold text-green-600`}>
-              FREE
+            <p className={`text-2xl font-bold ${getPriceColor(course.price)}`}>
+              {course.price === 0 ? 'FREE' : `$${course.price.toFixed(2)}`}
             </p>
+            {course.price > 0 && (
+              <p className="text-sm text-gray-500 -mt-1">
+                NPR {Math.round(course.price * USD_TO_NPR_RATE).toLocaleString('en-IN')}
+              </p>
+            )}
           </div>
         </div>
         <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
-          Start for Free
+          {course.price === 0 ? 'Start Free' : 'Enroll Now'}
         </Button>
       </CardFooter>
     </Card>
