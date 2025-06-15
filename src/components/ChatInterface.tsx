@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, Bot, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
   id: string;
@@ -50,19 +51,13 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chat-with-diwa', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: userMessage.content }),
+      const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
+        body: { message: userMessage.content },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to get response');
+      if (error) {
+        throw new Error(error.message);
       }
-
-      const data = await response.json();
       
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
