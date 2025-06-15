@@ -1,8 +1,16 @@
 
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Header() {
+  const { pathname } = useLocation();
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/courses", label: "Courses" },
+    { to: "/resources", label: "Resources" },
+    { to: "/about", label: "About" },
+  ];
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-white/20">
       <div className="container mx-auto px-6 py-4">
@@ -13,14 +21,19 @@ export default function Header() {
               RiverSkills
             </span>
           </Link>
-          
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Home</Link>
-            <Link to="/courses" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Courses</Link>
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Resources</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">About</a>
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`text-gray-700 hover:text-blue-600 transition-colors font-medium ${
+                  pathname === link.to ? "underline underline-offset-4 text-blue-700" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
-          
           <div className="flex items-center space-x-4">
             <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
               Sign In
