@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { staticResources } from "@/data/staticResources";
@@ -17,12 +16,13 @@ interface Resource {
 }
 
 export function useResources() {
-  const [resources, setResources] = useState<Resource[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [resources, setResources] = useState<Resource[]>(staticResources); // Start with static resources
+  const [loading, setLoading] = useState(false); // Start with false since we have static resources
   const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
 
-  const fetchResources = async () => {
+  const fetchResources = useCallback(async () => {
+    setLoading(true);
     try {
       const { data, error } = await supabase
         .from('resources')
@@ -32,11 +32,8 @@ export function useResources() {
 
       if (error) {
         console.error('Error fetching resources:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load resources. Please try again.",
-          variant: "destructive",
-        });
+        // Keep static resources on error
+        setResources(staticResources);
         return;
       }
 
@@ -45,17 +42,14 @@ export function useResources() {
       setResources(allResources);
     } catch (error) {
       console.error('Error fetching resources:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load resources. Please try again.",
-        variant: "destructive",
-      });
+      // Fallback to static resources
+      setResources(staticResources);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleRefreshResources = async () => {
+  const handleRefreshResources = useCallback(async () => {
     setRefreshing(true);
     try {
       const { data, error } = await supabase.functions.invoke('fetch-resources');
@@ -85,11 +79,12 @@ export function useResources() {
     } finally {
       setRefreshing(false);
     }
-  };
+  }, [fetchResources, toast]);
 
   useEffect(() => {
+    // Only fetch from database if we don't have static resources already loaded
     fetchResources();
-  }, []);
+  }, [fetchResources]);
 
   return {
     resources,

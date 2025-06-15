@@ -1,11 +1,12 @@
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, User, Sparkles, Zap, Settings, AlertCircle, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import ChatLoadingSkeleton from '@/components/ChatLoadingSkeleton';
 
 interface Message {
   id: string;
@@ -23,31 +24,36 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentMode, setCurrentMode] = useState<DiwaMode>('lite');
   const [retryCount, setRetryCount] = useState(0);
+  const [initialized, setInitialized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
 
+  // Memoize welcome message to prevent re-renders
+  const welcomeMessage = useMemo(() => ({
+    id: '1',
+    content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient for learning and career guidance. You can switch to Steroids mode for unlimited AI capabilities across any topic. What would you like to know?",
+    sender: 'bot' as const,
+    timestamp: new Date(),
+  }), []);
+
   // Initialize welcome message only when user is authenticated
   useEffect(() => {
-    if (user && messages.length === 0) {
-      setMessages([{
-        id: '1',
-        content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient for learning and career guidance. You can switch to Steroids mode for unlimited AI capabilities across any topic. What would you like to know?",
-        sender: 'bot',
-        timestamp: new Date(),
-      }]);
+    if (user && !initialized) {
+      setMessages([welcomeMessage]);
+      setInitialized(true);
     }
-  }, [user, messages.length]);
+  }, [user, initialized, welcomeMessage]);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
-  const handleModeSwitch = async (newMode: DiwaMode) => {
+  const handleModeSwitch = useCallback(async (newMode: DiwaMode) => {
     if (newMode === currentMode || !user) return;
     
     setCurrentMode(newMode);
@@ -90,9 +96,9 @@ export default function ChatInterface() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentMode, user, toast]);
 
-  const handleSendMessage = async (retryMessage?: string) => {
+  const handleSendMessage = useCallback(async (retryMessage?: string) => {
     const messageToSend = retryMessage || inputMessage.trim();
     if (!messageToSend || isLoading || !user) return;
 
@@ -174,16 +180,16 @@ export default function ChatInterface() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [inputMessage, isLoading, user, currentMode, retryCount, toast]);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  };
+  }, [handleSendMessage]);
 
-  const getModeConfig = () => {
+  const modeConfig = useMemo(() => {
     return currentMode === 'steroids' 
       ? {
           color: 'from-purple-500 to-pink-600',
@@ -207,16 +213,10 @@ export default function ChatInterface() {
           subtitle: 'Focused on learning & careers',
           placeholder: "Ask Diwa about RiverSkills courses, career guidance, and learning resources..."
         };
-  };
-
-  const modeConfig = getModeConfig();
+  }, [currentMode]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
-      </div>
-    );
+    return <ChatLoadingSkeleton />;
   }
 
   if (!user) {

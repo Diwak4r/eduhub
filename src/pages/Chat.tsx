@@ -1,6 +1,8 @@
 
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import ChatInterface from "@/components/ChatInterface";
+import ChatLoadingSkeleton from "@/components/ChatLoadingSkeleton";
 
 export default function Chat() {
   return (
@@ -19,7 +21,9 @@ export default function Chat() {
             </div>
 
             <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <ChatInterface />
+              <Suspense fallback={<ChatLoadingSkeleton />}>
+                <ChatInterface />
+              </Suspense>
             </div>
           </div>
         </section>
