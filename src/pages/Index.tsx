@@ -1,6 +1,6 @@
 
 import { Book, Video, FileText, Newspaper, Bot, GraduationCap } from 'lucide-react';
-import Hero3D from '@/components/Hero3D';
+import River3D from '@/components/River3D';
 import Header from '@/components/Header';
 import SectionCard from '@/components/SectionCard';
 import { Button } from '@/components/ui/button';
@@ -51,15 +51,15 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <Hero3D />
+        <River3D />
         
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
           <div className="animate-fade-in-up">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-800 via-purple-700 to-blue-900 bg-clip-text text-transparent leading-tight">
-              SkillSphere
+              RiverSkills
             </h1>
             <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed max-w-2xl mx-auto">
-              Your universe of knowledge. Explore, learn, and grow with our comprehensive platform for skill development.
+              Flow with knowledge. Explore, learn, and grow with our comprehensive platform for skill development.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 text-lg">
@@ -71,11 +71,6 @@ const Index = () => {
             </div>
           </div>
         </div>
-        
-        {/* Floating elements */}
-        <div className="absolute top-20 left-10 w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-20 animate-float"></div>
-        <div className="absolute bottom-20 right-10 w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-30 animate-float-delayed"></div>
-        <div className="absolute top-1/2 left-20 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full opacity-25 animate-float"></div>
       </section>
 
       {/* Main Sections */}
@@ -104,13 +99,13 @@ const Index = () => {
       <section className="py-20 px-6 bg-gradient-to-r from-blue-600 to-purple-700">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Transform Your Skills?
+            Ready to Start Your Learning Flow?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of learners who have already started their journey to success with SkillSphere.
+            Join thousands of learners who have already started their journey to success with RiverSkills.
           </p>
           <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold">
-            Join SkillSphere Today
+            Join RiverSkills Today
           </Button>
         </div>
       </section>
@@ -122,7 +117,7 @@ const Index = () => {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg"></div>
-                <span className="text-xl font-bold">SkillSphere</span>
+                <span className="text-xl font-bold">RiverSkills</span>
               </div>
               <p className="text-gray-400">
                 Empowering learners worldwide with comprehensive educational resources.
@@ -156,7 +151,7 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 SkillSphere. All rights reserved.</p>
+            <p>&copy; 2025 RiverSkills. All rights reserved.</p>
           </div>
         </div>
       </footer>
