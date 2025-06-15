@@ -58,7 +58,7 @@ export default function About() {
               <div className="flex-shrink-0 text-center">
                 <Avatar className="w-32 h-32 md:w-48 md:h-48 border-4 border-white shadow-lg mx-auto">
                   <AvatarImage src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" alt="Diwakar Ray Yadav" />
-                  <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DRY</AvatarFallable>
+                  <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DRY</AvatarFallback>
                 </Avatar>
                 <h2 className="text-2xl font-bold text-gray-800 mt-4">Diwakar Ray Yadav</h2>
                 <p className="text-gray-500">Raycode</p>
