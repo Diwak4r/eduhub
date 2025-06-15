@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import FeaturedCoursesSection from "@/components/FeaturedCoursesSection";
 import CareerPathsSection from "@/components/CareerPathsSection";
 import FreeAffordableSection from "@/components/FreeAffordableSection";
+import NewsSection from "@/components/NewsSection";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -186,6 +186,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {/* News Section */}
+      <NewsSection />
 
       {/* Featured Sections */}
       <FeaturedCoursesSection />
