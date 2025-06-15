@@ -44,21 +44,6 @@ export default function About() {
               The story behind our mission to make learning flow naturally.
             </p>
 
-            {/* Featured Image Section */}
-            <div className="mb-12 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              <div className="relative overflow-hidden rounded-2xl shadow-2xl max-w-3xl mx-auto">
-                <img 
-                  src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" 
-                  alt="Diwakar Ray Yadav - Founder of RiverSkills at a cultural heritage site" 
-                  className="w-full h-auto object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              </div>
-              <p className="text-sm text-gray-500 mt-4 italic">
-                Diwakar Ray Yadav - Passionate educator and founder of RiverSkills
-              </p>
-            </div>
-
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-left flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               <div className="flex-shrink-0 text-center">
                 <Avatar className="w-32 h-32 md:w-48 md:h-48 border-4 border-white shadow-lg mx-auto">
