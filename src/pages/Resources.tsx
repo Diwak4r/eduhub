@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
-import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Code, Wrench, RefreshCw, Play, Smartphone, Globe, Headphones, BookMarked } from "lucide-react";
+import EnhancedResourceCard from "@/components/EnhancedResourceCard";
+import { BookOpen, Code, Wrench, RefreshCw, Play, Smartphone, Globe, Headphones, BookMarked, Filter, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
 
 interface Resource {
@@ -680,6 +681,7 @@ export default function Resources() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedType, setSelectedType] = useState<string>("all");
   const { toast } = useToast();
 
   const fetchResources = async () => {
@@ -758,8 +760,9 @@ export default function Resources() {
     }
     
     if (
-      resource.title.toLowerCase().includes(search.toLowerCase()) ||
-      resource.description?.toLowerCase().includes(search.toLowerCase())
+      (selectedType === "all" || resource.type === selectedType) &&
+      (resource.title.toLowerCase().includes(search.toLowerCase()) ||
+      resource.description?.toLowerCase().includes(search.toLowerCase()))
     ) {
       acc[resource.type].push(resource);
     }
@@ -772,6 +775,10 @@ export default function Resources() {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
   };
+
+  const resourceTypes = ["all", ...Object.keys(sectionStyles)];
+  const totalResources = resources.length;
+  const filteredCount = Object.values(groupedResources).reduce((sum, items) => sum + items.length, 0);
 
   if (loading) {
     return (
@@ -793,8 +800,15 @@ export default function Resources() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Header />
       <main className="pt-20">
-        <section className="py-16 px-6">
+        {/* Enhanced Header Section */}
+        <section className="py-16 px-6 relative overflow-hidden">
+          <div className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-10 left-10 w-24 h-24 bg-gradient-to-br from-green-200 to-blue-200 rounded-lg opacity-30 animate-bounce"></div>
+          
           <div className="container mx-auto max-w-4xl text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-6">
+              <BookOpen className="w-8 h-8 text-white" />
+            </div>
             <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4 animate-fade-in-up pb-2">
               Learning Resources
             </h1>
@@ -802,14 +816,62 @@ export default function Resources() {
               Browse curated articles, tutorials, tools, video playlists, and learning platforms to accelerate your learning journey.
             </p>
 
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardContent className="p-6 text-center">
+                  <TrendingUp className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-800">{totalResources}+</div>
+                  <div className="text-gray-600">Total Resources</div>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardContent className="p-6 text-center">
+                  <Globe className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-800">{resourceTypes.length - 1}</div>
+                  <div className="text-gray-600">Categories</div>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardContent className="p-6 text-center">
+                  <RefreshCw className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-800">Daily</div>
+                  <div className="text-gray-600">Updates</div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Enhanced Search and Filter */}
             <div className="max-w-2xl mx-auto animate-fade-in-up mb-6" style={{ animationDelay: '0.4s' }}>
               <SearchBar value={search} onChange={setSearch} placeholder="Search for articles, tutorials, tools..." />
             </div>
+            
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap justify-center gap-2 mb-6">
+              {resourceTypes.map((type) => (
+                <Button
+                  key={type}
+                  variant={selectedType === type ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedType(type)}
+                  className={cn(
+                    "transition-all duration-300",
+                    selectedType === type 
+                      ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white" 
+                      : "hover:bg-blue-50"
+                  )}
+                >
+                  <Filter className="w-4 h-4 mr-2" />
+                  {type === "all" ? "All" : type}
+                </Button>
+              ))}
+            </div>
+
             <div className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
               <Button 
                 onClick={handleRefreshResources}
                 disabled={refreshing}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 {refreshing ? (
                   <>
@@ -829,6 +891,15 @@ export default function Resources() {
 
         <section className="pb-16 px-6">
           <div className="container mx-auto max-w-5xl">
+            {filteredCount > 0 && (
+              <div className="text-center mb-8">
+                <p className="text-gray-600">
+                  Showing {filteredCount} of {totalResources} resources
+                  {selectedType !== "all" && ` in ${selectedType}`}
+                </p>
+              </div>
+            )}
+            
             <div className="space-y-12">
               {Object.entries(groupedResources).map(
                 ([type, items]) =>
@@ -839,39 +910,26 @@ export default function Resources() {
                           {sectionStyles[type]?.icon || <BookOpen className="h-6 w-6 text-gray-500" />}
                         </div>
                         <h2 className="text-3xl font-bold text-gray-800">{type}</h2>
-                        <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                        <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full font-medium">
                           {items.length} {items.length === 1 ? 'item' : 'items'}
                         </span>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {items.map((item, index) => (
-                          <Card
+                          <EnhancedResourceCard
                             key={item.id}
-                            className={cn(
-                              "group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 bg-white/80 backdrop-blur-sm animate-fade-in-up",
-                              "border-t-4",
-                              sectionStyles[type]?.borderColor || "border-gray-500",
-                            )}
-                            style={{ animationDelay: `${0.7 + index * 0.1}s` }}
+                            title={item.title}
+                            description={item.description}
+                            type={item.type}
+                            url={item.url}
+                            created_at={item.created_at}
+                            borderColor={sectionStyles[type]?.borderColor}
+                            icon={sectionStyles[type]?.icon}
+                            duration={getRandomDuration()}
+                            rating={getRandomRating()}
+                            difficulty={getRandomDifficulty()}
                             onClick={() => handleResourceClick(item.url)}
-                          >
-                            <CardContent className="p-6 pt-5">
-                              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                {item.title}
-                              </h3>
-                              <p className="text-gray-600 mt-2">{item.description}</p>
-                              <div className="flex items-center justify-between mt-4">
-                                <span className="text-xs text-gray-400">
-                                  Added {new Date(item.created_at).toLocaleDateString()}
-                                </span>
-                                {item.url && (
-                                  <span className="text-xs text-blue-600 group-hover:text-blue-800">
-                                    Click to open →
-                                  </span>
-                                )}
-                              </div>
-                            </CardContent>
-                          </Card>
+                          />
                         ))}
                       </div>
                     </div>
@@ -890,4 +948,19 @@ export default function Resources() {
       </main>
     </div>
   );
+}
+
+// Helper functions for demo data
+function getRandomDuration() {
+  const durations = ['5 min', '10 min', '30 min', '1 hour', '2 hours', '1 week', 'Self-paced'];
+  return durations[Math.floor(Math.random() * durations.length)];
+}
+
+function getRandomRating() {
+  return (4 + Math.random()).toFixed(1);
+}
+
+function getRandomDifficulty(): 'Beginner' | 'Intermediate' | 'Advanced' {
+  const levels = ['Beginner', 'Intermediate', 'Advanced'] as const;
+  return levels[Math.floor(Math.random() * levels.length)];
 }
