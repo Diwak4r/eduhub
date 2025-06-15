@@ -23,21 +23,16 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/courses" element={<Courses />} />
-              <Route path="/resources" element={<Resources />} />
-              <Route path="/ai-tools" element={<AITools />} />
-              <Route path="/chat" element={<Chat />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <footer className="text-center p-4 bg-white border-t">
-              <p className="text-sm text-gray-600">Made with Struggle by Diwa</p>
-            </footer>
-          </>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/ai-tools" element={<AITools />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </TooltipProvider>
       </AuthProvider>
     </BrowserRouter>

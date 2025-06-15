@@ -1,14 +1,539 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import EnhancedResourceCard from "@/components/EnhancedResourceCard";
 import { BookOpen, Code, Wrench, RefreshCw, Play, Smartphone, Globe, Headphones, BookMarked, Filter, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
-import { useResources } from "@/hooks/useResources";
 import React from "react";
+
+interface Resource {
+  id: string;
+  title: string;
+  description: string | null;
+  type: string;
+  url: string | null;
+  source_id: string | null;
+  created_at: string;
+  updated_at: string;
+  is_active: boolean | null;
+}
+
+const staticResources = [
+  // Video Playlists & Channels
+  {
+    id: 'static-1',
+    title: 'freeCodeCamp YouTube',
+    description: '700+ full-length programming courses including web development, data science, and computer science',
+    type: 'Video Playlists',
+    url: 'https://www.youtube.com/@freecodecamp',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-2',
+    title: "Traversy Media",
+    description: 'Web development tutorials, crash courses, and project builds',
+    type: 'Video Playlists',
+    url: 'https://www.youtube.com/@TraversyMedia',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-3',
+    title: 'The Net Ninja',
+    description: 'Programming tutorials for beginners and advanced developers',
+    type: 'Video Playlists',
+    url: 'https://www.youtube.com/@NetNinja',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-4',
+    title: 'CS50 Harvard',
+    description: 'Introduction to Computer Science from Harvard University',
+    type: 'Video Playlists',
+    url: 'https://www.youtube.com/@cs50',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-5',
+    title: 'Programming with Mosh',
+    description: 'Clear, concise programming tutorials for all skill levels',
+    type: 'Video Playlists',
+    url: 'https://www.youtube.com/@programmingwithmosh',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-6',
+    title: 'Kevin Powell - CSS',
+    description: 'CSS tutorials, tips, and modern web design techniques',
+    type: 'Video Playlists',
+    url: 'https://www.youtube.com/@KevinPowell',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-7',
+    title: 'Fireship',
+    description: 'Quick tech explainers, tutorials, and modern development trends',
+    type: 'Video Playlists',
+    url: 'https://www.youtube.com/@Fireship',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-8',
+    title: 'Corey Schafer',
+    description: 'Python programming, data science, and software development',
+    type: 'Video Playlists',
+    url: 'https://www.youtube.com/@CoreySchafer',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+
+  // Course Platforms
+  {
+    id: 'static-9',
+    title: 'freeCodeCamp.org',
+    description: 'Interactive coding lessons and certification programs - completely free',
+    type: 'Course Platforms',
+    url: 'https://www.freecodecamp.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-10',
+    title: 'Codecademy',
+    description: 'Interactive programming courses with hands-on coding practice',
+    type: 'Course Platforms',
+    url: 'https://www.codecademy.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-11',
+    title: 'Khan Academy',
+    description: 'Free courses in programming, math, science, and more',
+    type: 'Course Platforms',
+    url: 'https://www.khanacademy.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-12',
+    title: 'Coursera',
+    description: 'University courses from top institutions (many free to audit)',
+    type: 'Course Platforms',
+    url: 'https://www.coursera.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-13',
+    title: 'edX',
+    description: 'Free courses from MIT, Harvard, and other top universities',
+    type: 'Course Platforms',
+    url: 'https://www.edx.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-14',
+    title: 'MIT OpenCourseWare',
+    description: '2,400+ free courses from MIT with lecture notes and assignments',
+    type: 'Course Platforms',
+    url: 'https://ocw.mit.edu',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-15',
+    title: 'Udemy Free Courses',
+    description: 'Thousands of free courses in technology, business, and design',
+    type: 'Course Platforms',
+    url: 'https://www.udemy.com/courses/free',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+
+  // Practice Platforms
+  {
+    id: 'static-16',
+    title: 'LeetCode',
+    description: 'Coding interview preparation with 2000+ programming challenges',
+    type: 'Practice Platforms',
+    url: 'https://leetcode.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-17',
+    title: 'HackerRank',
+    description: 'Programming challenges and skill certification',
+    type: 'Practice Platforms',
+    url: 'https://www.hackerrank.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-18',
+    title: 'Codewars',
+    description: 'Programming kata and coding challenges to improve skills',
+    type: 'Practice Platforms',
+    url: 'https://www.codewars.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-19',
+    title: 'GeeksforGeeks',
+    description: 'Programming articles, practice problems, and interview preparation',
+    type: 'Practice Platforms',
+    url: 'https://www.geeksforgeeks.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-20',
+    title: 'The Odin Project',
+    description: 'Full-stack web development curriculum with projects',
+    type: 'Practice Platforms',
+    url: 'https://www.theodinproject.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-21',
+    title: 'Exercism',
+    description: 'Code practice and mentorship in 67+ programming languages',
+    type: 'Practice Platforms',
+    url: 'https://exercism.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+
+  // Learning Apps
+  {
+    id: 'static-22',
+    title: 'SoloLearn',
+    description: 'Mobile coding courses with interactive lessons and community',
+    type: 'Learning Apps',
+    url: 'https://www.sololearn.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-23',
+    title: 'Grasshopper',
+    description: 'Learn JavaScript through fun, quick games by Google',
+    type: 'Learning Apps',
+    url: 'https://grasshopper.app',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-24',
+    title: 'Mimo',
+    description: 'Learn programming on your phone with bite-sized lessons',
+    type: 'Learning Apps',
+    url: 'https://mimo.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-25',
+    title: 'Duolingo',
+    description: 'Learn languages with gamified lessons and daily practice',
+    type: 'Learning Apps',
+    url: 'https://www.duolingo.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+
+  // Tools & Resources
+  {
+    id: 'static-26',
+    title: 'GitHub',
+    description: 'Version control, code collaboration, and open source projects',
+    type: 'Tools',
+    url: 'https://github.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-27',
+    title: 'Stack Overflow',
+    description: 'Programming Q&A community with millions of solutions',
+    type: 'Tools',
+    url: 'https://stackoverflow.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-28',
+    title: 'MDN Web Docs',
+    description: 'Comprehensive web development documentation by Mozilla',
+    type: 'Tools',
+    url: 'https://developer.mozilla.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-29',
+    title: 'VS Code',
+    description: 'Free, powerful code editor with extensive extensions',
+    type: 'Tools',
+    url: 'https://code.visualstudio.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-30',
+    title: 'CodePen',
+    description: 'Online code editor for front-end development and sharing',
+    type: 'Tools',
+    url: 'https://codepen.io',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-31',
+    title: 'Replit',
+    description: 'Online IDE for coding, collaborating, and hosting projects',
+    type: 'Tools',
+    url: 'https://replit.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-32',
+    title: 'Figma',
+    description: 'Collaborative design tool for UI/UX design and prototyping',
+    type: 'Tools',
+    url: 'https://www.figma.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+
+  // Articles & Guides
+  {
+    id: 'static-33',
+    title: 'dev.to',
+    description: 'Developer community with articles, tutorials, and discussions',
+    type: 'Articles',
+    url: 'https://dev.to',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-34',
+    title: 'Medium - Programming',
+    description: 'In-depth programming articles and industry insights',
+    type: 'Articles',
+    url: 'https://medium.com/topic/programming',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-35',
+    title: 'CSS-Tricks',
+    description: 'Web design and development articles, especially CSS',
+    type: 'Articles',
+    url: 'https://css-tricks.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-36',
+    title: 'Smashing Magazine',
+    description: 'Web development and design articles for professionals',
+    type: 'Articles',
+    url: 'https://www.smashingmagazine.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-37',
+    title: 'A List Apart',
+    description: 'Articles on web standards, design, and development',
+    type: 'Articles',
+    url: 'https://alistapart.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-38',
+    title: 'Real Python',
+    description: 'Python tutorials, articles, and best practices',
+    type: 'Articles',
+    url: 'https://realpython.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+
+  // Community Resources
+  {
+    id: 'static-39',
+    title: 'Reddit - Programming',
+    description: 'Programming discussions, news, and community support',
+    type: 'Community',
+    url: 'https://www.reddit.com/r/programming',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-40',
+    title: 'Discord Programming Communities',
+    description: 'Real-time chat with developers and programmers',
+    type: 'Community',
+    url: 'https://discord.com/channels/programming',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-41',
+    title: 'Hashnode',
+    description: 'Developer blogging platform with technical articles',
+    type: 'Community',
+    url: 'https://hashnode.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+
+  // Specialized Learning
+  {
+    id: 'static-42',
+    title: 'W3Schools',
+    description: 'Web development tutorials with interactive examples',
+    type: 'Tutorials',
+    url: 'https://www.w3schools.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-43',
+    title: 'TutorialsPoint',
+    description: 'Free tutorials on programming, databases, and technology',
+    type: 'Tutorials',
+    url: 'https://www.tutorialspoint.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-44',
+    title: 'Javatpoint',
+    description: 'Comprehensive tutorials for Java, Python, and more',
+    type: 'Tutorials',
+    url: 'https://www.javatpoint.com',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+  {
+    id: 'static-45',
+    title: 'Learn Git Branching',
+    description: 'Interactive Git tutorial with visual demonstrations',
+    type: 'Tutorials',
+    url: 'https://learngitbranching.js.org',
+    source_id: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_active: true,
+  },
+];
 
 const sectionStyles: { [key: string]: { icon: React.ReactNode; borderColor: string } } = {
   Articles: {
@@ -47,8 +572,80 @@ const sectionStyles: { [key: string]: { icon: React.ReactNode; borderColor: stri
 
 export default function Resources() {
   const [search, setSearch] = useState("");
+  const [resources, setResources] = useState<Resource[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedType, setSelectedType] = useState<string>("all");
-  const { resources, loading, refreshing, handleRefreshResources } = useResources();
+  const { toast } = useToast();
+
+  const fetchResources = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('resources')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching resources:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load resources. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Combine database resources with static resources
+      const allResources = [...(data || []), ...staticResources];
+      setResources(allResources);
+    } catch (error) {
+      console.error('Error fetching resources:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load resources. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefreshResources = async () => {
+    setRefreshing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('fetch-resources');
+      
+      if (error) {
+        console.error('Error refreshing resources:', error);
+        toast({
+          title: "Error",
+          description: "Failed to refresh resources. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: "Resources refreshed successfully!",
+        });
+        // Refetch resources to show updated data
+        await fetchResources();
+      }
+    } catch (error) {
+      console.error('Error refreshing resources:', error);
+      toast({
+        title: "Error",
+        description: "Failed to refresh resources. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResources();
+  }, []);
 
   // Group resources by type and filter by search
   const groupedResources = resources.reduce((acc, resource) => {
@@ -65,7 +662,7 @@ export default function Resources() {
     }
     
     return acc;
-  }, {} as Record<string, typeof resources>);
+  }, {} as Record<string, Resource[]>);
 
   const handleResourceClick = (url?: string | null) => {
     if (url) {
@@ -212,7 +809,7 @@ export default function Resources() {
                         </span>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {items.map((item) => (
+                        {items.map((item, index) => (
                           <EnhancedResourceCard
                             key={item.id}
                             title={item.title}

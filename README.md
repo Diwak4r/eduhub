@@ -1,5 +1,5 @@
 
-# EduHub - Educational Platform
+# RiverSkills - Educational Platform
 
 **Created by: Diwakar Ray Yadav (Raycode)**  
 **Made with Struggle - Every byte of code is a step toward changing my life and supporting my family.**
@@ -15,7 +15,7 @@
 
 ## Project Vision
 
-EduHub is an educational platform created by a BIT student who understands the struggles of balancing work, studies, and the desire to build something meaningful. This platform serves as a central hub for:
+RiverSkills is an educational platform created by a BIT student who understands the struggles of balancing work, studies, and the desire to build something meaningful. This platform serves as a central hub for:
 
 - 📚 **Educational Resources** - Curated learning materials for IT students
 - 🤖 **AI Tools Integration** - Latest AI tools for productivity and learning
@@ -42,7 +42,7 @@ This project is built with modern web technologies:
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd eduhub
+cd riverskills
 
 # Install dependencies
 npm install
@@ -105,7 +105,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 ### Academic Projects
 - **C Programming:** Marksheet Management System with struct, file handling
-- **Web Development:** EduHub platform with AI integration
+- **Web Development:** RiverSkills platform with AI integration
 - **Database:** Learning SQL and database management
 
 ### Professional Development

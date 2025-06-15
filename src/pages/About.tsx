@@ -51,7 +51,7 @@ export default function About() {
               About Me - Diwakar Ray Yadav
             </h1>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              Student, Developer, and Creator - Building EduHub with struggle and determination.
+              Student, Developer, and Creator - Building RiverSkills with struggle and determination.
             </p>
 
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-left flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
@@ -70,10 +70,10 @@ export default function About() {
               </div>
               <div className="flex-grow">
                 <p className="text-lg text-gray-700 mb-6 italic">
-                  "Welcome to <span className="font-bold text-blue-600">EduHub</span>! I'm a 20-year-old BIT student from Kathmandu, Nepal, who believes in learning through struggle and building something meaningful."
+                  "Welcome to <span className="font-bold text-blue-600">RiverSkills</span>! I'm a 20-year-old BIT student from Kathmandu, Nepal, who believes in learning through struggle and building something meaningful."
                 </p>
                 <p className="text-gray-600 mb-6">
-                  Currently pursuing my Bachelor's in Information Technology while working as Computer Support Staff at MC Group of Companies. Every line of code I write is a step toward changing my life and supporting my family. EduHub is my way of helping fellow students navigate the challenging world of IT and programming.
+                  Currently pursuing my Bachelor's in Information Technology while working as Computer Support Staff at MC Group of Companies. Every line of code I write is a step toward changing my life and supporting my family. RiverSkills is my way of helping fellow students navigate the challenging world of IT and programming.
                 </p>
                 <div className="space-y-6 border-t border-gray-200 pt-6">
                   <div className="flex items-start gap-4">
@@ -83,7 +83,7 @@ export default function About() {
                     <div>
                       <h3 className="font-semibold text-lg text-gray-800">My Motivation</h3>
                       <p className="text-gray-600">
-                        As a student juggling work and studies, I understand the struggles of learning programming and managing resources. EduHub is my attempt to create a platform that makes learning accessible and practical for students like me who are building their future one project at a time.
+                        As a student juggling work and studies, I understand the struggles of learning programming and managing resources. RiverSkills is my attempt to create a platform that makes learning accessible and practical for students like me who are building their future one project at a time.
                       </p>
                     </div>
                   </div>
@@ -94,7 +94,7 @@ export default function About() {
                     <div>
                       <h3 className="font-semibold text-lg text-gray-800">My Journey</h3>
                       <p className="text-gray-600">
-                        From learning C programming with Marksheet Management Systems to building web applications like EduHub, every project teaches me something new. I'm passionate about AI tools, automation, and creating educational resources that bridge the gap between theory and practice.
+                        From learning C programming with Marksheet Management Systems to building web applications like RiverSkills, every project teaches me something new. I'm passionate about AI tools, automation, and creating educational resources that bridge the gap between theory and practice.
                       </p>
                     </div>
                   </div>
@@ -112,7 +112,7 @@ export default function About() {
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Get to Know Me</h2>
-              <p className="text-gray-600 text-lg">The person behind EduHub</p>
+              <p className="text-gray-600 text-lg">The person behind RiverSkills</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -166,11 +166,11 @@ export default function About() {
               
               <h2 className="text-3xl font-bold mb-6 relative z-10">My Mission</h2>
               <p className="text-xl text-blue-100 leading-relaxed relative z-10">
-                To create educational resources and tools that help students like me succeed in their IT journey. Every feature in EduHub reflects my commitment to making learning practical, accessible, and rooted in real-world application. Because every byte of code is a step toward changing lives and supporting families.
+                To create educational resources and tools that help students like me succeed in their IT journey. Every feature in RiverSkills reflects my commitment to making learning practical, accessible, and rooted in real-world application. Because every byte of code is a step toward changing lives and supporting families.
               </p>
               <div className="mt-8 relative z-10">
                 <p className="text-lg font-semibold">
-                  Current Projects: C Programming Systems, EduHub Platform, AI Integration
+                  Current Projects: C Programming Systems, RiverSkills Platform, AI Integration
                 </p>
               </div>
             </div>
