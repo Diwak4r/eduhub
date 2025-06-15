@@ -1,20 +1,32 @@
 
 import { ReactNode } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
 interface SectionCardProps {
   title: string;
   description: string;
   icon: ReactNode;
   gradient: string;
+  to?: string;
   onClick?: () => void;
 }
 
-export default function SectionCard({ title, description, icon, gradient, onClick }: SectionCardProps) {
+export default function SectionCard({ title, description, icon, gradient, to, onClick }: SectionCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else if (to) {
+      navigate(to);
+    }
+  };
+
   return (
     <Card 
       className={`group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-0 ${gradient} text-white overflow-hidden relative`}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <CardContent className="p-6 relative z-10">

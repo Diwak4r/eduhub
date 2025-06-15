@@ -12,37 +12,43 @@ const Index = () => {
       title: "Courses",
       description: "Comprehensive learning paths designed by industry experts to help you master new skills.",
       icon: <GraduationCap className="w-6 h-6" />,
-      gradient: "bg-gradient-to-br from-blue-500 to-blue-600"
+      gradient: "bg-gradient-to-br from-blue-500 to-blue-600",
+      to: "/courses"
     },
     {
       title: "News",
       description: "Stay updated with the latest trends, insights, and developments in technology and education.",
       icon: <Newspaper className="w-6 h-6" />,
-      gradient: "bg-gradient-to-br from-green-500 to-emerald-600"
+      gradient: "bg-gradient-to-br from-green-500 to-emerald-600",
+      to: "/resources"
     },
     {
       title: "PDFs",
       description: "Downloadable resources, guides, and reference materials for offline learning.",
       icon: <FileText className="w-6 h-6" />,
-      gradient: "bg-gradient-to-br from-red-500 to-rose-600"
+      gradient: "bg-gradient-to-br from-red-500 to-rose-600",
+      to: "/resources"
     },
     {
       title: "Articles",
       description: "In-depth articles and tutorials written by professionals and thought leaders.",
       icon: <Book className="w-6 h-6" />,
-      gradient: "bg-gradient-to-br from-purple-500 to-violet-600"
+      gradient: "bg-gradient-to-br from-purple-500 to-violet-600",
+      to: "/resources"
     },
     {
       title: "Videos",
       description: "Engaging video content including tutorials, lectures, and hands-on demonstrations.",
       icon: <Video className="w-6 h-6" />,
-      gradient: "bg-gradient-to-br from-orange-500 to-amber-600"
+      gradient: "bg-gradient-to-br from-orange-500 to-amber-600",
+      to: "/resources"
     },
     {
       title: "AI Tools",
       description: "Cutting-edge AI-powered tools to enhance your learning experience and productivity.",
       icon: <Bot className="w-6 h-6" />,
-      gradient: "bg-gradient-to-br from-cyan-500 to-teal-600"
+      gradient: "bg-gradient-to-br from-cyan-500 to-teal-600",
+      to: "/ai-tools"
     }
   ];
 
