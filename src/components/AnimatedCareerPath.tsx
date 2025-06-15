@@ -24,7 +24,7 @@ function CareerNode({ position, color, title }: { position: [number, number, num
 }
 
 export default function AnimatedCareerPath() {
-  const paths = [
+  const paths: { title: string; position: [number, number, number]; color: string }[] = [
     { title: 'Web Developer', position: [-3, 0, 0], color: 'orange' },
     { title: 'Full Stack', position: [-1, 2, 0], color: 'hotpink' },
     { title: 'DevOps', position: [1, 2, 0], color: 'cyan' },
@@ -32,6 +32,7 @@ export default function AnimatedCareerPath() {
     { title: 'AI/ML Engineer', position: [2, -2, 0], color: 'lightblue' },
     { title: 'Cybersecurity', position: [-2, -2, 0], color: 'red' },
   ]
+  
   return (
     <section className="py-16 px-6 bg-gray-900 text-white">
         <div className="container mx-auto max-w-6xl">
