@@ -13,7 +13,7 @@ const careerPaths = [
     salary: "$70K - $120K",
     demand: "High",
     color: "from-blue-500 to-blue-600",
-    link: "/courses?category=web-development"
+    link: "/courses"
   },
   {
     title: "UI/UX Designer",
@@ -23,7 +23,7 @@ const careerPaths = [
     salary: "$60K - $100K",
     demand: "High",
     color: "from-purple-500 to-purple-600",
-    link: "/courses?category=design"
+    link: "/courses"
   },
   {
     title: "Data Scientist",
@@ -33,7 +33,7 @@ const careerPaths = [
     salary: "$80K - $140K",
     demand: "Very High",
     color: "from-green-500 to-green-600",
-    link: "/courses?category=data-science"
+    link: "/courses"
   },
   {
     title: "Mobile Developer",
@@ -43,7 +43,7 @@ const careerPaths = [
     salary: "$75K - $130K",
     demand: "High",
     color: "from-orange-500 to-orange-600",
-    link: "/courses?category=mobile-development"
+    link: "/courses"
   },
   {
     title: "Database Administrator",
@@ -53,7 +53,7 @@ const careerPaths = [
     salary: "$65K - $110K",
     demand: "Medium",
     color: "from-teal-500 to-teal-600",
-    link: "/courses?category=database"
+    link: "/courses"
   },
   {
     title: "Cybersecurity Specialist",
@@ -63,7 +63,7 @@ const careerPaths = [
     salary: "$85K - $150K",
     demand: "Very High",
     color: "from-red-500 to-red-600",
-    link: "/courses?category=cybersecurity"
+    link: "/courses"
   }
 ];
 
