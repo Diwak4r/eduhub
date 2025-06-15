@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Code, Wrench } from "lucide-react";
+import { cn } from "@/lib/utils";
+import React from "react";
 
 const mockResources = [
   {
@@ -29,10 +31,19 @@ const mockResources = [
   },
 ];
 
-const sectionIcons: { [key: string]: React.ReactNode } = {
-  Articles: <BookOpen className="h-6 w-6 text-blue-500" />,
-  Tutorials: <Code className="h-6 w-6 text-purple-500" />,
-  Tools: <Wrench className="h-6 w-6 text-green-500" />,
+const sectionStyles: { [key: string]: { icon: React.ReactNode; borderColor: string } } = {
+  Articles: {
+    icon: <BookOpen className="h-6 w-6 text-blue-500" />,
+    borderColor: "border-blue-500",
+  },
+  Tutorials: {
+    icon: <Code className="h-6 w-6 text-purple-500" />,
+    borderColor: "border-purple-500",
+  },
+  Tools: {
+    icon: <Wrench className="h-6 w-6 text-green-500" />,
+    borderColor: "border-green-500",
+  },
 };
 
 export default function Resources() {
@@ -52,7 +63,7 @@ export default function Resources() {
       <main className="pt-20">
         <section className="py-16 px-6">
           <div className="container mx-auto max-w-4xl text-center">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4 animate-fade-in-up">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4 animate-fade-in-up pb-2">
               Learning Resources
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
@@ -73,14 +84,22 @@ export default function Resources() {
                     <div key={section} className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
                       <div className="flex items-center gap-4 mb-6">
                         <div className="p-3 bg-white rounded-xl shadow-md">
-                          {sectionIcons[section]}
+                          {sectionStyles[section].icon}
                         </div>
                         <h2 className="text-3xl font-bold text-gray-800">{section}</h2>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {items.map((item, index) => (
-                          <Card key={item.title} className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 bg-white/80 backdrop-blur-sm border-0 animate-fade-in-up" style={{ animationDelay: `${0.7 + index * 0.1}s` }}>
-                            <CardContent className="p-6">
+                          <Card
+                            key={item.title}
+                            className={cn(
+                              "group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 bg-white/80 backdrop-blur-sm animate-fade-in-up",
+                              "border-t-4",
+                              sectionStyles[section].borderColor,
+                            )}
+                            style={{ animationDelay: `${0.7 + index * 0.1}s` }}
+                          >
+                            <CardContent className="p-6 pt-5">
                               <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                                 {item.title}
                               </h3>
@@ -90,7 +109,7 @@ export default function Resources() {
                         ))}
                       </div>
                     </div>
-                  )
+                  ),
               )}
               {filteredSections.every((s) => s.items.length === 0) && (
                 <div className="text-center py-16 bg-white/50 rounded-lg shadow-sm">

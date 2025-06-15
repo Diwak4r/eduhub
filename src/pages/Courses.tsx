@@ -211,7 +211,7 @@ export default function Courses() {
         {/* Hero Section with Search */}
         <section className="py-16 px-6">
           <div className="container mx-auto max-w-6xl text-center">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4 pb-2">
               Discover Your Next Skill
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
