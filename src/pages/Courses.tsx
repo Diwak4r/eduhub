@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -8,6 +7,7 @@ import Header from '@/components/Header';
 import CourseCard from '@/components/CourseCard';
 import FeaturedCoursesSection from '@/components/FeaturedCoursesSection';
 import FreeAffordableSection from '@/components/FreeAffordableSection';
+import CareerPathsSection from '@/components/CareerPathsSection';
 
 const categories = [
   'All Categories',
@@ -294,6 +294,9 @@ export default function Courses() {
             </div>
           </div>
         </section>
+
+        {/* Career Paths Section */}
+        <CareerPathsSection />
 
         {/* Free & Affordable Options Section */}
         <FreeAffordableSection />
