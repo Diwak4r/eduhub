@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, User, Sparkles, Zap, Settings, AlertCircle, RefreshCw } from 'lucide-react';
@@ -23,39 +23,41 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentMode, setCurrentMode] = useState<DiwaMode>('lite');
   const [retryCount, setRetryCount] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
 
-  // Initialize welcome message only when user is authenticated
+  // Initialize welcome message only once when user is authenticated
   useEffect(() => {
-    if (user && messages.length === 0) {
+    if (user && !isInitialized) {
+      console.log('Initializing chat with welcome message');
       setMessages([{
         id: '1',
         content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient for learning and career guidance. You can switch to Steroids mode for unlimited AI capabilities across any topic. What would you like to know?",
         sender: 'bot',
         timestamp: new Date(),
       }]);
+      setIsInitialized(true);
     }
-  }, [user, messages.length]);
+  }, [user, isInitialized]);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
-  const handleModeSwitch = async (newMode: DiwaMode) => {
+  const handleModeSwitch = useCallback(async (newMode: DiwaMode) => {
     if (newMode === currentMode || !user) return;
     
+    console.log('Switching to mode:', newMode);
     setCurrentMode(newMode);
     setIsLoading(true);
 
     try {
-      console.log('Switching to mode:', newMode);
-
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
           message: `Switch to ${newMode} mode`,
@@ -63,8 +65,6 @@ export default function ChatInterface() {
           isModeSwitching: true
         },
       });
-
-      console.log('Mode switch response:', data, error);
 
       if (error) {
         console.error('Mode switch error:', error);
@@ -96,9 +96,9 @@ export default function ChatInterface() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentMode, user, toast]);
 
-  const handleSendMessage = async (retryMessage?: string) => {
+  const handleSendMessage = useCallback(async (retryMessage?: string) => {
     const messageToSend = retryMessage || inputMessage.trim();
     if (!messageToSend || isLoading || !user) return;
 
@@ -118,7 +118,6 @@ export default function ChatInterface() {
 
     try {
       console.log('Sending message:', messageToSend);
-      console.log('Current mode:', currentMode);
 
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
@@ -126,8 +125,6 @@ export default function ChatInterface() {
           mode: currentMode
         },
       });
-
-      console.log('Chat response:', data, error);
 
       if (error) {
         console.error('Chat error:', error);
@@ -142,7 +139,7 @@ export default function ChatInterface() {
       };
 
       setMessages(prev => [...prev, botMessage]);
-      setRetryCount(0); // Reset retry count on success
+      setRetryCount(0);
     } catch (error) {
       console.error('Error sending message:', error);
       
@@ -156,7 +153,6 @@ export default function ChatInterface() {
         errorMessage = "AI service is temporarily unavailable. Please try again in a moment.";
       }
       
-      // Add retry button for failed messages
       const errorBotMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: `❌ ${errorMessage}`,
@@ -187,26 +183,26 @@ export default function ChatInterface() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [inputMessage, isLoading, user, currentMode, retryCount, toast]);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  };
+  }, [handleSendMessage]);
 
-  const getModeColor = () => {
+  const getModeColor = useMemo(() => {
     return currentMode === 'steroids' ? 'from-purple-500 to-pink-600' : 'from-red-500 to-red-600';
-  };
+  }, [currentMode]);
 
-  const getModeBgColor = () => {
+  const getModeBgColor = useMemo(() => {
     return currentMode === 'steroids' ? 'bg-purple-50 border-purple-200' : 'bg-red-50 border-red-200';
-  };
+  }, [currentMode]);
 
-  const getModeButtonColor = () => {
+  const getModeButtonColor = useMemo(() => {
     return currentMode === 'steroids' ? 'bg-purple-500 hover:bg-purple-600' : 'bg-red-500 hover:bg-red-600';
-  };
+  }, [currentMode]);
 
   // Show loading state while checking authentication
   if (loading) {
@@ -239,9 +235,9 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-red-200 shadow-lg">
       {/* Chat Header with Mode Controls */}
-      <div className={`flex items-center justify-between p-4 border-b rounded-t-lg ${getModeBgColor()}`}>
+      <div className={`flex items-center justify-between p-4 border-b rounded-t-lg ${getModeBgColor}`}>
         <div className="flex items-center gap-3">
-          <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center`}>
+          <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor} rounded-full flex items-center justify-center`}>
             {currentMode === 'steroids' ? (
               <Zap className="w-5 h-5 text-white" />
             ) : (
@@ -291,7 +287,7 @@ export default function ChatInterface() {
             className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {message.sender === 'bot' && (
-              <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center flex-shrink-0`}>
+              <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor} rounded-full flex items-center justify-center flex-shrink-0`}>
                 {currentMode === 'steroids' ? (
                   <Zap className="w-4 h-4 text-white" />
                 ) : (
@@ -303,7 +299,7 @@ export default function ChatInterface() {
             <div
               className={`max-w-[80%] rounded-lg px-4 py-3 ${
                 message.sender === 'user'
-                  ? `${getModeButtonColor()} text-white ml-auto`
+                  ? `${getModeButtonColor} text-white ml-auto`
                   : 'bg-gray-100 text-gray-900'
               }`}
             >
@@ -320,7 +316,7 @@ export default function ChatInterface() {
         
         {isLoading && (
           <div className="flex gap-3 justify-start">
-            <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor()} rounded-full flex items-center justify-center`}>
+            <div className={`w-8 h-8 bg-gradient-to-br ${getModeColor} rounded-full flex items-center justify-center`}>
               {currentMode === 'steroids' ? (
                 <Zap className="w-4 h-4 text-white" />
               ) : (
@@ -340,7 +336,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className={`p-4 border-t rounded-b-lg ${getModeBgColor()}`}>
+      <div className={`p-4 border-t rounded-b-lg ${getModeBgColor}`}>
         <div className="flex gap-3 items-end">
           <div className="flex-1">
             <Textarea
@@ -363,7 +359,7 @@ export default function ChatInterface() {
           <Button
             onClick={() => handleSendMessage()}
             disabled={!inputMessage.trim() || isLoading}
-            className={`${getModeButtonColor()} text-white px-4 py-2 h-11`}
+            className={`${getModeButtonColor} text-white px-4 py-2 h-11`}
           >
             <Send className="w-4 h-4" />
           </Button>
