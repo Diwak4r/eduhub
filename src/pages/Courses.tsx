@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import CourseCard from '@/components/CourseCard';
 import FeaturedCoursesSection from '@/components/FeaturedCoursesSection';
+import FreeAffordableSection from '@/components/FreeAffordableSection';
 
 const categories = [
   'All Categories',
@@ -25,6 +26,14 @@ const skillLevels = [
   'Beginner',
   'Intermediate',
   'Advanced'
+];
+
+const priceRanges = [
+  'All Prices',
+  'Free',
+  'Under $50',
+  'Under $100',
+  '$100+'
 ];
 
 const courses = [
@@ -105,6 +114,58 @@ const courses = [
     price: 109.99,
     image: '/placeholder.svg',
     description: 'Master AWS services and cloud architecture patterns'
+  },
+  {
+    id: 7,
+    title: 'HTML & CSS Fundamentals',
+    instructor: 'John Martinez',
+    category: 'Web Development',
+    level: 'Beginner',
+    duration: '25 hours',
+    students: 15623,
+    rating: 4.5,
+    price: 0,
+    image: '/placeholder.svg',
+    description: 'Learn the basics of web development with HTML and CSS'
+  },
+  {
+    id: 8,
+    title: 'JavaScript Essentials',
+    instructor: 'Emma Davis',
+    category: 'Web Development',
+    level: 'Beginner',
+    duration: '30 hours',
+    students: 9876,
+    rating: 4.6,
+    price: 0,
+    image: '/placeholder.svg',
+    description: 'Master JavaScript fundamentals and DOM manipulation'
+  },
+  {
+    id: 9,
+    title: 'Git Version Control',
+    instructor: 'Tom Wilson',
+    category: 'DevOps',
+    level: 'Beginner',
+    duration: '15 hours',
+    students: 7432,
+    rating: 4.4,
+    price: 29.99,
+    image: '/placeholder.svg',
+    description: 'Learn version control with Git and GitHub'
+  },
+  {
+    id: 10,
+    title: 'Introduction to Data Analysis',
+    instructor: 'Rachel Green',
+    category: 'Data Science',
+    level: 'Beginner',
+    duration: '20 hours',
+    students: 5234,
+    rating: 4.7,
+    price: 39.99,
+    image: '/placeholder.svg',
+    description: 'Get started with data analysis using Excel and basic statistics'
   }
 ];
 
@@ -112,6 +173,7 @@ export default function Courses() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedLevel, setSelectedLevel] = useState('All Levels');
+  const [selectedPriceRange, setSelectedPriceRange] = useState('All Prices');
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -120,13 +182,25 @@ export default function Courses() {
     const matchesCategory = selectedCategory === 'All Categories' || course.category === selectedCategory;
     const matchesLevel = selectedLevel === 'All Levels' || course.level === selectedLevel;
     
-    return matchesSearch && matchesCategory && matchesLevel;
+    let matchesPrice = true;
+    if (selectedPriceRange === 'Free') {
+      matchesPrice = course.price === 0;
+    } else if (selectedPriceRange === 'Under $50') {
+      matchesPrice = course.price < 50;
+    } else if (selectedPriceRange === 'Under $100') {
+      matchesPrice = course.price < 100;
+    } else if (selectedPriceRange === '$100+') {
+      matchesPrice = course.price >= 100;
+    }
+    
+    return matchesSearch && matchesCategory && matchesLevel && matchesPrice;
   });
 
   const handleClearFilters = () => {
     setSearchQuery('');
     setSelectedCategory('All Categories');
     setSelectedLevel('All Levels');
+    setSelectedPriceRange('All Prices');
   };
 
   return (
@@ -190,6 +264,19 @@ export default function Courses() {
                     ))}
                   </SelectContent>
                 </Select>
+
+                <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Price Range" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {priceRanges.map(range => (
+                      <SelectItem key={range} value={range}>
+                        {range}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="flex items-center gap-4">
@@ -208,6 +295,9 @@ export default function Courses() {
           </div>
         </section>
 
+        {/* Free & Affordable Options Section */}
+        <FreeAffordableSection />
+
         {/* Featured Courses Section */}
         <FeaturedCoursesSection />
 
@@ -215,7 +305,7 @@ export default function Courses() {
         <section className="py-16 px-6">
           <div className="container mx-auto max-w-6xl">
             <h2 className="text-3xl font-bold text-gray-800 mb-8">
-              {searchQuery || selectedCategory !== 'All Categories' || selectedLevel !== 'All Levels' 
+              {searchQuery || selectedCategory !== 'All Categories' || selectedLevel !== 'All Levels' || selectedPriceRange !== 'All Prices'
                 ? 'Search Results' 
                 : 'All Courses'}
             </h2>

@@ -1,5 +1,5 @@
 
-import { Star, Clock, Users, DollarSign } from 'lucide-react';
+import { Star, Clock, Users, DollarSign, Gift } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -40,6 +40,20 @@ export default function CourseCard({ course }: CourseCardProps) {
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const formatPrice = (price: number) => {
+    if (price === 0) {
+      return 'FREE';
+    }
+    return `$${price}`;
+  };
+
+  const getPriceColor = (price: number) => {
+    if (price === 0) {
+      return 'text-green-600';
+    }
+    return 'text-green-600';
   };
 
   return (
@@ -89,11 +103,17 @@ export default function CourseCard({ course }: CourseCardProps) {
 
       <CardFooter className="px-6 pb-6 pt-0 flex items-center justify-between">
         <div className="flex items-center gap-1">
-          <DollarSign className="h-5 w-5 text-green-600" />
-          <span className="text-2xl font-bold text-green-600">{course.price}</span>
+          {course.price === 0 ? (
+            <Gift className="h-5 w-5 text-green-600" />
+          ) : (
+            <DollarSign className="h-5 w-5 text-green-600" />
+          )}
+          <span className={`text-2xl font-bold ${getPriceColor(course.price)}`}>
+            {formatPrice(course.price)}
+          </span>
         </div>
         <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
-          Enroll Now
+          {course.price === 0 ? 'Start Free' : 'Enroll Now'}
         </Button>
       </CardFooter>
     </Card>
