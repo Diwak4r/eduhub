@@ -9,6 +9,7 @@ export default function Header() {
     { to: "/courses", label: "Courses" },
     { to: "/resources", label: "Resources" },
     { to: "/ai-tools", label: "AI Tools" },
+    { to: "/career-guide", label: "Career Guide" },
     { to: "/about", label: "About" },
     { to: "/chat", label: "Chat with Diwa" },
   ];
