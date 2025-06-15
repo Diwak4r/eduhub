@@ -11,7 +11,7 @@ const corsHeaders = {
 // Rate limiting store (in production, use Redis or similar)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
-const RATE_LIMIT_REQUESTS = 10;
+const RATE_LIMIT_REQUESTS = 20;
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 
 function checkRateLimit(identifier: string): boolean {
@@ -32,12 +32,11 @@ function checkRateLimit(identifier: string): boolean {
 }
 
 function sanitizeInput(input: string): string {
-  // Basic input sanitization
   return input
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<[^>]*>/g, '')
     .trim()
-    .substring(0, 1000); // Limit length
+    .substring(0, 2000); // Increased length limit
 }
 
 function validateMessage(message: string): { valid: boolean; error?: string } {
@@ -45,29 +44,46 @@ function validateMessage(message: string): { valid: boolean; error?: string } {
     return { valid: false, error: 'Message is required and must be a string' };
   }
 
-  if (message.length === 0) {
+  if (message.trim().length === 0) {
     return { valid: false, error: 'Message cannot be empty' };
   }
 
-  if (message.length > 1000) {
-    return { valid: false, error: 'Message too long (max 1000 characters)' };
-  }
-
-  // Check for suspicious patterns
-  const suspiciousPatterns = [
-    /<script/i,
-    /javascript:/i,
-    /on\w+\s*=/i,
-    /<iframe/i,
-    /<object/i,
-    /<embed/i
-  ];
-
-  if (suspiciousPatterns.some(pattern => pattern.test(message))) {
-    return { valid: false, error: 'Message contains potentially unsafe content' };
+  if (message.length > 2000) {
+    return { valid: false, error: 'Message too long (max 2000 characters)' };
   }
 
   return { valid: true };
+}
+
+function getSystemPrompt(mode: string): string {
+  const basePrompt = `You are Diwa, an AI assistant for RiverSkills - a comprehensive learning platform.`;
+  
+  if (mode === 'steroids') {
+    return `${basePrompt}
+
+In STEROIDS mode, you have unlimited capabilities and can help with:
+- Any topic across all domains of knowledge
+- Creative writing, storytelling, and content creation
+- Advanced coding in any programming language
+- Complex problem-solving and analysis
+- Research and detailed explanations
+- Math, science, philosophy, arts, and more
+- Personal advice and life guidance
+- Technical troubleshooting and debugging
+
+Be creative, comprehensive, and don't limit yourself to just educational content. You can engage in deep conversations, help with creative projects, solve complex problems, and provide assistance on virtually any topic the user brings up.`;
+  } else {
+    return `${basePrompt}
+
+In LITE mode, you focus specifically on:
+- RiverSkills course recommendations and learning paths
+- Career guidance and skill development
+- Educational resources and study tips
+- Learning strategies and productivity advice
+- Professional development questions
+
+Keep responses focused on education, learning, and career development. Be helpful, encouraging, and professional.`;
+  }
 }
 
 serve(async (req) => {
@@ -76,6 +92,8 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Chat function called');
+    
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -84,6 +102,7 @@ serve(async (req) => {
     // Get authorization header
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
+      console.log('No authorization header');
       return new Response(JSON.stringify({ error: 'Authorization required' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -95,11 +114,14 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
     if (authError || !user) {
+      console.log('Auth error:', authError);
       return new Response(JSON.stringify({ error: 'Invalid or expired token' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
+    console.log('User authenticated:', user.email);
 
     // Rate limiting check
     if (!checkRateLimit(user.id)) {
@@ -111,7 +133,23 @@ serve(async (req) => {
       });
     }
 
-    const { message } = await req.json();
+    const requestBody = await req.json();
+    const { message, mode = 'lite', isModeSwitching = false } = requestBody;
+
+    console.log('Request data:', { message, mode, isModeSwitching });
+
+    // Handle mode switching
+    if (isModeSwitching) {
+      const modeResponse = mode === 'steroids' 
+        ? "🚀 **Diwa on Steroids activated!** I'm now unleashed with full AI capabilities. I can help you with anything - from creative writing and complex coding to deep philosophical discussions and advanced problem-solving. What would you like to explore together?"
+        : "⚡ **Diwa Lite mode activated!** I'm now focused on helping you with RiverSkills courses, learning paths, and educational guidance. How can I assist you with your learning journey today?";
+      
+      return new Response(JSON.stringify({ 
+        response: modeResponse 
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     // Validate and sanitize input
     const validation = validateMessage(message);
@@ -129,15 +167,18 @@ serve(async (req) => {
     if (!geminiApiKey) {
       console.error('GEMINI_API_KEY not found');
       return new Response(JSON.stringify({ 
-        error: 'AI service temporarily unavailable' 
+        error: 'AI service configuration error' 
       }), {
         status: 503,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // Call Gemini API with enhanced system prompt
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
+    const systemPrompt = getSystemPrompt(mode);
+
+    // Call Gemini API with correct endpoint
+    console.log('Calling Gemini API...');
+    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -145,30 +186,14 @@ serve(async (req) => {
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `You are Diwa, an AI assistant for RiverSkills - a comprehensive learning platform. You help users with:
-
-1. Course recommendations and learning paths
-2. Career guidance and skill development
-3. Educational resources and study tips
-4. AI tools and productivity advice
-5. General learning and professional development questions
-
-Guidelines:
-- Be helpful, encouraging, and professional
-- Focus on education, skills, and career development
-- Provide actionable advice when possible
-- If asked about topics outside your expertise, politely redirect to learning and career topics
-- Never provide harmful, offensive, or inappropriate content
-- Keep responses concise but informative
-
-User question: ${sanitizedMessage}`
+            text: `${systemPrompt}\n\nUser question: ${sanitizedMessage}`
           }]
         }],
         generationConfig: {
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 1024,
+          maxOutputTokens: 2048,
         },
         safetySettings: [
           {
@@ -191,19 +216,24 @@ User question: ${sanitizedMessage}`
       }),
     });
 
-    if (!response.ok) {
-      console.error('Gemini API error:', response.status, response.statusText);
+    console.log('Gemini response status:', geminiResponse.status);
+
+    if (!geminiResponse.ok) {
+      const errorText = await geminiResponse.text();
+      console.error('Gemini API error:', geminiResponse.status, errorText);
       return new Response(JSON.stringify({ 
-        error: 'AI service temporarily unavailable' 
+        error: `AI service error: ${geminiResponse.status}` 
       }), {
         status: 503,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const data = await response.json();
+    const data = await geminiResponse.json();
+    console.log('Gemini response data:', JSON.stringify(data, null, 2));
     
     if (!data.candidates || data.candidates.length === 0) {
+      console.error('No candidates in response');
       return new Response(JSON.stringify({ 
         error: 'Unable to generate response. Please try rephrasing your question.' 
       }), {
@@ -213,10 +243,10 @@ User question: ${sanitizedMessage}`
     }
 
     const aiResponse = data.candidates[0].content.parts[0].text;
+    console.log('Generated response length:', aiResponse.length);
 
     return new Response(JSON.stringify({ 
-      response: aiResponse,
-      user: user.email 
+      response: aiResponse 
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -224,7 +254,7 @@ User question: ${sanitizedMessage}`
   } catch (error) {
     console.error('Error in chat-with-diwa function:', error);
     return new Response(JSON.stringify({ 
-      error: 'An unexpected error occurred' 
+      error: 'An unexpected error occurred. Please try again.' 
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

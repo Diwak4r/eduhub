@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, User, Sparkles, Zap, Settings, AlertCircle } from 'lucide-react';
+import { Send, User, Sparkles, Zap, Settings, AlertCircle, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -22,6 +22,7 @@ export default function ChatInterface() {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentMode, setCurrentMode] = useState<DiwaMode>('lite');
+  const [retryCount, setRetryCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
@@ -31,7 +32,7 @@ export default function ChatInterface() {
     if (user && messages.length === 0) {
       setMessages([{
         id: '1',
-        content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient. You can switch to Steroids mode for full capabilities. What would you like to know?",
+        content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient for learning and career guidance. You can switch to Steroids mode for unlimited AI capabilities across any topic. What would you like to know?",
         sender: 'bot',
         timestamp: new Date(),
       }]);
@@ -54,7 +55,6 @@ export default function ChatInterface() {
 
     try {
       console.log('Switching to mode:', newMode);
-      console.log('User token:', user);
 
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
@@ -68,7 +68,7 @@ export default function ChatInterface() {
 
       if (error) {
         console.error('Mode switch error:', error);
-        throw new Error(error.message);
+        throw new Error(error.message || 'Failed to switch mode');
       }
       
       const botMessage: Message = {
@@ -79,6 +79,11 @@ export default function ChatInterface() {
       };
 
       setMessages(prev => [...prev, botMessage]);
+      
+      toast({
+        title: "Mode Switched",
+        description: `Diwa is now in ${newMode === 'steroids' ? 'Steroids' : 'Lite'} mode.`,
+      });
     } catch (error) {
       console.error('Error switching mode:', error);
       toast({
@@ -93,27 +98,31 @@ export default function ChatInterface() {
     }
   };
 
-  const handleSendMessage = async () => {
-    if (!inputMessage.trim() || isLoading || !user) return;
+  const handleSendMessage = async (retryMessage?: string) => {
+    const messageToSend = retryMessage || inputMessage.trim();
+    if (!messageToSend || isLoading || !user) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      content: inputMessage.trim(),
+      content: messageToSend,
       sender: 'user',
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
+    if (!retryMessage) {
+      setMessages(prev => [...prev, userMessage]);
+      setInputMessage('');
+    }
+    
     setIsLoading(true);
 
     try {
-      console.log('Sending message:', userMessage.content);
-      console.log('Current user:', user);
+      console.log('Sending message:', messageToSend);
+      console.log('Current mode:', currentMode);
 
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
-          message: userMessage.content,
+          message: messageToSend,
           mode: currentMode
         },
       });
@@ -122,7 +131,7 @@ export default function ChatInterface() {
 
       if (error) {
         console.error('Chat error:', error);
-        throw new Error(error.message);
+        throw new Error(error.message || 'Failed to get response');
       }
       
       const botMessage: Message = {
@@ -133,23 +142,47 @@ export default function ChatInterface() {
       };
 
       setMessages(prev => [...prev, botMessage]);
+      setRetryCount(0); // Reset retry count on success
     } catch (error) {
       console.error('Error sending message:', error);
       
       let errorMessage = "Failed to send message. Please try again.";
       
       if (error.message?.includes('401') || error.message?.includes('Authorization')) {
-        errorMessage = "Authentication error. Please try logging out and back in.";
+        errorMessage = "Authentication error. Please refresh the page and try again.";
       } else if (error.message?.includes('429')) {
         errorMessage = "Rate limit exceeded. Please wait a moment before trying again.";
-      } else if (error.message?.includes('503')) {
-        errorMessage = "AI service is temporarily unavailable. Please try again later.";
+      } else if (error.message?.includes('503') || error.message?.includes('AI service')) {
+        errorMessage = "AI service is temporarily unavailable. Please try again in a moment.";
       }
+      
+      // Add retry button for failed messages
+      const errorBotMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: `❌ ${errorMessage}`,
+        sender: 'bot',
+        timestamp: new Date(),
+      };
+
+      setMessages(prev => [...prev, errorBotMessage]);
       
       toast({
         title: "Error",
         description: errorMessage,
         variant: "destructive",
+        action: retryCount < 3 ? (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => {
+              setRetryCount(prev => prev + 1);
+              handleSendMessage(messageToSend);
+            }}
+          >
+            <RefreshCw className="w-4 h-4 mr-1" />
+            Retry
+          </Button>
+        ) : undefined,
       });
     } finally {
       setIsLoading(false);
@@ -220,7 +253,7 @@ export default function ChatInterface() {
               Diwa {currentMode === 'steroids' ? 'on Steroids' : 'Lite'}
             </h3>
             <p className={`text-sm ${currentMode === 'steroids' ? 'text-purple-600' : 'text-red-600'}`}>
-              {currentMode === 'steroids' ? 'Full AI capabilities unleashed' : 'Focused & efficient assistance'}
+              {currentMode === 'steroids' ? 'Unlimited AI capabilities' : 'Focused on learning & careers'}
             </p>
           </div>
         </div>
@@ -316,8 +349,8 @@ export default function ChatInterface() {
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={currentMode === 'steroids' 
-                ? "Ask Diwa anything - from RiverSkills courses to creative writing, coding, or any topic..." 
-                : "Ask Diwa about RiverSkills courses and resources..."
+                ? "Ask Diwa anything - from creative writing to coding, philosophy to problem-solving..." 
+                : "Ask Diwa about RiverSkills courses, career guidance, and learning resources..."
               }
               className={`min-h-[44px] max-h-32 resize-none ${
                 currentMode === 'steroids' 
@@ -328,7 +361,7 @@ export default function ChatInterface() {
             />
           </div>
           <Button
-            onClick={handleSendMessage}
+            onClick={() => handleSendMessage()}
             disabled={!inputMessage.trim() || isLoading}
             className={`${getModeButtonColor()} text-white px-4 py-2 h-11`}
           >
