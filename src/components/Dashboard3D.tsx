@@ -41,7 +41,6 @@ function FloatingCard({ position, title, color, onClick }: FloatingCardProps) {
           color={hovered ? '#333333' : '#ffffff'}
           anchorX="center"
           anchorY="middle"
-          font="/fonts/helvetiker_regular.typeface.json"
         >
           {title}
         </Text>

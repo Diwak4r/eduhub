@@ -8,10 +8,13 @@ import NewsSection from './NewsSection';
 import DailyQuote from './DailyQuote';
 import Dashboard3D from './Dashboard3D';
 import GitHubTrending from './GitHubTrending';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  console.log('Dashboard rendering for user:', user?.email);
 
   const quickActions = [
     {
@@ -63,13 +66,24 @@ export default function Dashboard() {
       </div>
 
       {/* 3D Interactive Dashboard */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Interactive Dashboard</h2>
-        <Dashboard3D onNavigate={navigate} />
-      </div>
+      <ErrorBoundary fallback={
+        <Card className="bg-gradient-to-br from-blue-100 to-purple-100">
+          <CardContent className="p-8 text-center">
+            <h3 className="text-xl font-semibold mb-2">Interactive Dashboard</h3>
+            <p className="text-gray-600">3D Dashboard temporarily unavailable</p>
+          </CardContent>
+        </Card>
+      }>
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Interactive Dashboard</h2>
+          <Dashboard3D onNavigate={navigate} />
+        </div>
+      </ErrorBoundary>
 
       {/* Daily Quote */}
-      <DailyQuote />
+      <ErrorBoundary>
+        <DailyQuote />
+      </ErrorBoundary>
 
       {/* Quick Actions */}
       <div>
@@ -94,8 +108,12 @@ export default function Dashboard() {
       {/* Stats and Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <NewsSection />
-          <GitHubTrending />
+          <ErrorBoundary>
+            <NewsSection />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <GitHubTrending />
+          </ErrorBoundary>
         </div>
         <div className="space-y-6">
           <Card className="bg-white/80 backdrop-blur-sm">
