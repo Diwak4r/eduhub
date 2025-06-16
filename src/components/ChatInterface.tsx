@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, User, Sparkles, Zap, Settings, AlertCircle, RefreshCw } from 'lucide-react';
+import { Send, User, Bot, Settings, AlertCircle, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -14,25 +14,21 @@ interface Message {
   timestamp: Date;
 }
 
-type DiwaMode = 'lite' | 'steroids';
-
 export default function ChatInterface() {
   const { user, loading: authLoading } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [currentMode, setCurrentMode] = useState<DiwaMode>('lite');
   const [initialized, setInitialized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
 
-  // Initialize welcome message when user is authenticated and not already initialized
   useEffect(() => {
     if (user && !initialized && !authLoading) {
       setMessages([{
         id: '1',
-        content: "Hello! I'm Diwa, your AI assistant for RiverSkills. I'm currently in Lite mode - focused and efficient for learning and career guidance. You can switch to Steroids mode for unlimited AI capabilities across any topic. What would you like to know?",
+        content: "Hello! I'm your learning assistant. I can help you find the perfect free courses, suggest learning paths, and answer questions about programming, technology, and career development. What would you like to learn today?",
         sender: 'bot',
         timestamp: new Date(),
       }]);
@@ -48,53 +44,8 @@ export default function ChatInterface() {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
-  const handleModeSwitch = useCallback(async (newMode: DiwaMode) => {
-    if (newMode === currentMode || !user) return;
-    
-    setCurrentMode(newMode);
-    setIsLoading(true);
-
-    try {
-      const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
-        body: { 
-          message: `Switch to ${newMode} mode`,
-          mode: newMode,
-          isModeSwitching: true
-        },
-      });
-
-      if (error) {
-        throw new Error(error.message || 'Failed to switch mode');
-      }
-      
-      const botMessage: Message = {
-        id: Date.now().toString(),
-        content: data.response,
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, botMessage]);
-      
-      toast({
-        title: "Mode Switched",
-        description: `Diwa is now in ${newMode === 'steroids' ? 'Steroids' : 'Lite'} mode.`,
-      });
-    } catch (error) {
-      console.error('Error switching mode:', error);
-      toast({
-        title: "Error",
-        description: "Failed to switch mode. Please try again.",
-        variant: "destructive",
-      });
-      setCurrentMode(currentMode === 'lite' ? 'steroids' : 'lite');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentMode, user, toast]);
-
-  const handleSendMessage = useCallback(async (retryMessage?: string) => {
-    const messageToSend = retryMessage || inputMessage.trim();
+  const handleSendMessage = useCallback(async () => {
+    const messageToSend = inputMessage.trim();
     if (!messageToSend || isLoading || !user) return;
 
     const userMessage: Message = {
@@ -104,18 +55,15 @@ export default function ChatInterface() {
       timestamp: new Date(),
     };
 
-    if (!retryMessage) {
-      setMessages(prev => [...prev, userMessage]);
-      setInputMessage('');
-    }
-    
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage('');
     setIsLoading(true);
 
     try {
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
           message: messageToSend,
-          mode: currentMode
+          mode: 'lite'
         },
       });
 
@@ -134,19 +82,9 @@ export default function ChatInterface() {
     } catch (error) {
       console.error('Error sending message:', error);
       
-      let errorMessage = "Failed to send message. Please try again.";
-      
-      if (error.message?.includes('401') || error.message?.includes('Authorization')) {
-        errorMessage = "Authentication error. Please refresh the page and try again.";
-      } else if (error.message?.includes('429')) {
-        errorMessage = "Rate limit exceeded. Please wait a moment before trying again.";
-      } else if (error.message?.includes('503') || error.message?.includes('AI service')) {
-        errorMessage = "AI service is temporarily unavailable. Please try again in a moment.";
-      }
-      
       const errorBotMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: `❌ ${errorMessage}`,
+        content: "I'm having trouble connecting right now. Please try again in a moment. You can also browse our free courses and resources while I get back online!",
         sender: 'bot',
         timestamp: new Date(),
       };
@@ -154,14 +92,14 @@ export default function ChatInterface() {
       setMessages(prev => [...prev, errorBotMessage]);
       
       toast({
-        title: "Error",
-        description: errorMessage,
+        title: "Connection Error",
+        description: "Unable to reach the assistant. Please try again.",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
-  }, [inputMessage, isLoading, user, currentMode, toast]);
+  }, [inputMessage, isLoading, user, toast]);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -170,84 +108,38 @@ export default function ChatInterface() {
     }
   }, [handleSendMessage]);
 
-  const modeColors = useMemo(() => ({
-    gradient: currentMode === 'steroids' ? 'from-purple-500 to-pink-600' : 'from-red-500 to-red-600',
-    bg: currentMode === 'steroids' ? 'bg-purple-50 border-purple-200' : 'bg-red-50 border-red-200',
-    button: currentMode === 'steroids' ? 'bg-purple-500 hover:bg-purple-600' : 'bg-red-500 hover:bg-red-600',
-  }), [currentMode]);
-
-  // Show loading state while checking authentication
   if (authLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
-  // Show authentication required message
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border border-gray-200">
         <AlertCircle className="w-12 h-12 text-gray-400 mb-4" />
         <h3 className="text-lg font-semibold text-gray-700 mb-2">Authentication Required</h3>
         <p className="text-gray-500 text-center mb-4">
-          Please sign in to chat with Diwa, your AI assistant.
+          Please sign in to chat with our learning assistant.
         </p>
-        <Button 
-          onClick={() => window.location.href = '/auth'}
-          className="bg-red-500 hover:bg-red-600 text-white"
-        >
-          Sign In
-        </Button>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-red-200 shadow-lg">
-      {/* Chat Header with Mode Controls */}
-      <div className={`flex items-center justify-between p-4 border-b rounded-t-lg ${modeColors.bg}`}>
+    <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-blue-200 shadow-lg">
+      {/* Chat Header */}
+      <div className="flex items-center justify-between p-4 border-b bg-blue-50 rounded-t-lg">
         <div className="flex items-center gap-3">
-          <div className={`w-8 h-8 bg-gradient-to-br ${modeColors.gradient} rounded-full flex items-center justify-center`}>
-            {currentMode === 'steroids' ? (
-              <Zap className="w-5 h-5 text-white" />
-            ) : (
-              <Sparkles className="w-5 h-5 text-white" />
-            )}
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+            <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className={`font-semibold ${currentMode === 'steroids' ? 'text-purple-900' : 'text-red-900'}`}>
-              Diwa {currentMode === 'steroids' ? 'on Steroids' : 'Lite'}
-            </h3>
-            <p className={`text-sm ${currentMode === 'steroids' ? 'text-purple-600' : 'text-red-600'}`}>
-              {currentMode === 'steroids' ? 'Unlimited AI capabilities' : 'Focused on learning & careers'}
-            </p>
+            <h3 className="font-semibold text-blue-900">Learning Assistant</h3>
+            <p className="text-sm text-blue-600">Specialized in free courses & career guidance</p>
           </div>
-        </div>
-        
-        {/* Mode Toggle Buttons */}
-        <div className="flex gap-2">
-          <Button
-            variant={currentMode === 'lite' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => handleModeSwitch('lite')}
-            className={currentMode === 'lite' ? 'bg-red-500 hover:bg-red-600 text-white' : 'border-red-300 text-red-600 hover:bg-red-50'}
-            disabled={isLoading}
-          >
-            <Settings className="w-4 h-4 mr-1" />
-            Lite
-          </Button>
-          <Button
-            variant={currentMode === 'steroids' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => handleModeSwitch('steroids')}
-            className={currentMode === 'steroids' ? 'bg-purple-500 hover:bg-purple-600 text-white' : 'border-purple-300 text-purple-600 hover:bg-purple-50'}
-            disabled={isLoading}
-          >
-            <Zap className="w-4 h-4 mr-1" />
-            Steroids
-          </Button>
         </div>
       </div>
 
@@ -259,19 +151,15 @@ export default function ChatInterface() {
             className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {message.sender === 'bot' && (
-              <div className={`w-8 h-8 bg-gradient-to-br ${modeColors.gradient} rounded-full flex items-center justify-center flex-shrink-0`}>
-                {currentMode === 'steroids' ? (
-                  <Zap className="w-4 h-4 text-white" />
-                ) : (
-                  <Sparkles className="w-4 h-4 text-white" />
-                )}
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <Bot className="w-4 h-4 text-white" />
               </div>
             )}
             
             <div
               className={`max-w-[80%] rounded-lg px-4 py-3 ${
                 message.sender === 'user'
-                  ? `${modeColors.button} text-white ml-auto`
+                  ? 'bg-blue-500 text-white ml-auto'
                   : 'bg-gray-100 text-gray-900'
               }`}
             >
@@ -288,18 +176,14 @@ export default function ChatInterface() {
         
         {isLoading && (
           <div className="flex gap-3 justify-start">
-            <div className={`w-8 h-8 bg-gradient-to-br ${modeColors.gradient} rounded-full flex items-center justify-center`}>
-              {currentMode === 'steroids' ? (
-                <Zap className="w-4 h-4 text-white" />
-              ) : (
-                <Sparkles className="w-4 h-4 text-white" />
-              )}
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+              <Bot className="w-4 h-4 text-white" />
             </div>
             <div className="bg-gray-100 rounded-lg px-4 py-3">
               <div className="flex gap-1">
-                <div className={`w-2 h-2 ${currentMode === 'steroids' ? 'bg-purple-400' : 'bg-red-400'} rounded-full animate-bounce`} style={{ animationDelay: '0ms' }}></div>
-                <div className={`w-2 h-2 ${currentMode === 'steroids' ? 'bg-purple-400' : 'bg-red-400'} rounded-full animate-bounce`} style={{ animationDelay: '150ms' }}></div>
-                <div className={`w-2 h-2 ${currentMode === 'steroids' ? 'bg-purple-400' : 'bg-red-400'} rounded-full animate-bounce`} style={{ animationDelay: '300ms' }}></div>
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
               </div>
             </div>
           </div>
@@ -308,7 +192,7 @@ export default function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className={`p-4 border-t rounded-b-lg ${modeColors.bg}`}>
+      <div className="p-4 border-t bg-blue-50 rounded-b-lg">
         <div className="flex gap-3 items-end">
           <div className="flex-1">
             <Textarea
@@ -316,22 +200,15 @@ export default function ChatInterface() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={currentMode === 'steroids' 
-                ? "Ask Diwa anything - from creative writing to coding, philosophy to problem-solving..." 
-                : "Ask Diwa about RiverSkills courses, career guidance, and learning resources..."
-              }
-              className={`min-h-[44px] max-h-32 resize-none ${
-                currentMode === 'steroids' 
-                  ? 'border-purple-300 focus:border-purple-500 focus:ring-purple-500' 
-                  : 'border-red-300 focus:border-red-500 focus:ring-red-500'
-              }`}
+              placeholder="Ask about free courses, learning paths, or career guidance..."
+              className="min-h-[44px] max-h-32 resize-none border-blue-300 focus:border-blue-500 focus:ring-blue-500"
               disabled={isLoading}
             />
           </div>
           <Button
-            onClick={() => handleSendMessage()}
+            onClick={handleSendMessage}
             disabled={!inputMessage.trim() || isLoading}
-            className={`${modeColors.button} text-white px-4 py-2 h-11`}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 h-11"
           >
             <Send className="w-4 h-4" />
           </Button>
