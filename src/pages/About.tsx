@@ -1,40 +1,38 @@
 
 import Header from "@/components/Header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Lightbulb, Rocket, Heart, Target, Globe, Users, MapPin, GraduationCap, Briefcase, Code2 } from "lucide-react";
+import { Lightbulb, Rocket, Heart, Target, Globe, Users, Mail, GraduationCap, Briefcase, Code2, Star, Book, Zap } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function About() {
-  const values = [
+  const platformFeatures = [
     {
-      icon: <Heart className="w-6 h-6" />,
-      title: "Passion for Learning",
-      description: "Driven by curiosity and the desire to grow every day, turning struggles into stepping stones."
-    },
-    {
-      icon: <Target className="w-6 h-6" />,
-      title: "Goal-Oriented",
-      description: "Every project and skill learned is a step toward changing my life and supporting my family."
+      icon: <Book className="w-6 h-6" />,
+      title: "200+ Free Courses",
+      description: "Curated courses from top platforms worldwide, completely free forever."
     },
     {
       icon: <Globe className="w-6 h-6" />,
-      title: "Community First",
-      description: "Building resources that help students like me navigate the challenging world of IT and programming."
+      title: "Multi-Language Support",
+      description: "Content available in English, Hindi, and Nepali for inclusive learning."
+    },
+    {
+      icon: <Zap className="w-6 h-6" />,
+      title: "50+ AI Tools",
+      description: "Discover and access the best AI-powered learning and development tools."
     },
     {
       icon: <Users className="w-6 h-6" />,
-      title: "Real-World Focus",
-      description: "Bridging the gap between academic learning and practical application through hands-on projects."
+      title: "Intelligent Assistant",
+      description: "Chat with Diwa for personalized learning guidance and course recommendations."
     }
   ];
 
-  const personalInfo = [
-    { label: "Full Name", value: "Diwakar Ray Yadav", icon: <Users className="w-4 h-4" /> },
-    { label: "Nickname", value: "Raycode", icon: <Code2 className="w-4 h-4" /> },
-    { label: "Age", value: "20 years", icon: <Heart className="w-4 h-4" /> },
-    { label: "Location", value: "Kathmandu, Nepal", icon: <MapPin className="w-4 h-4" /> },
-    { label: "Education", value: "BIT - Himalayan WhiteHouse International College", icon: <GraduationCap className="w-4 h-4" /> },
-    { label: "Role", value: "Computer Support Staff at MC Group of Companies", icon: <Briefcase className="w-4 h-4" /> },
+  const missionPoints = [
+    "Making quality education accessible to everyone, regardless of financial background",
+    "Supporting students in Nepal and India with resources in their native languages",
+    "Bridging the gap between academic learning and practical industry skills",
+    "Creating a community of learners who support each other's growth"
   ];
 
   return (
@@ -48,132 +46,172 @@ export default function About() {
           
           <div className="container mx-auto max-w-4xl text-center">
             <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4 animate-fade-in-up pb-2">
-              About Me - Diwakar Ray Yadav
+              About RiverSkills
             </h1>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              Student, Developer, and Creator - Building RiverSkills with struggle and determination.
+              Your gateway to free, quality education. Built with passion, powered by community.
             </p>
 
-            <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-left flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <div className="flex-shrink-0 text-center">
-                <Avatar className="w-32 h-32 md:w-48 md:h-48 border-4 border-white shadow-lg mx-auto">
-                  <AvatarImage src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" alt="Diwakar Ray Yadav" />
-                  <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DRY</AvatarFallback>
-                </Avatar>
-                <h2 className="text-2xl font-bold text-gray-800 mt-4">Diwakar Ray Yadav</h2>
-                <p className="text-gray-500">Raycode</p>
-                <div className="flex justify-center mt-4 space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-left animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-4">
+                  <Rocket className="w-10 h-10 text-white" />
                 </div>
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">RiverSkills Platform</h2>
+                <p className="text-gray-600">Where Learning Flows Like a River</p>
               </div>
-              <div className="flex-grow">
-                <p className="text-lg text-gray-700 mb-6 italic">
-                  "Welcome to <span className="font-bold text-blue-600">RiverSkills</span>! I'm a 20-year-old BIT student from Kathmandu, Nepal, who believes in learning through struggle and building something meaningful."
-                </p>
-                <p className="text-gray-600 mb-6">
-                  Currently pursuing my Bachelor's in Information Technology while working as Computer Support Staff at MC Group of Companies. Every line of code I write is a step toward changing my life and supporting my family. RiverSkills is my way of helping fellow students navigate the challenging world of IT and programming.
-                </p>
-                <div className="space-y-6 border-t border-gray-200 pt-6">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-blue-100 text-blue-600 p-3 rounded-full flex-shrink-0">
-                      <Lightbulb className="w-6 h-6" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {platformFeatures.map((feature, index) => (
+                  <div key={index} className="flex items-start gap-4 p-4 bg-blue-50 rounded-lg">
+                    <div className="bg-blue-500 text-white p-3 rounded-full flex-shrink-0">
+                      {feature.icon}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg text-gray-800">My Motivation</h3>
-                      <p className="text-gray-600">
-                        As a student juggling work and studies, I understand the struggles of learning programming and managing resources. RiverSkills is my attempt to create a platform that makes learning accessible and practical for students like me who are building their future one project at a time.
-                      </p>
+                      <h3 className="font-semibold text-gray-800 mb-1">{feature.title}</h3>
+                      <p className="text-sm text-gray-600">{feature.description}</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-4">
-                    <div className="bg-purple-100 text-purple-600 p-3 rounded-full flex-shrink-0">
-                      <Rocket className="w-6 h-6" />
+                ))}
+              </div>
+
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Our Mission</h3>
+                <div className="space-y-3">
+                  {missionPoints.map((point, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Star className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-gray-600">{point}</p>
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-lg text-gray-800">My Journey</h3>
-                      <p className="text-gray-600">
-                        From learning C programming with Marksheet Management Systems to building web applications like RiverSkills, every project teaches me something new. I'm passionate about AI tools, automation, and creating educational resources that bridge the gap between theory and practice.
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-                <p className="mt-8 text-lg font-semibold text-gray-800 text-center md:text-right">
-                  "Made with Struggle by Diwa" 💪
-                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Personal Info Section */}
+        {/* Creator Section */}
         <section className="py-16 px-6 bg-gradient-to-r from-blue-50 to-purple-50">
-          <div className="container mx-auto max-w-6xl">
+          <div className="container mx-auto max-w-4xl">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Get to Know Me</h2>
-              <p className="text-gray-600 text-lg">The person behind RiverSkills</p>
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">Meet the Creator</h2>
+              <p className="text-gray-600 text-lg">The mind behind RiverSkills</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {personalInfo.map((info, index) => (
-                <Card key={index} className="bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-2 rounded-full">
-                        {info.icon}
+            <Card className="bg-white/80 backdrop-blur-sm shadow-xl">
+              <CardContent className="p-8 md:p-12">
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className="text-center md:text-left">
+                    <Avatar className="w-32 h-32 border-4 border-white shadow-lg mx-auto md:mx-0">
+                      <AvatarImage src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" alt="Diwakar Ray Yadav" />
+                      <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DRY</AvatarFallback>
+                    </Avatar>
+                    <h3 className="text-2xl font-bold text-gray-800 mt-4">Diwakar Ray Yadav</h3>
+                    <p className="text-blue-600 font-medium">Creator & Developer</p>
+                    <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
+                      <Mail className="w-4 h-4 text-gray-500" />
+                      <a href="mailto:reachout.diwakar@gmail.com" className="text-sm text-blue-600 hover:underline">
+                        reachout.diwakar@gmail.com
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex-1">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <GraduationCap className="w-5 h-5 text-blue-500" />
+                        <div>
+                          <p className="font-medium text-gray-800">BIT Student</p>
+                          <p className="text-sm text-gray-600">Himalayan WhiteHouse International College</p>
+                        </div>
                       </div>
-                      <h3 className="font-semibold text-gray-800">{info.label}</h3>
+                      
+                      <div className="flex items-center gap-3">
+                        <Briefcase className="w-5 h-5 text-green-500" />
+                        <div>
+                          <p className="font-medium text-gray-800">Computer Support Staff</p>
+                          <p className="text-sm text-gray-600">MC Group of Companies</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <Code2 className="w-5 h-5 text-purple-500" />
+                        <div>
+                          <p className="font-medium text-gray-800">Nickname: Raycode</p>
+                          <p className="text-sm text-gray-600">20 years old • Kathmandu, Nepal</p>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-gray-600 text-sm ml-11">{info.value}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+
+                    <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                      <p className="text-gray-700 italic">
+                        "As a student juggling work and studies, I understand the challenges of accessing quality education. RiverSkills is my contribution to making learning accessible to everyone, especially students like me who are building their future one project at a time."
+                      </p>
+                      <p className="text-right mt-2 font-medium text-blue-600">— Diwakar Ray Yadav</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
-        {/* Values Section */}
+        {/* Platform Stats */}
         <section className="py-16 px-6">
-          <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">My Core Values</h2>
-              <p className="text-gray-600 text-lg">What drives me every day</p>
-            </div>
+          <div className="container mx-auto max-w-4xl text-center">
+            <h2 className="text-3xl font-bold text-gray-800 mb-12">Platform Impact</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {values.map((value, index) => (
-                <Card key={index} className="bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <CardContent className="p-6 text-center">
-                    <div className="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-3 rounded-full w-fit mx-auto mb-4">
-                      {value.icon}
-                    </div>
-                    <h3 className="font-semibold text-lg text-gray-800 mb-2">{value.title}</h3>
-                    <p className="text-gray-600 text-sm">{value.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+                <CardContent className="p-6 text-center">
+                  <div className="text-3xl font-bold mb-2">200+</div>
+                  <div className="text-blue-100">Free Courses</div>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
+                <CardContent className="p-6 text-center">
+                  <div className="text-3xl font-bold mb-2">50+</div>
+                  <div className="text-green-100">AI Tools</div>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+                <CardContent className="p-6 text-center">
+                  <div className="text-3xl font-bold mb-2">3</div>
+                  <div className="text-purple-100">Languages</div>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
+                <CardContent className="p-6 text-center">
+                  <div className="text-3xl font-bold mb-2">100%</div>
+                  <div className="text-orange-100">Free Forever</div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
 
-        {/* Mission Section */}
-        <section className="py-16 px-6 bg-gradient-to-r from-blue-50 to-purple-50">
+        {/* Contact Section */}
+        <section className="py-16 px-6 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
           <div className="container mx-auto max-w-4xl text-center">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white rounded-2xl p-12 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full transform translate-x-16 -translate-y-16"></div>
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-lg transform -translate-x-12 translate-y-12 rotate-45"></div>
-              
-              <h2 className="text-3xl font-bold mb-6 relative z-10">My Mission</h2>
-              <p className="text-xl text-blue-100 leading-relaxed relative z-10">
-                To create educational resources and tools that help students like me succeed in their IT journey. Every feature in RiverSkills reflects my commitment to making learning practical, accessible, and rooted in real-world application. Because every byte of code is a step toward changing lives and supporting families.
-              </p>
-              <div className="mt-8 relative z-10">
-                <p className="text-lg font-semibold">
-                  Current Projects: C Programming Systems, RiverSkills Platform, AI Integration
-                </p>
-              </div>
+            <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
+            <p className="text-xl text-blue-100 mb-8">
+              Have questions about RiverSkills? Want to contribute or collaborate?
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a 
+                href="mailto:reachout.diwakar@gmail.com"
+                className="bg-white text-blue-600 px-8 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+              >
+                <Mail className="w-5 h-5" />
+                Contact Diwakar
+              </a>
             </div>
+            <p className="mt-8 text-blue-200">
+              "Made with Struggle and Passion by Diwakar Ray Yadav" 💪🌊
+            </p>
           </div>
         </section>
       </main>

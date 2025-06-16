@@ -1,18 +1,18 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Newspaper, ExternalLink, RefreshCw, Clock } from 'lucide-react';
-import { useDevTo } from '@/hooks/useDevTo';
+import { Github, ExternalLink, RefreshCw, Star } from 'lucide-react';
+import { useGitHubTrending } from '@/hooks/useGitHubTrending';
 
-export default function NewsSection() {
-  const { articles, loading, refetch } = useDevTo();
+export default function GitHubTrending() {
+  const { repos, loading, refetch } = useGitHubTrending();
 
   return (
     <Card className="bg-white/80 backdrop-blur-sm">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
-          <Newspaper className="w-5 h-5 text-blue-600" />
-          Latest Dev Articles
+          <Github className="w-5 h-5 text-gray-800" />
+          Trending Repositories
         </CardTitle>
         <Button
           variant="outline"
@@ -35,22 +35,22 @@ export default function NewsSection() {
           </div>
         ) : (
           <div className="space-y-4">
-            {articles.slice(0, 3).map((article, index) => (
+            {repos.slice(0, 3).map((repo, index) => (
               <div key={index} className="border-b border-gray-100 last:border-0 pb-3 last:pb-0">
-                <h4 className="font-medium text-sm mb-1 line-clamp-2">{article.title}</h4>
-                <p className="text-xs text-gray-600 mb-2 line-clamp-2">{article.description}</p>
+                <h4 className="font-medium text-sm mb-1 line-clamp-2">{repo.name}</h4>
+                <p className="text-xs text-gray-600 mb-2 line-clamp-2">{repo.description}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">{article.user.name}</span>
+                    <span className="text-xs text-gray-500">{repo.language}</span>
                     <div className="flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-gray-400" />
-                      <span className="text-xs text-gray-500">{article.reading_time_minutes}min</span>
+                      <Star className="w-3 h-3 text-yellow-500" />
+                      <span className="text-xs text-gray-500">{repo.stargazers_count}</span>
                     </div>
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => window.open(article.url, '_blank')}
+                    onClick={() => window.open(repo.html_url, '_blank')}
                     className="h-6 px-2"
                   >
                     <ExternalLink className="w-3 h-3" />

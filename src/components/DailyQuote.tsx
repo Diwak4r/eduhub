@@ -1,10 +1,10 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Quote } from 'lucide-react';
-import { useQuotes } from '@/hooks/useQuotes';
+import { useQuotable } from '@/hooks/useQuotable';
 
 export default function DailyQuote() {
-  const { quote, loading } = useQuotes();
+  const { quote, loading } = useQuotable();
 
   if (loading) {
     return (
@@ -27,8 +27,8 @@ export default function DailyQuote() {
         <div className="flex items-start gap-3">
           <Quote className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
           <div>
-            <p className="text-gray-800 font-medium mb-2 italic">"{quote.q}"</p>
-            <p className="text-sm text-gray-600">— {quote.a}</p>
+            <p className="text-gray-800 font-medium mb-2 italic">"{quote.content}"</p>
+            <p className="text-sm text-gray-600">— {quote.author}</p>
           </div>
         </div>
       </CardContent>

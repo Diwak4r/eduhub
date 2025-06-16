@@ -1,8 +1,8 @@
 
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, User, Bot, Settings, AlertCircle, RefreshCw } from 'lucide-react';
+import { Send, User, Bot, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -28,7 +28,7 @@ export default function ChatInterface() {
     if (user && !initialized && !authLoading) {
       setMessages([{
         id: '1',
-        content: "Hello! I'm your learning assistant. I can help you find the perfect free courses, suggest learning paths, and answer questions about programming, technology, and career development. What would you like to learn today?",
+        content: "Hello! I'm Diwa, your learning assistant for RiverSkills! 🌊\n\nI'm here to help you navigate our platform created by Diwakar Yadav. I can help you:\n\n• Find the perfect free courses from our 200+ collection\n• Suggest learning paths in English, Hindi, or Nepali\n• Recommend AI tools for your projects\n• Answer questions about programming and technology\n• Share information about RiverSkills and its creator\n\nWhat would you like to learn today?",
         sender: 'bot',
         timestamp: new Date(),
       }]);
@@ -60,9 +60,23 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
+      const contextualMessage = `User message: ${messageToSend}
+
+Context about RiverSkills and its creator:
+- RiverSkills is a free learning platform created by Diwakar Yadav (nickname: Raycode)
+- Diwakar is a 20-year-old BIT student from Kathmandu, Nepal
+- He works as Computer Support Staff at MC Group of Companies
+- Contact: reachout.diwakar@gmail.com
+- The platform offers 200+ free courses in English, Hindi, and Nepali
+- Features include courses, resources, AI tools, and this chat assistant
+- Mission: Making quality education accessible to all, especially students like Diwakar who are building their future
+- The platform focuses on practical, hands-on learning with real-world applications
+
+Please respond as a helpful learning assistant who knows about RiverSkills and can help users find courses, resources, and learning paths.`;
+
       const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
         body: { 
-          message: messageToSend,
+          message: contextualMessage,
           mode: 'lite'
         },
       });
@@ -84,7 +98,7 @@ export default function ChatInterface() {
       
       const errorBotMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "I'm having trouble connecting right now. Please try again in a moment. You can also browse our free courses and resources while I get back online!",
+        content: "I'm having trouble connecting right now. Please try again in a moment. You can also browse our 200+ free courses and resources while I get back online!\n\nRemember, RiverSkills was created by Diwakar Yadav to make learning accessible to everyone. Feel free to explore our courses, resources, and AI tools in the meantime!",
         sender: 'bot',
         timestamp: new Date(),
       };
@@ -122,7 +136,7 @@ export default function ChatInterface() {
         <AlertCircle className="w-12 h-12 text-gray-400 mb-4" />
         <h3 className="text-lg font-semibold text-gray-700 mb-2">Authentication Required</h3>
         <p className="text-gray-500 text-center mb-4">
-          Please sign in to chat with our learning assistant.
+          Please sign in to chat with Diwa, your learning assistant.
         </p>
       </div>
     );
@@ -137,8 +151,8 @@ export default function ChatInterface() {
             <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="font-semibold text-blue-900">Learning Assistant</h3>
-            <p className="text-sm text-blue-600">Specialized in free courses & career guidance</p>
+            <h3 className="font-semibold text-blue-900">Diwa - RiverSkills Assistant</h3>
+            <p className="text-sm text-blue-600">Created by Diwakar Yadav • 200+ Free Courses</p>
           </div>
         </div>
       </div>
@@ -200,7 +214,7 @@ export default function ChatInterface() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about free courses, learning paths, or career guidance..."
+              placeholder="Ask about free courses, RiverSkills, or get learning guidance from Diwa..."
               className="min-h-[44px] max-h-32 resize-none border-blue-300 focus:border-blue-500 focus:ring-blue-500"
               disabled={isLoading}
             />
