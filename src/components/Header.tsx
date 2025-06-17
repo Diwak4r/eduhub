@@ -1,12 +1,14 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, BookOpen, Code, Brain, MessageCircle, Info, GraduationCap } from "lucide-react";
+import { Menu, X, BookOpen, Code, Brain, MessageCircle, Info, GraduationCap, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -18,6 +20,11 @@ export default function Header() {
     { path: "/chat", label: "Chat", icon: <MessageCircle className="w-4 h-4" /> },
     { path: "/about", label: "About", icon: <Info className="w-4 h-4" /> },
   ];
+
+  const handleSignOut = async () => {
+    await signOut();
+    setIsMenuOpen(false);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
@@ -48,6 +55,27 @@ export default function Header() {
                 <span>{item.label}</span>
               </Link>
             ))}
+            
+            {/* User Profile and Sign Out */}
+            {user && (
+              <div className="flex items-center space-x-2 ml-4 pl-4 border-l border-gray-200">
+                <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-50">
+                  <User className="w-4 h-4 text-gray-600" />
+                  <span className="text-sm text-gray-600">
+                    {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                  </span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSignOut}
+                  className="flex items-center space-x-2 text-gray-600 hover:text-red-600"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </Button>
+              </div>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -80,6 +108,27 @@ export default function Header() {
                   <span>{item.label}</span>
                 </Link>
               ))}
+              
+              {/* Mobile User Info and Sign Out */}
+              {user && (
+                <div className="pt-4 mt-4 border-t border-gray-200">
+                  <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-50 mb-2">
+                    <User className="w-4 h-4 text-gray-600" />
+                    <span className="text-sm text-gray-600">
+                      {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSignOut}
+                    className="w-full justify-start space-x-2 text-gray-600 hover:text-red-600"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Sign Out</span>
+                  </Button>
+                </div>
+              )}
             </div>
           </nav>
         )}

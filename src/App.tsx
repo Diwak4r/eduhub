@@ -40,19 +40,37 @@ const App = () => {
               <Sonner />
               <Routes>
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/*" element={
+                <Route path="/" element={
                   <AuthGate>
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/courses" element={<Courses />} />
-                      <Route path="/resources" element={<Resources />} />
-                      <Route path="/ai-tools" element={<AITools />} />
-                      <Route path="/chat" element={<Chat />} />
-                      <Route path="/about" element={<About />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
+                    <Index />
                   </AuthGate>
                 } />
+                <Route path="/courses" element={
+                  <AuthGate>
+                    <Courses />
+                  </AuthGate>
+                } />
+                <Route path="/resources" element={
+                  <AuthGate>
+                    <Resources />
+                  </AuthGate>
+                } />
+                <Route path="/ai-tools" element={
+                  <AuthGate>
+                    <AITools />
+                  </AuthGate>
+                } />
+                <Route path="/chat" element={
+                  <AuthGate>
+                    <Chat />
+                  </AuthGate>
+                } />
+                <Route path="/about" element={
+                  <AuthGate>
+                    <About />
+                  </AuthGate>
+                } />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </TooltipProvider>
           </AuthProvider>

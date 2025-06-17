@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { signUpSchema, signInSchema } from '@/lib/validations';
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -23,52 +24,27 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const validateForm = () => {
-    if (!formData.email || !formData.password) {
-      toast({
-        title: "Validation Error",
-        description: "Email and password are required",
-        variant: "destructive"
-      });
-      return false;
-    }
-
-    if (formData.password.length < 6) {
-      toast({
-        title: "Validation Error", 
-        description: "Password must be at least 6 characters long",
-        variant: "destructive"
-      });
-      return false;
-    }
-
-    if (isSignUp) {
-      if (!formData.fullName) {
-        toast({
-          title: "Validation Error",
-          description: "Full name is required for sign up",
-          variant: "destructive"
-        });
-        return false;
-      }
-
-      if (formData.password !== formData.confirmPassword) {
-        toast({
-          title: "Validation Error",
-          description: "Passwords do not match",
-          variant: "destructive"
-        });
-        return false;
-      }
-    }
-
-    return true;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+    // Validate form data using zod schemas
+    try {
+      if (isSignUp) {
+        signUpSchema.parse(formData);
+      } else {
+        signInSchema.parse({
+          email: formData.email,
+          password: formData.password
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Validation Error",
+        description: error.errors?.[0]?.message || "Please check your input",
+        variant: "destructive"
+      });
+      return;
+    }
     
     setLoading(true);
 
@@ -92,6 +68,7 @@ const Auth = () => {
               description: "An account with this email already exists. Please sign in instead.",
               variant: "destructive"
             });
+            setIsSignUp(false);
           } else {
             throw error;
           }
@@ -103,7 +80,7 @@ const Auth = () => {
           setIsSignUp(false);
         }
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: formData.email,
           password: formData.password
         });
@@ -118,15 +95,16 @@ const Auth = () => {
           } else {
             throw error;
           }
-        } else {
+        } else if (data.user) {
           toast({
             title: "Welcome back!",
             description: "You have been successfully signed in.",
           });
-          navigate('/');
+          // Navigation will be handled by AuthGate component
         }
       }
     } catch (error: any) {
+      console.error('Auth error:', error);
       toast({
         title: "Authentication Error",
         description: error.message || "An unexpected error occurred",
@@ -138,17 +116,17 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center space-x-2 group">
+          <div className="inline-flex items-center space-x-2 group">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
               <div className="w-full h-full rounded-lg bg-gradient-to-br from-white/20 to-transparent"></div>
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               RiverSkills
             </span>
-          </Link>
+          </div>
         </div>
 
         <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
@@ -175,6 +153,7 @@ const Auth = () => {
                       placeholder="Enter your full name"
                       className="pl-10"
                       disabled={loading}
+                      required
                     />
                   </div>
                 </div>
@@ -192,6 +171,7 @@ const Auth = () => {
                     placeholder="Enter your email"
                     className="pl-10"
                     disabled={loading}
+                    required
                   />
                 </div>
               </div>
@@ -208,6 +188,7 @@ const Auth = () => {
                     placeholder="Enter your password"
                     className="pl-10 pr-10"
                     disabled={loading}
+                    required
                   />
                   <button
                     type="button"
@@ -233,6 +214,7 @@ const Auth = () => {
                       placeholder="Confirm your password"
                       className="pl-10"
                       disabled={loading}
+                      required
                     />
                   </div>
                 </div>

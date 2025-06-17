@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         description: "You have been logged out of your account.",
       });
     } catch (error: any) {
+      console.error('Sign out error:', error);
       toast({
         title: "Sign out error",
         description: error.message || "Failed to sign out",
@@ -73,16 +74,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
+    console.log('Setting up auth state listener...');
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.email);
+        
         setSession(session);
         setUser(session?.user ?? null);
 
         // Check admin role when user signs in
         if (session?.user) {
+          console.log('Checking admin role for user:', session.user.id);
           const adminStatus = await checkAdminRole(session.user.id);
           setIsAdmin(adminStatus);
+          console.log('Admin status:', adminStatus);
         } else {
           setIsAdmin(false);
         }
@@ -92,19 +99,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     );
 
     // Get initial session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session }, error }) => {
+      if (error) {
+        console.error('Error getting initial session:', error);
+      }
+      
+      console.log('Initial session:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
 
       if (session?.user) {
+        console.log('Checking admin role for initial session user:', session.user.id);
         const adminStatus = await checkAdminRole(session.user.id);
         setIsAdmin(adminStatus);
+        console.log('Initial admin status:', adminStatus);
       }
 
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      console.log('Cleaning up auth subscription...');
+      subscription.unsubscribe();
+    };
   }, []);
 
   const value = {
@@ -114,6 +131,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     signOut,
     isAdmin
   };
+
+  console.log('AuthProvider rendering with user:', user?.email, 'loading:', loading);
 
   return (
     <AuthContext.Provider value={value}>

@@ -14,14 +14,18 @@ export default function AuthGate({ children }: AuthGateProps) {
   const location = useLocation();
 
   useEffect(() => {
-    if (!loading && !user && location.pathname !== '/auth') {
-      navigate('/auth', { replace: true });
+    if (!loading) {
+      if (!user && location.pathname !== '/auth') {
+        navigate('/auth', { replace: true });
+      } else if (user && location.pathname === '/auth') {
+        navigate('/', { replace: true });
+      }
     }
   }, [user, loading, navigate, location.pathname]);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
           <p className="text-gray-600">Loading...</p>
@@ -30,7 +34,13 @@ export default function AuthGate({ children }: AuthGateProps) {
     );
   }
 
+  // If user is not authenticated and not on auth page, redirect will happen in useEffect
   if (!user && location.pathname !== '/auth') {
+    return null;
+  }
+
+  // If user is authenticated and on auth page, redirect will happen in useEffect
+  if (user && location.pathname === '/auth') {
     return null;
   }
 
