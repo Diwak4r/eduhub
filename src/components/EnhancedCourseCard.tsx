@@ -1,7 +1,7 @@
 
 import { ReactNode } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Clock, Users, Star, Award, Play, BookOpen } from 'lucide-react';
+import { Clock, Users, Star, Award, Play, BookOpen, Gift, Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -12,13 +12,14 @@ interface EnhancedCourseCardProps {
   duration?: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
   category: string;
-  price?: string;
   rating?: number;
   studentsCount?: string;
   image?: string;
   skills: string[];
   isFeatured?: boolean;
   isNew?: boolean;
+  language?: string;
+  platform?: string;
   onClick?: () => void;
 }
 
@@ -29,19 +30,31 @@ export default function EnhancedCourseCard({
   duration,
   level,
   category,
-  price = "Free",
   rating,
   studentsCount,
   image,
   skills,
   isFeatured,
   isNew,
+  language = "English",
+  platform,
   onClick
 }: EnhancedCourseCardProps) {
   const levelColors = {
     'Beginner': 'bg-green-100 text-green-700 border-green-200',
     'Intermediate': 'bg-yellow-100 text-yellow-700 border-yellow-200',
     'Advanced': 'bg-red-100 text-red-700 border-red-200'
+  };
+
+  const getLanguageFlag = (lang: string) => {
+    switch (lang) {
+      case 'Hindi':
+        return '🇮🇳';
+      case 'Nepali':
+        return '🇳🇵';
+      default:
+        return '🇺🇸';
+    }
   };
 
   return (
@@ -78,17 +91,29 @@ export default function EnhancedCourseCard({
             Preview
           </Button>
         </div>
+        
+        {/* FREE Badge */}
+        <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full flex items-center gap-1">
+          <Gift className="h-3 w-3" />
+          <span className="text-xs font-bold">FREE</span>
+        </div>
       </div>
 
       <CardContent className="p-6" onClick={onClick}>
-        {/* Category and Level */}
+        {/* Category, Level, and Language */}
         <div className="flex items-center justify-between mb-3">
-          <Badge variant="outline" className="text-xs text-blue-600 border-blue-200">
-            {category}
-          </Badge>
-          <Badge className={`text-xs border ${levelColors[level]}`} variant="outline">
-            {level}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-xs text-blue-600 border-blue-200">
+              {category}
+            </Badge>
+            <Badge className={`text-xs border ${levelColors[level]}`} variant="outline">
+              {level}
+            </Badge>
+          </div>
+          <div className="flex items-center gap-1">
+            <span>{getLanguageFlag(language)}</span>
+            <span className="text-xs text-gray-500">{language}</span>
+          </div>
         </div>
 
         {/* Title */}
@@ -145,14 +170,22 @@ export default function EnhancedCourseCard({
           </div>
         </div>
 
+        {/* Platform */}
+        {platform && (
+          <div className="flex items-center gap-1 text-sm text-gray-500 mb-4">
+            <Globe className="w-4 h-4" />
+            <span>{platform}</span>
+          </div>
+        )}
+
         {/* Price and Action */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div className="text-2xl font-bold text-gray-900">
-            {price === "Free" ? (
-              <span className="text-green-600">Free</span>
-            ) : (
-              <span>{price}</span>
-            )}
+          <div className="flex items-center gap-2">
+            <Gift className="h-6 w-6 text-green-600" />
+            <div>
+              <span className="text-2xl font-bold text-green-600">Free</span>
+              <p className="text-sm text-gray-500 -mt-1">100% Free</p>
+            </div>
           </div>
           <Button 
             className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
@@ -161,7 +194,7 @@ export default function EnhancedCourseCard({
               onClick?.();
             }}
           >
-            Enroll Now
+            Start Learning
           </Button>
         </div>
       </CardContent>
