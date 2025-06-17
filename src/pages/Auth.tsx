@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Loader2 } from 'lucide-react';
 import { signUpSchema, signInSchema } from '@/lib/validations';
 
 const Auth = () => {
@@ -23,6 +23,15 @@ const Auth = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const resetForm = () => {
+    setFormData({
+      email: '',
+      password: '',
+      fullName: '',
+      confirmPassword: ''
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +59,7 @@ const Auth = () => {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
           options: {
@@ -69,6 +78,7 @@ const Auth = () => {
               variant: "destructive"
             });
             setIsSignUp(false);
+            resetForm();
           } else {
             throw error;
           }
@@ -77,7 +87,11 @@ const Auth = () => {
             title: "Account Created!",
             description: "Please check your email to verify your account.",
           });
-          setIsSignUp(false);
+          // If email confirmation is disabled, user will be automatically signed in
+          if (data.user && !data.user.email_confirmed_at) {
+            resetForm();
+            setIsSignUp(false);
+          }
         }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -92,6 +106,12 @@ const Auth = () => {
               description: "Please check your email and password and try again.",
               variant: "destructive"
             });
+          } else if (error.message.includes('Email not confirmed')) {
+            toast({
+              title: "Email Not Verified",
+              description: "Please check your email and click the verification link.",
+              variant: "destructive"
+            });
           } else {
             throw error;
           }
@@ -100,6 +120,7 @@ const Auth = () => {
             title: "Welcome back!",
             description: "You have been successfully signed in.",
           });
+          console.log('Sign in successful, redirecting...');
           // Navigation will be handled by AuthGate component
         }
       }
@@ -115,12 +136,18 @@ const Auth = () => {
     }
   };
 
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp);
+    resetForm();
+    setShowPassword(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-2 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg transform group-hover:scale-110 transition-transform duration-300 shadow-lg flex items-center justify-center">
               <div className="w-full h-full rounded-lg bg-gradient-to-br from-white/20 to-transparent"></div>
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -172,6 +199,7 @@ const Auth = () => {
                     className="pl-10"
                     disabled={loading}
                     required
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -189,11 +217,12 @@ const Auth = () => {
                     className="pl-10 pr-10"
                     disabled={loading}
                     required
+                    autoComplete={isSignUp ? "new-password" : "current-password"}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     disabled={loading}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -215,6 +244,7 @@ const Auth = () => {
                       className="pl-10"
                       disabled={loading}
                       required
+                      autoComplete="new-password"
                     />
                   </div>
                 </div>
@@ -225,13 +255,20 @@ const Auth = () => {
                 className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 disabled={loading}
               >
-                {loading ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}
+                {loading ? (
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Processing...</span>
+                  </div>
+                ) : (
+                  isSignUp ? 'Create Account' : 'Sign In'
+                )}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <button
-                onClick={() => setIsSignUp(!isSignUp)}
+                onClick={toggleMode}
                 className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
                 disabled={loading}
               >

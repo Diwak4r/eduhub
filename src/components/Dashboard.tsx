@@ -21,16 +21,16 @@ export default function Dashboard() {
       description: 'Explore 200+ free courses from top platforms',
       icon: <BookOpen className="w-6 h-6" />,
       href: '/courses',
-      color: 'bg-blue-600',
-      hoverColor: 'hover:bg-blue-700',
+      color: 'bg-emerald-600',
+      hoverColor: 'hover:bg-emerald-700',
     },
     {
       title: 'Learning Resources',
       description: 'Curated materials in English, Hindi & Nepali',
       icon: <Brain className="w-6 h-6" />,
       href: '/resources',
-      color: 'bg-emerald-600',
-      hoverColor: 'hover:bg-emerald-700',
+      color: 'bg-blue-600',
+      hoverColor: 'hover:bg-blue-700',
     },
     {
       title: 'AI Tools',
@@ -60,7 +60,9 @@ export default function Dashboard() {
           </div>
           <div>
             <h1 className="text-2xl font-bold">Welcome back to RiverSkills!</h1>
-            <p className="opacity-90">{user?.email}</p>
+            <p className="opacity-90">
+              {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guest'}
+            </p>
           </div>
         </div>
         <p className="text-lg opacity-90">
@@ -94,9 +96,9 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {quickActions.map((action, index) => (
             <Link key={index} to={action.href}>
-              <Card className="hover:shadow-xl transition-all duration-300 hover:scale-105 border-slate-200">
+              <Card className="hover:shadow-xl transition-all duration-300 hover:scale-105 border-slate-200 group">
                 <CardContent className="p-6">
-                  <div className={`w-12 h-12 ${action.color} ${action.hoverColor} text-white rounded-lg flex items-center justify-center mb-4 transition-colors`}>
+                  <div className={`w-12 h-12 ${action.color} ${action.hoverColor} text-white rounded-lg flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110`}>
                     {action.icon}
                   </div>
                   <h3 className="font-semibold mb-2 text-slate-800">{action.title}</h3>

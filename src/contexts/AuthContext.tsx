@@ -33,31 +33,40 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
 
-  const checkAdminRole = async (userId: string) => {
+  const checkAdminRole = async (userId: string): Promise<boolean> => {
     try {
+      console.log('Checking admin role for user:', userId);
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId)
         .eq('role', 'admin')
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         console.error('Error checking admin role:', error);
         return false;
       }
 
-      return !!data;
+      const adminStatus = !!data;
+      console.log('Admin status determined:', adminStatus);
+      return adminStatus;
     } catch (error) {
-      console.error('Error checking admin role:', error);
+      console.error('Exception in checkAdminRole:', error);
       return false;
     }
   };
 
   const signOut = async () => {
     try {
+      setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      
+      // Clear local state
+      setUser(null);
+      setSession(null);
+      setIsAdmin(false);
       
       toast({
         title: "Signed out successfully",
@@ -70,15 +79,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         description: error.message || "Failed to sign out",
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     console.log('Setting up auth state listener...');
+    let mounted = true;
 
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (!mounted) return;
+        
         console.log('Auth state changed:', event, session?.user?.email);
         
         setSession(session);
@@ -86,39 +100,71 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         // Check admin role when user signs in
         if (session?.user) {
-          console.log('Checking admin role for user:', session.user.id);
-          const adminStatus = await checkAdminRole(session.user.id);
-          setIsAdmin(adminStatus);
-          console.log('Admin status:', adminStatus);
+          try {
+            const adminStatus = await checkAdminRole(session.user.id);
+            if (mounted) {
+              setIsAdmin(adminStatus);
+            }
+          } catch (error) {
+            console.error('Error in admin check:', error);
+            if (mounted) {
+              setIsAdmin(false);
+            }
+          }
         } else {
           setIsAdmin(false);
         }
 
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     );
 
     // Get initial session
-    supabase.auth.getSession().then(async ({ data: { session }, error }) => {
-      if (error) {
-        console.error('Error getting initial session:', error);
-      }
-      
-      console.log('Initial session:', session?.user?.email);
-      setSession(session);
-      setUser(session?.user ?? null);
+    const getInitialSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Error getting initial session:', error);
+        }
+        
+        if (!mounted) return;
+        
+        console.log('Initial session:', session?.user?.email);
+        setSession(session);
+        setUser(session?.user ?? null);
 
-      if (session?.user) {
-        console.log('Checking admin role for initial session user:', session.user.id);
-        const adminStatus = await checkAdminRole(session.user.id);
-        setIsAdmin(adminStatus);
-        console.log('Initial admin status:', adminStatus);
-      }
+        if (session?.user) {
+          try {
+            const adminStatus = await checkAdminRole(session.user.id);
+            if (mounted) {
+              setIsAdmin(adminStatus);
+            }
+          } catch (error) {
+            console.error('Error in initial admin check:', error);
+            if (mounted) {
+              setIsAdmin(false);
+            }
+          }
+        }
 
-      setLoading(false);
-    });
+        if (mounted) {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Exception in getInitialSession:', error);
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    getInitialSession();
 
     return () => {
+      mounted = false;
       console.log('Cleaning up auth subscription...');
       subscription.unsubscribe();
     };
@@ -132,7 +178,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     isAdmin
   };
 
-  console.log('AuthProvider rendering with user:', user?.email, 'loading:', loading);
+  console.log('AuthProvider rendering with user:', user?.email, 'loading:', loading, 'isAdmin:', isAdmin);
 
   return (
     <AuthContext.Provider value={value}>

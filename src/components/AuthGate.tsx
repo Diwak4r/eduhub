@@ -16,8 +16,10 @@ export default function AuthGate({ children }: AuthGateProps) {
   useEffect(() => {
     if (!loading) {
       if (!user && location.pathname !== '/auth') {
+        console.log('Redirecting to auth - no user found');
         navigate('/auth', { replace: true });
       } else if (user && location.pathname === '/auth') {
+        console.log('Redirecting to dashboard - user authenticated');
         navigate('/', { replace: true });
       }
     }
@@ -34,12 +36,11 @@ export default function AuthGate({ children }: AuthGateProps) {
     );
   }
 
-  // If user is not authenticated and not on auth page, redirect will happen in useEffect
+  // Don't render anything while redirecting
   if (!user && location.pathname !== '/auth') {
     return null;
   }
 
-  // If user is authenticated and on auth page, redirect will happen in useEffect
   if (user && location.pathname === '/auth') {
     return null;
   }

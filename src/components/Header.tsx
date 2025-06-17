@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -22,8 +22,12 @@ export default function Header() {
   ];
 
   const handleSignOut = async () => {
-    await signOut();
-    setIsMenuOpen(false);
+    try {
+      await signOut();
+      setIsMenuOpen(false);
+    } catch (error) {
+      console.error('Sign out failed:', error);
+    }
   };
 
   return (
@@ -61,15 +65,16 @@ export default function Header() {
               <div className="flex items-center space-x-2 ml-4 pl-4 border-l border-gray-200">
                 <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-50">
                   <User className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">
-                    {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                  <span className="text-sm text-gray-600 max-w-32 truncate">
+                    {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
                   </span>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleSignOut}
-                  className="flex items-center space-x-2 text-gray-600 hover:text-red-600"
+                  disabled={loading}
+                  className="flex items-center space-x-2 text-gray-600 hover:text-red-600 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Sign Out</span>
@@ -114,14 +119,15 @@ export default function Header() {
                 <div className="pt-4 mt-4 border-t border-gray-200">
                   <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-50 mb-2">
                     <User className="w-4 h-4 text-gray-600" />
-                    <span className="text-sm text-gray-600">
-                      {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                    <span className="text-sm text-gray-600 truncate">
+                      {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
                     </span>
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={handleSignOut}
+                    disabled={loading}
                     className="w-full justify-start space-x-2 text-gray-600 hover:text-red-600"
                   >
                     <LogOut className="w-4 h-4" />
