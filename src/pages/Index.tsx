@@ -4,7 +4,7 @@ import Dashboard from "@/components/Dashboard";
 
 export default function Index() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50">
       <Header />
       <main className="pt-20">
         <section className="py-8 px-6">

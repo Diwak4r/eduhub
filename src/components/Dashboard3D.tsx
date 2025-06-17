@@ -1,6 +1,6 @@
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useState } from 'react';
+import { useRef, useState, Suspense } from 'react';
 import { Text, Box, Sphere, Float } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -38,7 +38,7 @@ function FloatingCard({ position, title, color, onClick }: FloatingCardProps) {
         <Text
           position={[0, 0, 0.06]}
           fontSize={0.2}
-          color={hovered ? '#333333' : '#ffffff'}
+          color={hovered ? '#1e293b' : '#ffffff'}
           anchorX="center"
           anchorY="middle"
         >
@@ -78,8 +78,16 @@ function FlowingParticles() {
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial color="#60a5fa" size={0.05} />
+      <pointsMaterial color="#06b6d4" size={0.05} />
     </points>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="h-96 w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-xl flex items-center justify-center">
+      <div className="text-white">Loading 3D Dashboard...</div>
+    </div>
   );
 }
 
@@ -89,52 +97,54 @@ interface Dashboard3DProps {
 
 export default function Dashboard3D({ onNavigate }: Dashboard3DProps) {
   return (
-    <div className="h-96 w-full bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 rounded-xl overflow-hidden">
-      <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        
-        <FlowingParticles />
-        
-        <FloatingCard
-          position={[-3, 1, 0]}
-          title="Courses"
-          color="#3b82f6"
-          onClick={() => onNavigate('/courses')}
-        />
-        
-        <FloatingCard
-          position={[0, 1, 0]}
-          title="Resources"
-          color="#10b981"
-          onClick={() => onNavigate('/resources')}
-        />
-        
-        <FloatingCard
-          position={[3, 1, 0]}
-          title="AI Tools"
-          color="#8b5cf6"
-          onClick={() => onNavigate('/ai-tools')}
-        />
-        
-        <FloatingCard
-          position={[-1.5, -1, 0]}
-          title="Chat"
-          color="#ef4444"
-          onClick={() => onNavigate('/chat')}
-        />
-        
-        <FloatingCard
-          position={[1.5, -1, 0]}
-          title="About"
-          color="#f59e0b"
-          onClick={() => onNavigate('/about')}
-        />
-        
-        <Sphere args={[0.5]} position={[0, 3, -2]}>
-          <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} />
-        </Sphere>
-      </Canvas>
+    <div className="h-96 w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-xl overflow-hidden">
+      <Suspense fallback={<LoadingFallback />}>
+        <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          
+          <FlowingParticles />
+          
+          <FloatingCard
+            position={[-3, 1, 0]}
+            title="Courses"
+            color="#3b82f6"
+            onClick={() => onNavigate('/courses')}
+          />
+          
+          <FloatingCard
+            position={[0, 1, 0]}
+            title="Resources"
+            color="#10b981"
+            onClick={() => onNavigate('/resources')}
+          />
+          
+          <FloatingCard
+            position={[3, 1, 0]}
+            title="AI Tools"
+            color="#8b5cf6"
+            onClick={() => onNavigate('/ai-tools')}
+          />
+          
+          <FloatingCard
+            position={[-1.5, -1, 0]}
+            title="Chat"
+            color="#ef4444"
+            onClick={() => onNavigate('/chat')}
+          />
+          
+          <FloatingCard
+            position={[1.5, -1, 0]}
+            title="About"
+            color="#f59e0b"
+            onClick={() => onNavigate('/about')}
+          />
+          
+          <Sphere args={[0.5]} position={[0, 3, -2]}>
+            <meshStandardMaterial color="#06b6d4" transparent opacity={0.3} />
+          </Sphere>
+        </Canvas>
+      </Suspense>
     </div>
   );
 }
