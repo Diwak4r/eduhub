@@ -4,9 +4,9 @@ import { BookOpen, MessageSquare, Brain, TrendingUp, User, Calendar } from 'luci
 import { Link, useNavigate } from 'react-router-dom';
 import NewsSection from './NewsSection';
 import DailyQuote from './DailyQuote';
-import Dashboard3D from './Dashboard3D';
 import GitHubTrending from './GitHubTrending';
 import { ErrorBoundary } from './ErrorBoundary';
+import River3D from './River3D';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -50,74 +50,48 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-xl p-8 shadow-lg">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-            <User className="w-6 h-6" />
+      {/* Hero Section with 3D River Background */}
+      <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 text-white rounded-2xl overflow-hidden shadow-2xl">
+        <River3D />
+        <div className="relative z-10 p-12 text-center">
+          <div className="mb-8">
+            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-300 via-white to-purple-300 bg-clip-text text-transparent">
+              RiverSkills
+            </h1>
+            <p className="text-2xl opacity-90 max-w-3xl mx-auto leading-relaxed">
+              Where Knowledge Flows Like a River - Unlimited Learning Opportunities
+            </p>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold">Welcome to RiverSkills!</h1>
-            <p className="opacity-90">Free Learning Platform</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {quickActions.map((action, index) => (
+              <Link key={index} to={action.href}>
+                <div className="group bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 hover:bg-white/20 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <div className={`w-12 h-12 ${action.color} ${action.hoverColor} text-white rounded-lg flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110`}>
+                    {action.icon}
+                  </div>
+                  <h3 className="font-semibold mb-2 text-white">{action.title}</h3>
+                  <p className="text-sm text-blue-100">{action.description}</p>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
-        <p className="text-lg opacity-90">
-          Start your learning journey with our curated free resources created by Diwakar Yadav
-        </p>
       </div>
-
-      {/* 3D Interactive Dashboard */}
-      <ErrorBoundary fallback={
-        <Card className="bg-gradient-to-br from-slate-100 to-purple-100 border-slate-200">
-          <CardContent className="p-8 text-center">
-            <h3 className="text-xl font-semibold mb-2 text-slate-800">Interactive Dashboard</h3>
-            <p className="text-slate-600">3D Dashboard temporarily unavailable</p>
-          </CardContent>
-        </Card>
-      }>
-        <div>
-          <h2 className="text-xl font-semibold mb-4 text-slate-800">Interactive Dashboard</h2>
-          <Dashboard3D onNavigate={navigate} />
-        </div>
-      </ErrorBoundary>
 
       {/* Daily Quote */}
       <ErrorBoundary>
         <DailyQuote />
       </ErrorBoundary>
 
-      {/* Quick Actions */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4 text-slate-800">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {quickActions.map((action, index) => (
-            <Link key={index} to={action.href}>
-              <Card className="hover:shadow-xl transition-all duration-300 hover:scale-105 border-slate-200 group">
-                <CardContent className="p-6">
-                  <div className={`w-12 h-12 ${action.color} ${action.hoverColor} text-white rounded-lg flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110`}>
-                    {action.icon}
-                  </div>
-                  <h3 className="font-semibold mb-2 text-slate-800">{action.title}</h3>
-                  <p className="text-sm text-slate-600">{action.description}</p>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </div>
-
       {/* Stats and Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <ErrorBoundary>
-            <NewsSection />
-          </ErrorBoundary>
           <ErrorBoundary>
             <GitHubTrending />
           </ErrorBoundary>
         </div>
         <div className="space-y-6">
-          <Card className="bg-white/90 backdrop-blur-sm border-slate-200 shadow-lg">
+          <Card className="bg-gradient-to-br from-white to-blue-50 border-blue-200 shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-emerald-600" />
@@ -127,7 +101,7 @@ export default function Dashboard() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-600">Free Courses</span>
+                  <span className="text-sm text-slate-600">Courses</span>
                   <span className="font-semibold text-slate-800">200+</span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -139,8 +113,8 @@ export default function Dashboard() {
                   <span className="font-semibold text-slate-800">3</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-600">Resources</span>
-                  <span className="font-semibold text-emerald-600">Free Forever</span>
+                  <span className="text-sm text-slate-600">Learning Paths</span>
+                  <span className="font-semibold text-emerald-600">25+</span>
                 </div>
               </div>
             </CardContent>

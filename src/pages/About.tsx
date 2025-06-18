@@ -9,7 +9,7 @@ export default function About() {
     {
       icon: <Book className="w-6 h-6" />,
       title: "200+ Free Courses",
-      description: "Curated courses from top platforms worldwide, completely free forever."
+      description: "Curated courses from top platforms worldwide, completely free."
     },
     {
       icon: <Globe className="w-6 h-6" />,
@@ -137,8 +137,8 @@ export default function About() {
                       <div className="flex items-center gap-3">
                         <Code2 className="w-5 h-5 text-purple-500" />
                         <div>
-                          <p className="font-medium text-gray-800">Nickname: Raycode</p>
-                          <p className="text-sm text-gray-600">20 years old • Kathmandu, Nepal</p>
+                          <p className="font-medium text-gray-800">Full Stack Developer</p>
+                          <p className="text-sm text-gray-600">Kathmandu, Nepal</p>
                         </div>
                       </div>
                     </div>
@@ -165,7 +165,7 @@ export default function About() {
               <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
                 <CardContent className="p-6 text-center">
                   <div className="text-3xl font-bold mb-2">200+</div>
-                  <div className="text-blue-100">Free Courses</div>
+                  <div className="text-blue-100">Courses</div>
                 </CardContent>
               </Card>
               
@@ -185,8 +185,8 @@ export default function About() {
               
               <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
                 <CardContent className="p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">100%</div>
-                  <div className="text-orange-100">Free Forever</div>
+                  <div className="text-3xl font-bold mb-2">Global</div>
+                  <div className="text-orange-100">Access</div>
                 </CardContent>
               </Card>
             </div>

@@ -18,7 +18,7 @@ export const aiTools: AITool[] = [
     id: 1,
     name: "GitHub Copilot",
     description: "AI-powered code completion and programming assistant",
-    category: "Development",
+    category: "Development & Code",
     image: "/placeholder.svg",
     url: "https://github.com/features/copilot",
     pricing: "Free for students",
@@ -27,256 +27,516 @@ export const aiTools: AITool[] = [
   },
   {
     id: 2,
-    name: "Replit AI",
-    description: "AI assistant for coding, debugging, and explaining code",
-    category: "Development",
-    image: "/placeholder.svg",
-    url: "https://replit.com",
-    pricing: "Free tier available",
-    features: ["Code generation", "Bug fixing", "Code explanation"],
-    isNew: true
-  },
-  {
-    id: 3,
-    name: "Tabnine",
-    description: "AI code completion for all programming languages",
-    category: "Development",
-    image: "/placeholder.svg",
-    url: "https://tabnine.com",
-    pricing: "Free tier available",
-    features: ["Auto-completion", "Code suggestions", "Team learning"]
-  },
-  {
-    id: 4,
-    name: "Codex by OpenAI",
-    description: "AI system that translates natural language to code",
-    category: "Development",
-    image: "/placeholder.svg",
-    url: "https://openai.com/codex",
-    pricing: "Free trial available",
-    features: ["Natural language to code", "Multiple languages", "Code explanation"]
-  },
-  {
-    id: 5,
-    name: "Cursor",
+    name: "Cursor AI",
     description: "AI-first code editor built for pair programming with AI",
-    category: "Development",
+    category: "Development & Code",
     image: "/placeholder.svg",
     url: "https://cursor.sh",
     pricing: "Free",
     features: ["AI pair programming", "Code editing", "Natural language commands"]
   },
+  {
+    id: 3,
+    name: "Replit AI",
+    description: "AI assistant for coding, debugging, and explaining code",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://replit.com",
+    pricing: "Free tier",
+    features: ["Code generation", "Bug fixing", "Code explanation"],
+    isNew: true
+  },
+  {
+    id: 4,
+    name: "Tabnine",
+    description: "AI code completion for all programming languages",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://tabnine.com",
+    pricing: "Free tier",
+    features: ["Auto-completion", "Code suggestions", "Team learning"]
+  },
+  {
+    id: 5,
+    name: "Codeium",
+    description: "Free AI-powered toolkit for developers",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://codeium.com",
+    pricing: "Free",
+    features: ["Code completion", "Chat assistant", "Code search"]
+  },
 
-  // Design Tools
+  // Design & Creative Tools
   {
     id: 6,
-    name: "Figma AI",
-    description: "AI-powered design assistant in Figma",
-    category: "Design",
+    name: "DALL-E 3",
+    description: "Advanced AI image generation from OpenAI",
+    category: "Image Generation",
     image: "/placeholder.svg",
-    url: "https://figma.com",
-    pricing: "Free tier available",
-    features: ["Design automation", "Asset generation", "Layout suggestions"],
+    url: "https://openai.com/dall-e-3",
+    pricing: "Free credits",
+    features: ["Text to image", "High quality", "Style control"],
     isFeatured: true
   },
   {
     id: 7,
-    name: "Canva Magic Design",
-    description: "AI-powered design creation and editing",
-    category: "Design",
+    name: "Midjourney",
+    description: "AI art generator creating stunning visual content",
+    category: "Image Generation",
     image: "/placeholder.svg",
-    url: "https://canva.com",
-    pricing: "Free tier available",
-    features: ["Auto design", "Background removal", "Magic resize"]
+    url: "https://midjourney.com",
+    pricing: "Free trial",
+    features: ["Art generation", "Style variations", "Community gallery"]
   },
   {
     id: 8,
-    name: "DALL-E 2",
-    description: "AI system that creates realistic images from text descriptions",
-    category: "Design",
+    name: "Stable Diffusion",
+    description: "Open-source AI image generation model",
+    category: "Image Generation",
     image: "/placeholder.svg",
-    url: "https://openai.com/dall-e-2",
-    pricing: "Free credits monthly",
-    features: ["Text to image", "Image editing", "Style variations"]
+    url: "https://stability.ai",
+    pricing: "Free",
+    features: ["Open source", "Local installation", "Customizable"]
   },
   {
     id: 9,
-    name: "Midjourney",
-    description: "AI art generator that creates images from text prompts",
-    category: "Design",
+    name: "Leonardo AI",
+    description: "Production-quality AI art generation platform",
+    category: "Image Generation",
     image: "/placeholder.svg",
-    url: "https://midjourney.com",
-    pricing: "Free trial available",
-    features: ["Art generation", "Style control", "High quality images"]
+    url: "https://leonardo.ai",
+    pricing: "Free tier",
+    features: ["Game assets", "Concept art", "Image training"]
   },
   {
     id: 10,
-    name: "Stable Diffusion",
-    description: "Open-source AI image generation model",
-    category: "Design",
+    name: "Playground AI",
+    description: "Free AI image generator with commercial use",
+    category: "Image Generation",
     image: "/placeholder.svg",
-    url: "https://stability.ai",
-    pricing: "Free (open source)",
-    features: ["Image generation", "Local installation", "Customizable models"]
+    url: "https://playgroundai.com",
+    pricing: "Free",
+    features: ["Commercial license", "Multiple models", "Easy interface"]
   },
 
-  // Learning Tools
+  // Writing & Content Tools
   {
     id: 11,
     name: "ChatGPT",
-    description: "AI chatbot for learning, coding help, and explanations",
-    category: "Learning",
+    description: "Advanced AI chatbot for conversations and assistance",
+    category: "Chatbots & Assistants",
     image: "/placeholder.svg",
     url: "https://chat.openai.com",
-    pricing: "Free tier available",
-    features: ["Code help", "Explanations", "Learning assistance"],
+    pricing: "Free tier",
+    features: ["Conversations", "Code help", "Writing assistance"],
     isFeatured: true
   },
   {
     id: 12,
     name: "Claude",
-    description: "AI assistant for analysis, research, and learning",
-    category: "Learning",
+    description: "AI assistant by Anthropic for analysis and creativity",
+    category: "Chatbots & Assistants",
     image: "/placeholder.svg",
     url: "https://claude.ai",
-    pricing: "Free tier available",
-    features: ["Research help", "Document analysis", "Learning support"]
+    pricing: "Free tier",
+    features: ["Document analysis", "Creative writing", "Code assistance"]
   },
   {
     id: 13,
-    name: "Perplexity AI",
-    description: "AI-powered search engine for research and learning",
-    category: "Learning",
+    name: "Gemini",
+    description: "Google's multimodal AI assistant",
+    category: "Chatbots & Assistants",
     image: "/placeholder.svg",
-    url: "https://perplexity.ai",
-    pricing: "Free tier available",
-    features: ["Research assistance", "Source citations", "Real-time information"]
+    url: "https://gemini.google.com",
+    pricing: "Free",
+    features: ["Multimodal", "Real-time info", "Google integration"]
   },
   {
     id: 14,
-    name: "Socratic by Google",
-    description: "AI-powered homework helper for students",
-    category: "Learning",
+    name: "Perplexity AI",
+    description: "AI search engine with cited sources",
+    category: "Research & Analysis",
     image: "/placeholder.svg",
-    url: "https://socratic.org",
-    pricing: "Free",
-    features: ["Homework help", "Step-by-step solutions", "Multiple subjects"]
+    url: "https://perplexity.ai",
+    pricing: "Free tier",
+    features: ["Research", "Citations", "Real-time data"]
   },
   {
     id: 15,
-    name: "Khan Academy Khanmigo",
-    description: "AI tutor for personalized learning",
-    category: "Learning",
+    name: "Quillbot",
+    description: "AI paraphrasing and writing enhancement tool",
+    category: "Writing & Content",
     image: "/placeholder.svg",
-    url: "https://khanacademy.org",
-    pricing: "Free",
-    features: ["Personalized tutoring", "Learning paths", "Progress tracking"]
+    url: "https://quillbot.com",
+    pricing: "Free tier",
+    features: ["Paraphrasing", "Grammar check", "Summarization"]
   },
 
-  // API and Integration Tools
+  // Lesser-known but powerful tools
   {
     id: 16,
-    name: "Postman AI",
-    description: "AI-powered API testing and development",
-    category: "Development",
+    name: "Phind",
+    description: "AI search engine optimized for developers",
+    category: "Research & Analysis",
     image: "/placeholder.svg",
-    url: "https://postman.com",
-    pricing: "Free tier available",
-    features: ["API testing", "Documentation generation", "Test automation"]
+    url: "https://phind.com",
+    pricing: "Free",
+    features: ["Developer-focused", "Code examples", "Technical answers"]
   },
   {
     id: 17,
-    name: "Zapier AI",
-    description: "AI-powered automation between apps",
-    category: "Productivity",
+    name: "You.com",
+    description: "AI search with customizable sources",
+    category: "Research & Analysis",
     image: "/placeholder.svg",
-    url: "https://zapier.com",
-    pricing: "Free tier available",
-    features: ["Workflow automation", "App integration", "AI suggestions"]
+    url: "https://you.com",
+    pricing: "Free",
+    features: ["Custom sources", "AI chat", "Web search"]
   },
   {
     id: 18,
-    name: "Notion AI",
-    description: "AI writing assistant built into Notion",
-    category: "Productivity",
+    name: "Poe",
+    description: "Access multiple AI models in one platform",
+    category: "Chatbots & Assistants",
     image: "/placeholder.svg",
-    url: "https://notion.so",
-    pricing: "Free trial available",
-    features: ["Writing assistance", "Content generation", "Data analysis"]
+    url: "https://poe.com",
+    pricing: "Free tier",
+    features: ["Multiple models", "GPT-4 access", "Claude access"]
   },
-
-  // Free Text and Content Tools
   {
     id: 19,
-    name: "Grammarly",
-    description: "AI-powered writing assistant and grammar checker",
-    category: "Writing",
+    name: "Character.AI",
+    description: "Create and chat with AI characters",
+    category: "Chatbots & Assistants",
     image: "/placeholder.svg",
-    url: "https://grammarly.com",
-    pricing: "Free tier available",
-    features: ["Grammar checking", "Style suggestions", "Plagiarism detection"]
+    url: "https://character.ai",
+    pricing: "Free",
+    features: ["Custom characters", "Role-playing", "Entertainment"]
   },
   {
     id: 20,
-    name: "QuillBot",
-    description: "AI paraphrasing and writing enhancement tool",
-    category: "Writing",
-    image: "/placeholder.svg",
-    url: "https://quillbot.com",
-    pricing: "Free tier available",
-    features: ["Paraphrasing", "Grammar checking", "Summarization"]
-  },
-
-  // Additional Free Tools
-  {
-    id: 21,
     name: "Hugging Face",
     description: "Open-source AI models and tools platform",
-    category: "Development",
+    category: "Development & Code",
     image: "/placeholder.svg",
     url: "https://huggingface.co",
     pricing: "Free",
-    features: ["Pre-trained models", "Model hosting", "AI demos"],
+    features: ["Model hub", "Spaces", "Datasets"],
     isNew: true
+  },
+
+  // Video and Audio Tools
+  {
+    id: 21,
+    name: "RunwayML",
+    description: "AI-powered video editing and generation",
+    category: "Video & Audio",
+    image: "/placeholder.svg",
+    url: "https://runwayml.com",
+    pricing: "Free tier",
+    features: ["Video generation", "AI editing", "Green screen"]
   },
   {
     id: 22,
-    name: "Google Colab",
-    description: "Free cloud-based Jupyter notebook environment",
-    category: "Development",
+    name: "ElevenLabs",
+    description: "AI voice synthesis and cloning",
+    category: "Video & Audio",
     image: "/placeholder.svg",
-    url: "https://colab.research.google.com",
-    pricing: "Free",
-    features: ["GPU access", "Python environment", "Collaborative coding"]
+    url: "https://elevenlabs.io",
+    pricing: "Free tier",
+    features: ["Voice cloning", "Text to speech", "Multiple languages"]
   },
   {
     id: 23,
-    name: "Teachable Machine",
-    description: "Easy-to-use tool for creating machine learning models",
-    category: "Learning",
+    name: "Murf AI",
+    description: "AI voice generator for content creation",
+    category: "Video & Audio",
     image: "/placeholder.svg",
-    url: "https://teachablemachine.withgoogle.com",
-    pricing: "Free",
-    features: ["No-code ML", "Image recognition", "Sound classification"]
+    url: "https://murf.ai",
+    pricing: "Free trial",
+    features: ["Voice over", "Multiple voices", "Commercial use"]
   },
   {
     id: 24,
-    name: "RunwayML",
-    description: "Creative AI tools for content creation",
-    category: "Design",
+    name: "Pictory",
+    description: "AI video creation from text and blog posts",
+    category: "Video & Audio",
     image: "/placeholder.svg",
-    url: "https://runwayml.com",
-    pricing: "Free tier available",
-    features: ["Video editing", "Image generation", "Creative effects"]
+    url: "https://pictory.ai",
+    pricing: "Free trial",
+    features: ["Text to video", "Blog to video", "Auto captions"]
   },
+
+  // Productivity Tools
   {
     id: 25,
-    name: "Poe by Quora",
-    description: "Access to multiple AI chatbots in one platform",
-    category: "Learning",
+    name: "Notion AI",
+    description: "AI writing assistant built into Notion",
+    category: "Productivity & Automation",
     image: "/placeholder.svg",
-    url: "https://poe.com",
-    pricing: "Free tier available",
-    features: ["Multiple AI models", "Chat interface", "Learning assistance"]
+    url: "https://notion.so",
+    pricing: "Free trial",
+    features: ["Writing help", "Summarization", "Translation"]
+  },
+  {
+    id: 26,
+    name: "Zapier AI",
+    description: "AI-powered automation between apps",
+    category: "Productivity & Automation",
+    image: "/placeholder.svg",
+    url: "https://zapier.com",
+    pricing: "Free tier",
+    features: ["Workflow automation", "AI suggestions", "App connections"]
+  },
+  {
+    id: 27,
+    name: "Otter AI",
+    description: "AI meeting notes and transcription",
+    category: "Productivity & Automation",
+    image: "/placeholder.svg",
+    url: "https://otter.ai",
+    pricing: "Free tier",
+    features: ["Meeting transcription", "AI summaries", "Action items"]
+  },
+
+  // Hidden gems and specialized tools
+  {
+    id: 28,
+    name: "Scrivener AI",
+    description: "AI writing assistant for long-form content",
+    category: "Writing & Content",
+    image: "/placeholder.svg",
+    url: "https://scrivener.com",
+    pricing: "Free trial",
+    features: ["Long-form writing", "Research organization", "Project management"]
+  },
+  {
+    id: 29,
+    name: "Synthesia",
+    description: "AI video generation with virtual presenters",
+    category: "Video & Audio",
+    image: "/placeholder.svg",
+    url: "https://synthesia.io",
+    pricing: "Free trial",
+    features: ["AI presenters", "Multiple languages", "Custom avatars"]
+  },
+  {
+    id: 30,
+    name: "Beautiful AI",
+    description: "AI-powered presentation design",
+    category: "Design & Graphics",
+    image: "/placeholder.svg",
+    url: "https://beautiful.ai",
+    pricing: "Free tier",
+    features: ["Smart templates", "Auto-design", "Team collaboration"]
+  },
+
+  // More specialized and unknown tools
+  {
+    id: 31,
+    name: "Tome",
+    description: "AI storytelling and presentation tool",
+    category: "Design & Graphics",
+    image: "/placeholder.svg",
+    url: "https://tome.app",
+    pricing: "Free tier",
+    features: ["AI storytelling", "Interactive content", "Smart layouts"]
+  },
+  {
+    id: 32,
+    name: "Gamma",
+    description: "AI-powered document and presentation creator",
+    category: "Design & Graphics",
+    image: "/placeholder.svg",
+    url: "https://gamma.app",
+    pricing: "Free tier",
+    features: ["One-click design", "Interactive content", "Web publishing"]
+  },
+  {
+    id: 33,
+    name: "Ideogram",
+    description: "AI image generator with text rendering",
+    category: "Image Generation",
+    image: "/placeholder.svg",
+    url: "https://ideogram.ai",
+    pricing: "Free tier",
+    features: ["Text in images", "Logo creation", "Typography"]
+  },
+  {
+    id: 34,
+    name: "Krea AI",
+    description: "Real-time AI image generation",
+    category: "Image Generation",
+    image: "/placeholder.svg",
+    url: "https://krea.ai",
+    pricing: "Free tier",
+    features: ["Real-time generation", "Style transfer", "Image enhancement"]
+  },
+  {
+    id: 35,
+    name: "Fal AI",
+    description: "Fast AI image and video generation API",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://fal.ai",
+    pricing: "Free tier",
+    features: ["Fast API", "Multiple models", "Developer-friendly"]
+  },
+
+  // Educational and learning tools
+  {
+    id: 36,
+    name: "Socratic",
+    description: "Google's AI homework helper",
+    category: "Research & Analysis",
+    image: "/placeholder.svg",
+    url: "https://socratic.org",
+    pricing: "Free",
+    features: ["Homework help", "Step solutions", "Multiple subjects"]
+  },
+  {
+    id: 37,
+    name: "Teachable Machine",
+    description: "Google's no-code machine learning tool",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://teachablemachine.withgoogle.com",
+    pricing: "Free",
+    features: ["No-code ML", "Image classification", "Sound recognition"]
+  },
+  {
+    id: 38,
+    name: "Elicit",
+    description: "AI research assistant for academic papers",
+    category: "Research & Analysis",
+    image: "/placeholder.svg",
+    url: "https://elicit.org",
+    pricing: "Free tier",
+    features: ["Paper analysis", "Research workflows", "Citation finding"]
+  },
+
+  // More cutting-edge tools
+  {
+    id: 39,
+    name: "Fliki",
+    description: "AI video creation from text with voices",
+    category: "Video & Audio",
+    image: "/placeholder.svg",
+    url: "https://fliki.ai",
+    pricing: "Free tier",
+    features: ["Text to video", "AI voices", "Stock media"]
+  },
+  {
+    id: 40,
+    name: "Luma AI",
+    description: "AI 3D capture and generation",
+    category: "Design & Graphics",
+    image: "/placeholder.svg",
+    url: "https://lumalabs.ai",
+    pricing: "Free tier",
+    features: ["3D capture", "NeRF technology", "Mobile app"]
+  },
+  {
+    id: 41,
+    name: "Replicate",
+    description: "Run AI models in the cloud",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://replicate.com",
+    pricing: "Pay per use",
+    features: ["Model hosting", "API access", "Open source models"]
+  },
+  {
+    id: 42,
+    name: "Anthropic Console",
+    description: "Claude AI API and development tools",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://console.anthropic.com",
+    pricing: "Free tier",
+    features: ["Claude API", "Safety focused", "Enterprise ready"]
+  },
+  {
+    id: 43,
+    name: "Cohere",
+    description: "Enterprise-grade language AI platform",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://cohere.ai",
+    pricing: "Free tier",
+    features: ["Language models", "Enterprise AI", "Custom training"]
+  },
+  {
+    id: 44,
+    name: "Weights & Biases",
+    description: "MLOps platform for machine learning",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://wandb.ai",
+    pricing: "Free tier",
+    features: ["Experiment tracking", "Model versioning", "Collaboration"]
+  },
+  {
+    id: 45,
+    name: "Gradio",
+    description: "Build machine learning demos quickly",
+    category: "Development & Code",
+    image: "/placeholder.svg",
+    url: "https://gradio.app",
+    pricing: "Free",
+    features: ["Quick demos", "Web interfaces", "Python integration"]
+  },
+
+  // Final batch of specialized tools
+  {
+    id: 46,
+    name: "Descript",
+    description: "AI-powered audio and video editing",
+    category: "Video & Audio",
+    image: "/placeholder.svg",
+    url: "https://descript.com",
+    pricing: "Free tier",
+    features: ["Text-based editing", "Voice cloning", "Transcription"]
+  },
+  {
+    id: 47,
+    name: "Janitor AI",
+    description: "AI character chat platform",
+    category: "Chatbots & Assistants",
+    image: "/placeholder.svg",
+    url: "https://janitorai.com",
+    pricing: "Free",
+    features: ["Character creation", "NSFW chat", "Community"]
+  },
+  {
+    id: 48,
+    name: "Recraft",
+    description: "AI design tool for vector graphics",
+    category: "Design & Graphics",
+    image: "/placeholder.svg",
+    url: "https://recraft.ai",
+    pricing: "Free tier",
+    features: ["Vector generation", "Brand consistency", "Design systems"]
+  },
+  {
+    id: 49,
+    name: "Spline AI",
+    description: "AI-powered 3D design tool",
+    category: "Design & Graphics",
+    image: "/placeholder.svg",
+    url: "https://spline.design",
+    pricing: "Free tier",
+    features: ["3D design", "Web integration", "Collaborative"]
+  },
+  {
+    id: 50,
+    name: "Jitter",
+    description: "AI motion graphics and animation",
+    category: "Video & Audio",
+    image: "/placeholder.svg",
+    url: "https://jitter.video",
+    pricing: "Free tier",
+    features: ["Motion graphics", "Animation", "Export formats"]
   }
 ];
