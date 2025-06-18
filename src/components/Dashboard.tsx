@@ -1,22 +1,26 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, MessageSquare, Brain, TrendingUp, User, Calendar } from 'lucide-react';
+import { BookOpen, MessageSquare, Brain, TrendingUp, User, Calendar, Bookmark, Target } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import NewsSection from './NewsSection';
 import DailyQuote from './DailyQuote';
 import GitHubTrending from './GitHubTrending';
 import { ErrorBoundary } from './ErrorBoundary';
 import River3D from './River3D';
+import LearningPaths from './LearningPaths';
+import ProgressTracking from './ProgressTracking';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState('overview');
 
   console.log('Dashboard rendering for guest user');
 
   const quickActions = [
     {
       title: 'Browse Courses',
-      description: 'Explore 200+ free courses from top platforms',
+      description: 'Explore 200+ courses from top platforms',
       icon: <BookOpen className="w-6 h-6" />,
       href: '/courses',
       color: 'bg-emerald-600',
@@ -48,6 +52,69 @@ export default function Dashboard() {
     },
   ];
 
+  const dashboardSections = [
+    { id: 'overview', label: 'Overview', icon: <Calendar className="w-4 h-4" /> },
+    { id: 'progress', label: 'Progress', icon: <Target className="w-4 h-4" /> },
+    { id: 'paths', label: 'Learning Paths', icon: <BookOpen className="w-4 h-4" /> },
+  ];
+
+  const renderActiveSection = () => {
+    switch (activeSection) {
+      case 'progress':
+        return <ProgressTracking />;
+      case 'paths':
+        return <LearningPaths />;
+      default:
+        return (
+          <div className="space-y-8">
+            {/* Daily Quote */}
+            <ErrorBoundary>
+              <DailyQuote />
+            </ErrorBoundary>
+
+            {/* Stats and Content */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 space-y-6">
+                <ErrorBoundary>
+                  <GitHubTrending />
+                </ErrorBoundary>
+              </div>
+              <div className="space-y-6">
+                <Card className="bg-gradient-to-br from-white to-blue-50 border-blue-200 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5 text-emerald-600" />
+                      Platform Stats
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-slate-600">Courses</span>
+                        <span className="font-semibold text-slate-800">200+</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-slate-600">AI Tools</span>
+                        <span className="font-semibold text-slate-800">50+</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-slate-600">Languages</span>
+                        <span className="font-semibold text-slate-800">3</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-slate-600">Learning Paths</span>
+                        <span className="font-semibold text-emerald-600">25+</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Hero Section with 3D River Background */}
@@ -78,49 +145,32 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Daily Quote */}
-      <ErrorBoundary>
-        <DailyQuote />
-      </ErrorBoundary>
-
-      {/* Stats and Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          <ErrorBoundary>
-            <GitHubTrending />
-          </ErrorBoundary>
-        </div>
-        <div className="space-y-6">
-          <Card className="bg-gradient-to-br from-white to-blue-50 border-blue-200 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-emerald-600" />
-                Platform Stats
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-600">Courses</span>
-                  <span className="font-semibold text-slate-800">200+</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-600">AI Tools</span>
-                  <span className="font-semibold text-slate-800">50+</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-600">Languages</span>
-                  <span className="font-semibold text-slate-800">3</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-600">Learning Paths</span>
-                  <span className="font-semibold text-emerald-600">25+</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      {/* Dashboard Navigation */}
+      <div className="flex justify-center">
+        <div className="bg-white rounded-full p-2 shadow-lg border">
+          <div className="flex gap-2">
+            {dashboardSections.map((section) => (
+              <Button
+                key={section.id}
+                variant={activeSection === section.id ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveSection(section.id)}
+                className={`flex items-center gap-2 ${
+                  activeSection === section.id 
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white' 
+                    : 'text-gray-600 hover:text-blue-600'
+                }`}
+              >
+                {section.icon}
+                {section.label}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Dynamic Content */}
+      {renderActiveSection()}
     </div>
   );
 }

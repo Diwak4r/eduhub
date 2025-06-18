@@ -11,6 +11,7 @@ import Resources from "./pages/Resources";
 import AITools from "./pages/AITools";
 import Chat from "./pages/Chat";
 import About from "./pages/About";
+import Bookmarks from "./pages/Bookmarks";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -42,6 +43,7 @@ const App = () => {
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/about" element={<About />} />
+              <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </TooltipProvider>
