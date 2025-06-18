@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -55,8 +54,8 @@ export default function AdvancedSearch({ onSearch, className }: SearchProps) {
     const newActiveFilters = Object.entries(newFilters)
       .filter(([filterKey, filterValue]) => {
         if (filterKey === 'query') return filterValue !== '';
-        if (filterKey === 'rating') return filterValue > 0;
-        return !filterValue.toString().startsWith('All') && filterValue !== 'Any Duration';
+        if (filterKey === 'rating') return typeof filterValue === 'number' && filterValue > 0;
+        return typeof filterValue === 'string' && !filterValue.startsWith('All') && filterValue !== 'Any Duration';
       })
       .map(([key, value]) => `${key}: ${value}`);
     
