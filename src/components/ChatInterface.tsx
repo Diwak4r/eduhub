@@ -5,7 +5,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Send, User, Bot, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
 
 interface Message {
   id: string;
@@ -15,7 +14,6 @@ interface Message {
 }
 
 export default function ChatInterface() {
-  const { user, loading: authLoading } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +23,7 @@ export default function ChatInterface() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (user && !initialized && !authLoading) {
+    if (!initialized) {
       setMessages([{
         id: '1',
         content: "Hello! I'm Diwa, your learning assistant for RiverSkills! 🌊\n\nI'm here to help you navigate our platform created by Diwakar Yadav. I can help you:\n\n• Find the perfect free courses from our 200+ collection\n• Suggest learning paths in English, Hindi, or Nepali\n• Recommend AI tools for your projects\n• Answer questions about programming and technology\n• Share information about RiverSkills and its creator\n\nWhat would you like to learn today?",
@@ -34,7 +32,7 @@ export default function ChatInterface() {
       }]);
       setInitialized(true);
     }
-  }, [user, initialized, authLoading]);
+  }, [initialized]);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -46,7 +44,7 @@ export default function ChatInterface() {
 
   const handleSendMessage = useCallback(async () => {
     const messageToSend = inputMessage.trim();
-    if (!messageToSend || isLoading || !user) return;
+    if (!messageToSend || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -113,7 +111,7 @@ Please respond as a helpful learning assistant who knows about RiverSkills and c
     } finally {
       setIsLoading(false);
     }
-  }, [inputMessage, isLoading, user, toast]);
+  }, [inputMessage, isLoading, toast]);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -121,26 +119,6 @@ Please respond as a helpful learning assistant who knows about RiverSkills and c
       handleSendMessage();
     }
   }, [handleSendMessage]);
-
-  if (authLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border border-gray-200">
-        <AlertCircle className="w-12 h-12 text-gray-400 mb-4" />
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">Authentication Required</h3>
-        <p className="text-gray-500 text-center mb-4">
-          Please sign in to chat with Diwa, your learning assistant.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col h-full max-h-[80vh] bg-white rounded-lg border border-blue-200 shadow-lg">

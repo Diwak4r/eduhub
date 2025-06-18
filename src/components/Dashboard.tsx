@@ -1,5 +1,4 @@
 
-import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, MessageSquare, Brain, TrendingUp, User, Calendar } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,10 +9,9 @@ import GitHubTrending from './GitHubTrending';
 import { ErrorBoundary } from './ErrorBoundary';
 
 export default function Dashboard() {
-  const { user } = useAuth();
   const navigate = useNavigate();
 
-  console.log('Dashboard rendering for user:', user?.email);
+  console.log('Dashboard rendering for guest user');
 
   const quickActions = [
     {
@@ -59,14 +57,12 @@ export default function Dashboard() {
             <User className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Welcome back to RiverSkills!</h1>
-            <p className="opacity-90">
-              {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guest'}
-            </p>
+            <h1 className="text-2xl font-bold">Welcome to RiverSkills!</h1>
+            <p className="opacity-90">Free Learning Platform</p>
           </div>
         </div>
         <p className="text-lg opacity-90">
-          Continue your learning journey with our curated free resources created by Diwakar Yadav
+          Start your learning journey with our curated free resources created by Diwakar Yadav
         </p>
       </div>
 
