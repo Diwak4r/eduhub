@@ -69,11 +69,14 @@ function createGeminiConfig(prompt: string, isExperimental = true): GeminiConfig
 export async function callGeminiAPI(apiKey: string, prompt: string): Promise<string> {
   console.log('Calling new Gemini API...');
   
+  // Use the provided API key directly
+  const GEMINI_API_KEY = "AIzaSyAas9Qv7vdL2f2uUmJTZ7IVXs2-zrhifFM";
+  
   try {
     // Try experimental model first
     const experimentalConfig = createGeminiConfig(prompt, true);
     const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODELS.EXPERIMENTAL}:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODELS.EXPERIMENTAL}:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -96,7 +99,7 @@ export async function callGeminiAPI(apiKey: string, prompt: string): Promise<str
     console.log('Trying fallback to stable model...');
     const fallbackConfig = createGeminiConfig(prompt, false);
     const fallbackResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODELS.STABLE}:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODELS.STABLE}:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

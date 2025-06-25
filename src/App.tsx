@@ -5,13 +5,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import Index from "./pages/Index";
+import ModernIndex from "./pages/ModernIndex";
 import Courses from "./pages/Courses";
 import Resources from "./pages/Resources";
 import AITools from "./pages/AITools";
 import Chat from "./pages/Chat";
 import About from "./pages/About";
-import Bookmarks from "./pages/Bookmarks";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -37,13 +36,12 @@ const App = () => {
             <Toaster />
             <Sonner />
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<ModernIndex />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/about" element={<About />} />
-              <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </TooltipProvider>

@@ -1,5 +1,5 @@
 
-import Header from "@/components/Header";
+import ModernHeader from "@/components/ModernHeader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Lightbulb, Rocket, Heart, Target, Globe, Users, Mail, GraduationCap, Briefcase, Code2, Star, Book, Zap } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,7 +37,7 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Header />
+      <ModernHeader />
       <main className="pt-20">
         {/* Hero Section */}
         <section className="py-16 px-6 relative overflow-hidden">
@@ -103,10 +103,10 @@ export default function About() {
                 <div className="flex flex-col md:flex-row items-center gap-8">
                   <div className="text-center md:text-left">
                     <Avatar className="w-32 h-32 border-4 border-white shadow-lg mx-auto md:mx-0">
-                      <AvatarImage src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" alt="Diwakar Ray Yadav" />
-                      <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DRY</AvatarFallback>
+                      <AvatarImage src="/lovable-uploads/5aebc577-c367-47ca-b60b-74b3d331753b.png" alt="Diwakar Yadav" />
+                      <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">DY</AvatarFallback>
                     </Avatar>
-                    <h3 className="text-2xl font-bold text-gray-800 mt-4">Diwakar Ray Yadav</h3>
+                    <h3 className="text-2xl font-bold text-gray-800 mt-4">Diwakar Yadav</h3>
                     <p className="text-blue-600 font-medium">Creator & Developer</p>
                     <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
                       <Mail className="w-4 h-4 text-gray-500" />
@@ -147,49 +147,12 @@ export default function About() {
                       <p className="text-gray-700 italic">
                         "As a student juggling work and studies, I understand the challenges of accessing quality education. RiverSkills is my contribution to making learning accessible to everyone, especially students like me who are building their future one project at a time."
                       </p>
-                      <p className="text-right mt-2 font-medium text-blue-600">— Diwakar Ray Yadav</p>
+                      <p className="text-right mt-2 font-medium text-blue-600">— Diwakar Yadav</p>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </section>
-
-        {/* Platform Stats */}
-        <section className="py-16 px-6">
-          <div className="container mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl font-bold text-gray-800 mb-12">Platform Impact</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-                <CardContent className="p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">200+</div>
-                  <div className="text-blue-100">Courses</div>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
-                <CardContent className="p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">50+</div>
-                  <div className="text-green-100">AI Tools</div>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-                <CardContent className="p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">3</div>
-                  <div className="text-purple-100">Languages</div>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
-                <CardContent className="p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">Global</div>
-                  <div className="text-orange-100">Access</div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </section>
 
@@ -210,7 +173,7 @@ export default function About() {
               </a>
             </div>
             <p className="mt-8 text-blue-200">
-              "Made with Struggle and Passion by Diwakar Ray Yadav" 💪🌊
+              "Built with Passion by Diwakar Yadav" 💪🌊
             </p>
           </div>
         </section>
