@@ -6,7 +6,6 @@ import { checkRateLimit } from './rate-limit.ts';
 import { validateMessage, sanitizeInput } from './validation.ts';
 import { getSystemPrompt } from './prompts.ts';
 import { callGeminiAPI } from './gemini-api.ts';
-import { authenticateUser } from './auth.ts';
 import type { ChatRequest } from './types.ts';
 
 serve(async (req) => {
@@ -32,12 +31,11 @@ serve(async (req) => {
       });
     }
 
-    // Authenticate user
-    const authHeader = req.headers.get('authorization');
-    const user = await authenticateUser(authHeader, supabaseUrl, supabaseServiceKey);
+    // Skip authentication for now - use a default user ID for rate limiting
+    const defaultUserId = 'anonymous-user';
 
     // Rate limiting check
-    if (!checkRateLimit(user.id)) {
+    if (!checkRateLimit(defaultUserId)) {
       return new Response(JSON.stringify({ 
         error: 'Rate limit exceeded. Please try again later.' 
       }), {
@@ -89,13 +87,6 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in chat-with-diwa function:', error);
     
-    if (error.message === 'Authorization required' || error.message === 'Invalid or expired token') {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
     if (error.message.includes('AI service error') || error.message.includes('Unable to generate response')) {
       return new Response(JSON.stringify({ error: error.message }), {
         status: 503,
