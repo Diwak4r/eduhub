@@ -1,5 +1,5 @@
 
-import { ReactNode, ButtonHTMLAttributes } from 'react';
+import { ReactNode, ButtonHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -10,9 +10,10 @@ interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loadingText?: string;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
+  asChild?: boolean;
 }
 
-export default function AnimatedButton({
+const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(({
   children,
   variant = 'primary',
   size = 'md',
@@ -22,8 +23,9 @@ export default function AnimatedButton({
   iconPosition = 'left',
   className,
   disabled,
+  asChild = false,
   ...props
-}: AnimatedButtonProps) {
+}, ref) => {
   const baseClasses = cn(
     'relative inline-flex items-center justify-center font-medium transition-all duration-300',
     'focus:outline-none focus:ring-2 focus:ring-offset-2',
@@ -60,8 +62,19 @@ export default function AnimatedButton({
     lg: 'px-8 py-3.5 text-lg rounded-2xl'
   };
 
+  if (asChild && typeof children === 'object' && children !== null && 'type' in children) {
+    // Clone the child element and apply our styles
+    const childElement = children as React.ReactElement;
+    return React.cloneElement(childElement, {
+      className: cn(baseClasses, variantClasses[variant], sizeClasses[size], className),
+      ref,
+      ...props
+    });
+  }
+
   return (
     <button
+      ref={ref}
       className={cn(baseClasses, variantClasses[variant], sizeClasses[size], className)}
       disabled={disabled || loading}
       {...props}
@@ -89,4 +102,8 @@ export default function AnimatedButton({
       </span>
     </button>
   );
-}
+});
+
+AnimatedButton.displayName = 'AnimatedButton';
+
+export default AnimatedButton;

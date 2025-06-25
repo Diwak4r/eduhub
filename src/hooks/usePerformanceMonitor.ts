@@ -62,7 +62,7 @@ export const usePerformanceMonitor = () => {
             setMetrics(prev => ({
               ...prev,
               ttfb: navigation.responseStart - navigation.requestStart,
-              fcp: navigation.domContentLoadedEventEnd - navigation.navigationStart
+              fcp: navigation.domContentLoadedEventEnd - navigation.fetchStart
             }));
             setIsLoading(false);
           }, 0);

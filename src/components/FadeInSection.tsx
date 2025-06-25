@@ -18,7 +18,7 @@ export default function FadeInSection({
   direction = 'up',
   duration = 600
 }: FadeInSectionProps) {
-  const { elementRef, isVisible } = useIntersectionObserver({
+  const { elementRef, isVisible } = useIntersectionObserver<HTMLDivElement>({
     threshold: 0.1,
     triggerOnce: true
   });

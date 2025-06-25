@@ -7,6 +7,7 @@ import AnimatedButton from './AnimatedButton';
 import FadeInSection from './FadeInSection';
 import SkeletonLoader from './SkeletonLoader';
 import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const testimonials = [
   {
@@ -123,15 +124,16 @@ export default function EnhancedHeroSection() {
           {/* Action Buttons */}
           <FadeInSection delay={400}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-              <AnimatedButton
-                variant="primary"
-                size="lg"
-                icon={<ArrowRight className="w-5 h-5" />}
-                iconPosition="right"
-                asChild
-              >
-                <Link to="/courses">Start Learning Now</Link>
-              </AnimatedButton>
+              <Link to="/courses">
+                <AnimatedButton
+                  variant="primary"
+                  size="lg"
+                  icon={<ArrowRight className="w-5 h-5" />}
+                  iconPosition="right"
+                >
+                  Start Learning Now
+                </AnimatedButton>
+              </Link>
               
               <AnimatedButton
                 variant="outline"
