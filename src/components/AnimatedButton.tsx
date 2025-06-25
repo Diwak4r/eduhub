@@ -1,5 +1,5 @@
 
-import { ReactNode, ButtonHTMLAttributes, forwardRef } from 'react';
+import React, { ReactNode, ButtonHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
