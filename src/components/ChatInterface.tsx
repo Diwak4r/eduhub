@@ -26,7 +26,7 @@ export default function ChatInterface() {
     if (!initialized) {
       setMessages([{
         id: '1',
-        content: "Hello! I'm Diwa, your AI learning companion for RiverSkills! 🌊✨\n\nI'm here to guide you through our platform and help you:\n\n🎓 Find perfect courses from our 200+ collection\n🌍 Suggest learning paths in English, Hindi, or Nepali\n🤖 Recommend AI tools for your projects\n💡 Answer questions about programming and technology\n📚 Share insights about RiverSkills platform\n\nWhat would you like to explore today?",
+        content: "Hello! I'm Diwa AI, your intelligent assistant for RiverSkills! 🌊🤖\n\nI'm powered by advanced AI and can help you with:\n\n🎓 RiverSkills courses and learning paths\n🤖 Programming and technology questions\n🔬 Science, math, and engineering topics\n💼 Career guidance and professional development\n✍️ Creative writing and problem-solving\n🌍 General knowledge across all domains\n📚 Study strategies and learning tips\n\nI speak English, Hindi, and Nepali! What would you like to explore or learn about today?",
         sender: 'bot',
         timestamp: new Date(),
       }]);
@@ -141,10 +141,10 @@ Please respond as a helpful learning assistant who knows about RiverSkills and c
             <Bot className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h3 className="text-xl font-bold">Diwa - AI Learning Companion</h3>
+            <h3 className="text-xl font-bold">Diwa AI - Intelligent Assistant</h3>
             <p className="text-blue-100 flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
-              RiverSkills Assistant • 200+ Courses • 50+ AI Tools
+              Powered by Grok AI • RiverSkills Expert • Multi-Domain Knowledge
             </p>
           </div>
         </div>
@@ -210,7 +210,7 @@ Please respond as a helpful learning assistant who knows about RiverSkills and c
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about courses, AI tools, or get learning guidance from Diwa..."
+              placeholder="Ask Diwa AI anything - courses, programming, science, career advice, or general questions..."
               className="min-h-[50px] max-h-32 resize-none border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-xl bg-white shadow-sm"
               disabled={isLoading}
             />
