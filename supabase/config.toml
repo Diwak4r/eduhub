@@ -1,1 +1,4 @@
 project_id = "utxinrvceloqhqeujanc"
+
+[functions.chat-with-diwa]
+verify_jwt = false

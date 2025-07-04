@@ -71,27 +71,16 @@ Context about RiverSkills and its creator:
 
 Please respond as a helpful learning assistant who knows about RiverSkills and can help users find courses, resources, and learning paths.`;
 
-      // Call the edge function without authentication headers
-      const response = await fetch('https://utxinrvceloqhqeujanc.supabase.co/functions/v1/chat-with-diwa', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0eGlucnZjZWxvcWhxZXVqYW5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5OTkzMzksImV4cCI6MjA2NTU3NTMzOX0.m9OI3UM_WIpfRNr7euxiVzmaV4lKjMcQkE7HhXRkJ-g'
-        },
-        body: JSON.stringify({ 
+      // Call the edge function using Supabase client
+      const { data, error } = await supabase.functions.invoke('chat-with-diwa', {
+        body: { 
           message: contextualMessage,
           mode: 'lite'
-        }),
+        },
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      
-      if (data.error) {
-        throw new Error(data.error);
+      if (error) {
+        throw new Error(error.message || 'Failed to get response');
       }
       
       const botMessage: Message = {
