@@ -5,7 +5,7 @@ import { corsHeaders } from './constants.ts';
 import { checkRateLimit } from './rate-limit.ts';
 import { validateMessage, sanitizeInput } from './validation.ts';
 import { getSystemPrompt } from './prompts.ts';
-import { callGeminiAPI } from './gemini-api.ts';
+import { callGrokAPI } from './grok-api.ts';
 import type { ChatRequest } from './types.ts';
 
 serve(async (req) => {
@@ -19,10 +19,10 @@ serve(async (req) => {
     // Initialize environment variables
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
+    const grokApiKey = Deno.env.get('GROK_AI_API_KEY');
 
-    if (!geminiApiKey) {
-      console.error('GEMINI_API_KEY not found');
+    if (!grokApiKey) {
+      console.error('GROK_AI_API_KEY not found');
       return new Response(JSON.stringify({ 
         error: 'AI service configuration error' 
       }), {
@@ -75,8 +75,8 @@ serve(async (req) => {
     const systemPrompt = getSystemPrompt(mode);
     const fullPrompt = `${systemPrompt}\n\nUser question: ${sanitizedMessage}`;
 
-    // Call Gemini API
-    const aiResponse = await callGeminiAPI(geminiApiKey, fullPrompt);
+    // Call Grok AI API
+    const aiResponse = await callGrokAPI(grokApiKey, fullPrompt);
 
     return new Response(JSON.stringify({ 
       response: aiResponse 
